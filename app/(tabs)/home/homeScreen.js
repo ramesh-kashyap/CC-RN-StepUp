@@ -62,6 +62,7 @@ const HomeScreen = () => {
 
 
 
+<<<<<<< HEAD
   const [isPedometerAvailable, setIsPedometerAvailable] = useState('checking');
   const [stepCount, setStepCount] = useState(0);
   const [distance, setDistance] = useState(0);
@@ -103,6 +104,29 @@ const HomeScreen = () => {
   
 
   
+=======
+
+
+  const [stepCount, setStepCount] = useState(0);
+
+  // useEffect(() => {
+  //   let subscription;
+    
+  //   if (running) {
+  //     // Subscribe to step updates
+  //     subscription = Pedometer.subscribe(({ steps }) => {
+  //       setStepCount((prevCount) => prevCount + steps);
+  //     });
+  //   }
+
+  //   // Cleanup subscription on unmount or when 'running' changes
+  //   return () => {
+  //     if (subscription) {
+  //       subscription.remove(); // Ensure to unsubscribe
+  //     }
+  //   };
+  // }, [running]);
+>>>>>>> f21ad2f (ok)
 
   const dailyAverageChartData = [
     {
