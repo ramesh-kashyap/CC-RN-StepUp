@@ -6,7 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  Dimensions,
+  Dimensions,Platform 
 } from "react-native";
 import { Colors, Default, Fonts } from "../../../constants/styles";
 import MyStatusBar from "../../../components/myStatusBar";
@@ -20,8 +20,11 @@ import { Svg } from "react-native-svg";
 import { BottomSheet } from "react-native-btr";
 import DashedLine from "react-native-dashed-line";
 import { useNavigation } from "expo-router";
+import GoogleFit, { Scopes } from 'react-native-google-fit';
 
 const { width, height } = Dimensions.get("window");
+
+
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -39,21 +42,45 @@ const HomeScreen = () => {
   const [progress, setProgress] = useState(100);
   const [running, setRunning] = useState(false);
 
-  useEffect(() => {
-    let interval;
+  // useEffect(() => {
+  //   let interval;
 
-    if (running) {
-      interval = setInterval(() => {
-        setProgress((prevProgress) => {
-          if (prevProgress < 500) {
-            return prevProgress + 1;
-          }
-          return prevProgress;
-        });
-      }, 800);
-    }
-    return () => clearInterval(interval);
-  }, [running]);
+  //   if (running) {
+  //     interval = setInterval(() => {
+  //       setProgress((prevProgress) => {
+  //         if (prevProgress < 500) {
+  //           return prevProgress + 1;
+  //         }
+  //         return prevProgress;
+  //       });
+  //     }, 800);
+  //   }
+  //   return () => clearInterval(interval);
+  // }, [running]);
+
+
+
+
+
+  const [stepCount, setStepCount] = useState(0);
+
+  // useEffect(() => {
+  //   let subscription;
+    
+  //   if (running) {
+  //     // Subscribe to step updates
+  //     subscription = Pedometer.subscribe(({ steps }) => {
+  //       setStepCount((prevCount) => prevCount + steps);
+  //     });
+  //   }
+
+  //   // Cleanup subscription on unmount or when 'running' changes
+  //   return () => {
+  //     if (subscription) {
+  //       subscription.remove(); // Ensure to unsubscribe
+  //     }
+  //   };
+  // }, [running]);
 
   const dailyAverageChartData = [
     {
@@ -203,7 +230,7 @@ const HomeScreen = () => {
               backgroundColor: Colors.extraGrey,
             }}
           >
-            <Text style={{ ...Fonts.SemiBold40primary }}>{progress}</Text>
+            <Text style={{ ...Fonts.SemiBold40primary }}>{stepCount}</Text>
             <Text
               numberOfLines={1}
               style={{ ...Fonts.Bold16grey, overflow: "hidden" }}
@@ -316,7 +343,7 @@ const HomeScreen = () => {
                 marginTop: Default.fixPadding,
               }}
             >
-              4.8 km
+              4.2 km
             </Text>
             <Text
               numberOfLines={1}
@@ -553,7 +580,7 @@ const HomeScreen = () => {
                     paddingHorizontal: Default.fixPadding * 1.5,
                   }}
                 >
-                  <Text style={{ ...Fonts.SemiBold20primary }}>{progress}</Text>
+                  <Text style={{ ...Fonts.SemiBold20primary }}>{stepCount}</Text>
                   <Text
                     numberOfLines={1}
                     style={{ ...Fonts.Bold16grey, overflow: "hidden" }}

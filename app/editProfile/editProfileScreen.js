@@ -32,7 +32,7 @@ const EditProfileScreen = () => {
     return t(`editProfileScreen:${key}`);
   }
 
-  const [name, setName] = useState("Guy hawkins");
+  const [name, setName] = useState("Sahil");
   const [confirmName, setConfirmName] = useState("Guy hawkins");
 
   const [email, setEmail] = useState("guyhawkins@mail.com");
@@ -115,6 +115,7 @@ const EditProfileScreen = () => {
           {tr("editProfile")}
         </Text>
       </View>
+
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -208,7 +209,7 @@ const EditProfileScreen = () => {
                 ? confirmName
                 : !name
                 ? tr("enterName")
-                : "Guy hawkins"}
+                : "Sahil "}
             </Text>
           </TouchableOpacity>
 
