@@ -1,0 +1,254 @@
+{
+    "onboardingScreen": {
+        "title1": "مرحبًا بك في Stepup",
+        "title2": "تحدى نفسك",
+        "title3": "ابق قويًا وصحيًا",
+        "skip": "يتخطى",
+        "next": "التالي",
+        "login": "تسجيل الدخول",
+        "tapBack": "اضغط مرة أخرى للخروج من التطبيق"
+    },
+    "loginScreen": {
+        "tapBack": "اضغط مرة أخرى للخروج من التطبيق",
+        "welcome": "مرحباً",
+        "loginAccount": "قم بتسجيل الدخول إلى حسابك",
+        "mobileNumber": "رقم الهاتف المحمول",
+        "enterMobileNumber": "أدخل رقم هاتفك المحمول",
+        "login": "تسجيل الدخول",
+        "search": "يبحث",
+        "close": "يغلق"
+    },
+    "registerScreen": {
+        "welcome": "مرحباً",
+        "registerAccount": "سجل حسابك",
+        "userName": "اسم المستخدم",
+        "enterName": "أدخل أسمك",
+        "emailAddress": "عنوان البريد الإلكتروني",
+        "enterEmailAddress": "أدخل عنوان بريدك الالكتروني",
+        "mobileNumber": "رقم الهاتف المحمول",
+        "enterMobileNumber": "أدخل رقم هاتفك المحمول",
+        "register": "يسجل"
+    },
+    "otpScreen": {
+        "verification": "التحقق من OTP",
+        "enterOtp": "أدخل OTP المرسلة إليك على رقم الهاتف المحمول السجل",
+        "verify": "يؤكد",
+        "receiveCode": "لم يتلق رمز؟",
+        "resend": "إعادة إرسال"
+    },
+    "setGoalScreen": {
+        "continue": "يكمل",
+        "weNeverShare": "لا نشارك معلوماتك الشخصية أبدًا مع أي طرف ثالث"
+    },
+    "selectGender": {
+        "selectGender": "حدد نوع الجنس",
+        "selectGenderIt": "حدد الجنس لأن السعرات الحرارية وحساب طول الخطوة تحتاجه."
+    },
+    "dailyGoalSteps": {
+        "goalSteps": "حدد خطوات الأهداف اليومية",
+        "description": "دعونا نجيب على سؤال قليلة حتى نتمكن من معرفتك بشكل أفضل",
+        "steps": "خطوات"
+    },
+    "currentWeight": {
+        "currentWeight": "اختر وزنك الحالي؟",
+        "weight": "الوزن (كجم)",
+        "description": "لا نشارك معلوماتك الشخصية أبدًا مع أي طرف ثالث"
+    },
+    "currentHeight": {
+        "chooseCurrentHeight": "اختر طولك الحالي؟",
+        "distanceIt": "حساب المسافة والسرعة بحاجة إليه",
+        "height": "ارتفاع في)"
+    },
+    "chooseAge": {
+        "chooseYourAge": "اختر عمرك؟",
+        "distanceIt": "حساب المسافة والسرعة بحاجة إليه",
+        "age": "عمر"
+    },
+    "bottomTab": {
+        "home": "بيت",
+        "report": "تقرير",
+        "awards": "جوائز",
+        "profile": "حساب تعريفي",
+        "tapBack": "اضغط مرة أخرى للخروج من التطبيق"
+    },
+    "homeScreen": {
+        "step": "خطوة",
+        "goal": "هدف",
+        "kcalBurnt": "KCAL حرق",
+        "activeTime": "وقت نشط",
+        "distance": "مسافة",
+        "start": "يبدأ",
+        "pause": "يوقف",
+        "dailyAverage": "المتوسط اليومي",
+        "achievement": "إنجاز",
+        "startingWalk": "بدء المشي",
+        "stepsLeft": "خطوات اليسار",
+        "other": "مرحبًا Guy Hawkins ، بدأ تعقب الخطوة الخاص بك. استمر في المشي وحقق هدفك"
+    },
+    "notificationScreen": {
+        "remove": "الإخطار تمت إزالته.",
+        "notification": "إشعار",
+        "noNotification": "لا يوجد إشعار جديد"
+    },
+    "reportScreen": {
+        "report": "تقرير",
+        "week": "أسبوع",
+        "month": "شهر",
+        "year": "سنة",
+        "steps": "خطوات",
+        "calories": "سعرات حرارية",
+        "average": "متوسط",
+        "distance": "مسافة"
+    },
+    "awardsScreen": {
+        "awards": "جوائز",
+        "dailySteps": "الخطوات اليومية",
+        "distance": "مسافة",
+        "caloriesWeek": "السعرات الحرارية في الأسبوع",
+        "totalDays": "مجموع الأيام"
+    },
+    "awardsCategoryScreen": {
+        "yourLevel": "مستواك",
+        "achievement": "200 خطوة أخرى للفوز بالإنجاز 10K"
+    },
+    "achieveGoalScreen": {
+        "great": "عظيم!",
+        "achieved": "لقد حققت خطوة 5K!",
+        "share": "شارك مع وسائل التواصل الاجتماعي"
+    },
+    "profileScreen": {
+        "profile": "حساب تعريفي",
+        "personalInformation": "معلومات شخصية",
+        "gender": "جنس",
+        "weight": "وزن",
+        "height": "ارتفاع",
+        "language": "لغة",
+        "steps": "خطوات",
+        "reminder": "تذكير",
+        "stepGoal": "هدف الخطوة",
+        "history": "تاريخ",
+        "other": "آخر",
+        "instruction": "تعليمات",
+        "giveRate": "إعطاء معدل",
+        "privacyPolicy": "سياسة الخصوصية",
+        "termsCondition": "أحكام وشروط",
+        "logout": "تسجيل خروج",
+        "save": "يحفظ",
+        "cancel": "يلغي"
+    },
+    "privacyPolicyScreen": {
+        "privacyPolicy": "سياسة الخصوصية",
+        "introduction": "مقدمة"
+    },
+    "termsAndConditionScreen": {
+        "termsAndCondition": "أحكام وشروط"
+    },
+    "editProfileScreen": {
+        "editProfile": "تعديل الملف الشخصي",
+        "name": "اسم المستخدم",
+        "enterName": "أدخل اسم المستخدم الخاص بك",
+        "email": "عنوان البريد الإلكتروني",
+        "enterEmail": "أدخل عنوان بريدك الالكتروني",
+        "mobile": "رقم الهاتف المحمول",
+        "enterMobile": "أدخل رقم هاتفك المحمول",
+        "update": "تحديث",
+        "changeProfile": "تغيير الصورة",
+        "camera": "آلة تصوير",
+        "gallery": "صالة عرض",
+        "remove": "يزيل",
+        "removeImage": "تمت إزالة صورة الملف الشخصي.",
+        "deny": "لقد أنكرت الوصول إلى الكاميرا !!!",
+        "changeUserName": "غير اسم المستخدم",
+        "changeMobileNumber": "تغيير رقم الهاتف المحمول",
+        "changeEmailAddress": "تغيير البريد الالكتروني",
+        "save": "يحفظ",
+        "cancel": "يلغي"
+    },
+    "languageScreen": {
+        "language": "لغة",
+        "update": "تحديث"
+    },
+    "weightBottomSheet": {
+        "weight": "وزن",
+        "save": "يحفظ",
+        "cancel": "يلغي"
+    },
+    "heightBottomSheet": {
+        "height": "ارتفاع",
+        "save": "يحفظ",
+        "cancel": "يلغي"
+    },
+    "stepGoalBottomSheet": {
+        "stepGoal": "هدف الخطوة",
+        "steps": "خطوات",
+        "save": "يحفظ",
+        "cancel": "يلغي"
+    },
+    "reminderScreen": {
+        "reminder": "تذكير",
+        "walkingReminder": "تذكير المشي",
+        "setYourWalking": "اضبط تذكير المشي الخاص بك حتى لا تنسى",
+        "areYouSure": "هل أنت متأكد أنك تريد إزالة التذكير؟",
+        "cancel": "يلغي",
+        "remove": "يزيل",
+        "noReminderAdded": "لا تذكير إضافة",
+        "success": "تمت إزالتها بنجاح."
+    },
+    "addReminderScreen": {
+        "addReminder": "إضافة تذكير",
+        "title": "عنوان",
+        "enterTitle": "أدخل العنوان",
+        "time": "وقت",
+        "repeat": "يكرر",
+        "save": "يحفظ",
+        "cancel": "يلغي",
+        "sunday": "الأحد",
+        "thursday": "يوم الخميس",
+        "monday": "الاثنين",
+        "friday": "جمعة",
+        "tuesday": "يوم الثلاثاء",
+        "saturday": "السبت",
+        "wednesday": "الأربعاء"
+    },
+    "instructionsScreen": {
+        "instructions": "تعليمات",
+        "question1": "كيف تستعمل؟",
+        "question2": "العد الخطوة؟",
+        "question3": "العد عند هز الهاتف؟",
+        "question4": "العد عند القيادة؟",
+        "question5": "السعرات الحرارية والمسافة",
+        "question6": "توفير البطارية"
+    },
+    "giveRateScreen": {
+        "giveRate": "إعطاء معدل",
+        "enjoyingApp": "الاستمتاع التطبيق؟",
+        "pleaseTell": "من فضلك أخبرنا كيف كانت تجربتك في استخدام تطبيقنا",
+        "comments": "تعليقات",
+        "verify": "يؤكد"
+    },
+    "logoutModal": {
+        "areYouSure": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+        "cancel": "يلغي",
+        "logout": "تسجيل خروج"
+    },
+    "historyScreen": {
+        "history": "تاريخ",
+        "selectDate": "حدد تاريخ",
+        "from": "من",
+        "to": "ل",
+        "ok": "نعم",
+        "close": "يغلق",
+        "areYouSure": "هل أنت متأكد من حذف تاريخك؟",
+        "cancel": "يلغي",
+        "delete": "يمسح",
+        "steps": "خطوات",
+        "kcalBurnt": "KCAL حرق",
+        "activeTime": "وقت نشط",
+        "distance": "مسافة",
+        "empty": "فارغ",
+        "recordAtTime": "ليس لديك أي سجل في هذا الوقت"
+    },
+    "inactiveScreen": {
+        "inActiveNow": "هذا المستوى غير نشط الآن يرجى إكمال هدفك وتحقيق 10K"
+    }
+}

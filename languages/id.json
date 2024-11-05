@@ -1,0 +1,254 @@
+{
+    "onboardingScreen": {
+        "title1": "Selamat datang di Stepup",
+        "title2": "Tantang dirimu sendiri",
+        "title3": "Tetap Kuat & Sehat",
+        "skip": "Melewati",
+        "next": "Berikutnya",
+        "login": "Gabung",
+        "tapBack": "Ketuk Kembali Lagi untuk Keluar dari Aplikasi"
+    },
+    "loginScreen": {
+        "tapBack": "Ketuk Kembali Lagi untuk Keluar dari Aplikasi",
+        "welcome": "Selamat datang",
+        "loginAccount": "Masuk akun Anda",
+        "mobileNumber": "Nomor handphone",
+        "enterMobileNumber": "Masukkan nomor ponsel Anda",
+        "login": "Gabung",
+        "search": "Mencari",
+        "close": "Menutup"
+    },
+    "registerScreen": {
+        "welcome": "Selamat datang",
+        "registerAccount": "Daftarkan akun anda",
+        "userName": "Nama belakang",
+        "enterName": "Masukkan nama Anda",
+        "emailAddress": "Alamat email",
+        "enterEmailAddress": "Masukkan alamat email Anda",
+        "mobileNumber": "Nomor handphone",
+        "enterMobileNumber": "Masukkan nomor ponsel Anda",
+        "register": "Daftar"
+    },
+    "otpScreen": {
+        "verification": "Verifikasi OTP",
+        "enterOtp": "Masukkan OTP yang dikirimkan kepada Anda di Nomor Ponsel Register",
+        "verify": "Memeriksa",
+        "receiveCode": "Tidak menerima kode?",
+        "resend": "Ulang"
+    },
+    "setGoalScreen": {
+        "continue": "Melanjutkan",
+        "weNeverShare": "Kami tidak pernah membagikan informasi pribadi Anda dengan pihak ketiga mana pun"
+    },
+    "selectGender": {
+        "selectGender": "Pilih jenis kelamin",
+        "selectGenderIt": "Pilih jenis kelamin karena kalori dan perhitungan panjang langkah membutuhkannya."
+    },
+    "dailyGoalSteps": {
+        "goalSteps": "Tetapkan Langkah Sasaran Harian",
+        "description": "Mari kita jawab beberapa pertanyaan sehingga kami bisa mengenal Anda lebih baik ",
+        "steps": "Langkah"
+    },
+    "currentWeight": {
+        "currentWeight": "Pilih berat badan Anda saat ini?",
+        "weight": "Berat (kg)",
+        "description": "Kami tidak pernah membagikan informasi pribadi Anda dengan pihak ketiga mana pun"
+    },
+    "currentHeight": {
+        "chooseCurrentHeight": "Pilih Tinggi Anda Saat Ini?",
+        "distanceIt": "Perhitungan jarak & kecepatan membutuhkannya",
+        "height": "Height(Di dalam)"
+    },
+    "chooseAge": {
+        "chooseYourAge": "Pilih usia Anda?",
+        "distanceIt": "Perhitungan jarak & kecepatan membutuhkannya",
+        "age": "Usia"
+    },
+    "bottomTab": {
+        "home": "Rumah",
+        "report": "Laporan",
+        "awards": "Penghargaan",
+        "profile": "Profil",
+        "tapBack": "Ketuk Kembali Lagi untuk Keluar dari Aplikasi"
+    },
+    "homeScreen": {
+        "step": "Melangkah",
+        "goal": "Sasaran",
+        "kcalBurnt": "Kcal terbakar",
+        "activeTime": "Waktu aktif",
+        "distance": "Jarak",
+        "start": "Awal",
+        "pause": "Berhenti sebentar",
+        "dailyAverage": "Rata-rata harian",
+        "achievement": "Pencapaian",
+        "startingWalk": "Mulai berjalan",
+        "stepsLeft": "langkah tersisa",
+        "other": "Halo Guy Hawkins pelacak langkah Anda dimulai. BERJALAN berjalan dan mencapai tujuan Anda"
+    },
+    "notificationScreen": {
+        "remove": "Pemberitahuan dihapus.",
+        "notification": "Pemberitahuan",
+        "noNotification": "Tidak ada pemberitahuan baru"
+    },
+    "reportScreen": {
+        "report": "Laporan",
+        "week": "Pekan",
+        "month": "Bulan",
+        "year": "Tahun",
+        "steps": "Langkah",
+        "calories": "Kalori",
+        "average": "Rata-rata",
+        "distance": "Jarak"
+    },
+    "awardsScreen": {
+        "awards": "Penghargaan",
+        "dailySteps": "Langkah harian",
+        "distance": "Jarak",
+        "caloriesWeek": "Kalori seminggu",
+        "totalDays": "Total hari"
+    },
+    "awardsCategoryScreen": {
+        "yourLevel": "Level Anda",
+        "achievement": "200 langkah lagi untuk memenangkan pencapaian 10k"
+    },
+    "achieveGoalScreen": {
+        "great": "BESAR!",
+        "achieved": "Anda telah mencapai langkah 5K!",
+        "share": "Bagikan dengan media sosial"
+    },
+    "profileScreen": {
+        "profile": "Profil",
+        "personalInformation": "Informasi pribadi",
+        "gender": "Jenis kelamin",
+        "weight": "Berat",
+        "height": "Tinggi",
+        "language": "Bahasa",
+        "steps": "Langkah",
+        "reminder": "Pengingat",
+        "stepGoal": "Sasaran Langkah",
+        "history": "Sejarah",
+        "other": "Lainnya",
+        "instruction": "Petunjuk",
+        "giveRate": "Memberi tingkat",
+        "privacyPolicy": "Kebijakan pribadi",
+        "termsCondition": "Syarat dan Kondisi",
+        "logout": "Keluar",
+        "save": "Menyimpan",
+        "cancel": "Membatalkan"
+    },
+    "privacyPolicyScreen": {
+        "privacyPolicy": "Kebijakan pribadi",
+        "introduction": "Perkenalan"
+    },
+    "termsAndConditionScreen": {
+        "termsAndCondition": "Syarat dan Kondisi"
+    },
+    "editProfileScreen": {
+        "editProfile": "Sunting profil",
+        "name": "Nama belakang",
+        "enterName": "Masukkan Nama Pengguna Anda",
+        "email": "Alamat email",
+        "enterEmail": "Masukkan alamat email Anda",
+        "mobile": "Nomor handphone",
+        "enterMobile": "Masukkan nomor ponsel Anda",
+        "update": "Memperbarui",
+        "changeProfile": "Ganti gambar",
+        "camera": "Kamera",
+        "gallery": "Galeri",
+        "remove": "Menghapus",
+        "removeImage": "Foto profil dihapus.",
+        "deny": "Anda telah ditolak untuk mengakses kamera !!!",
+        "changeUserName": "Ubah Nama Pengguna",
+        "changeMobileNumber": "Ubah nomor ponsel",
+        "changeEmailAddress": "mengganti alamat email",
+        "save": "Menyimpan",
+        "cancel": "Membatalkan"
+    },
+    "languageScreen": {
+        "language": "Bahasa",
+        "update": "Memperbarui"
+    },
+    "weightBottomSheet": {
+        "weight": "Berat",
+        "save": "Menyimpan",
+        "cancel": "Membatalkan"
+    },
+    "heightBottomSheet": {
+        "height": "Tinggi",
+        "save": "Menyimpan",
+        "cancel": "Membatalkan"
+    },
+    "stepGoalBottomSheet": {
+        "stepGoal": "Sasaran Langkah",
+        "steps": "Langkah",
+        "save": "Menyimpan",
+        "cancel": "Membatalkan"
+    },
+    "reminderScreen": {
+        "reminder": "Pengingat",
+        "walkingReminder": "Pengingat berjalan",
+        "setYourWalking": "Atur pengingat berjalan Anda agar Anda tidak bisa lupa",
+        "areYouSure": "Apakah Anda yakin ingin menghapus pengingat?",
+        "cancel": "Membatalkan",
+        "remove": "Menghapus",
+        "noReminderAdded": "Tidak ada pengingat ditambahkan",
+        "success": "Berhasil dihapus."
+    },
+    "addReminderScreen": {
+        "addReminder": "Tambahkan pengingat",
+        "title": "Judul",
+        "enterTitle": "Masukkan judul",
+        "time": "Waktu",
+        "repeat": "Mengulang",
+        "save": "Menyimpan",
+        "cancel": "Membatalkan",
+        "sunday": "Minggu",
+        "thursday": "Kamis",
+        "monday": "Senin",
+        "friday": "Jumat",
+        "tuesday": "Selasa",
+        "saturday": "Sabtu",
+        "wednesday": "Rabu"
+    },
+    "instructionsScreen": {
+        "instructions": "Instruksi",
+        "question1": "Cara Penggunaan?",
+        "question2": "Langkah menghitung?",
+        "question3": "Menghitung saat mengguncang telepon?",
+        "question4": "Menghitung saat mengemudi?",
+        "question5": "Kalori & Jarak",
+        "question6": "Penghematan baterai"
+    },
+    "giveRateScreen": {
+        "giveRate": "Memberi tingkat",
+        "enjoyingApp": "Menikmati aplikasi?",
+        "pleaseTell": "Tolong beri tahu kami bagaimana pengalaman Anda menggunakan aplikasi kami",
+        "comments": "Komentar",
+        "verify": "Memeriksa"
+    },
+    "logoutModal": {
+        "areYouSure": "Apakah Anda yakin ingin keluar?",
+        "cancel": "Membatalkan",
+        "logout": "Keluar"
+    },
+    "historyScreen": {
+        "history": "Sejarah",
+        "selectDate": "Pilih Tanggal",
+        "from": "Dari",
+        "to": "Ke",
+        "ok": "Oke",
+        "close": "Menutup",
+        "areYouSure": "Apakah Anda pasti akan menghapus riwayat Anda?",
+        "cancel": "Membatalkan",
+        "delete": "Menghapus",
+        "steps": "Langkah",
+        "kcalBurnt": "Kcal terbakar",
+        "activeTime": "Waktu aktif",
+        "distance": "Jarak",
+        "empty": "Kosong",
+        "recordAtTime": "Anda tidak memiliki catatan apa pun saat ini"
+    },
+    "inactiveScreen": {
+        "inActiveNow": "Level ini tidak aktif sekarang harap selesaikan tujuan Anda dan mencapai 10k"
+    }
+}

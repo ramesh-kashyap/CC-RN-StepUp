@@ -1,0 +1,254 @@
+{
+    "onboardingScreen": {
+        "title1": "स्टेपअप में आपका स्वागत है",
+        "title2": "आपने आप को चुनौती दो",
+        "title3": "मजबूत और स्वस्थ रहें",
+        "skip": "छोडना",
+        "next": "अगला",
+        "login": "लॉग इन करें",
+        "tapBack": "ऐप से बाहर निकलने के लिए फिर से टैप करें"
+    },
+    "loginScreen": {
+        "tapBack": "ऐप से बाहर निकलने के लिए फिर से टैप करें",
+        "welcome": "स्वागत",
+        "loginAccount": "अपना खाता लॉगिन करें",
+        "mobileNumber": "मोबाइल नंबर",
+        "enterMobileNumber": "अपना मोबाइल संख्या दर्ज करे",
+        "login": "लॉग इन करें",
+        "search": "खोज",
+        "close": "बंद करना"
+    },
+    "registerScreen": {
+        "welcome": "स्वागत",
+        "registerAccount": "अपने खाते को पंजीकृत करें",
+        "userName": "उपयोगकर्ता नाम",
+        "enterName": "अपना नाम दर्ज करें",
+        "emailAddress": "मेल पता",
+        "enterEmailAddress": "अपना ईमेल पता दर्ज करें",
+        "mobileNumber": "मोबाइल नंबर",
+        "enterMobileNumber": "अपना मोबाइल संख्या दर्ज करे",
+        "register": "पंजीकरण करवाना"
+    },
+    "otpScreen": {
+        "verification": "ओटीपी सत्यापन",
+        "enterOtp": "रजिस्टर मोबाइल नंबर पर आपको भेजे गए OTP दर्ज करें",
+        "verify": "सत्यापित करना",
+        "receiveCode": "कोड प्राप्त नहीं किया?",
+        "resend": "पुन: भेजें"
+    },
+    "setGoalScreen": {
+        "continue": "जारी रखना",
+        "weNeverShare": "हम कभी भी किसी तीसरे पक्ष के साथ आपकी व्यक्तिगत जानकारी साझा नहीं करते हैं"
+    },
+    "selectGender": {
+        "selectGender": "लिंग चुनें",
+        "selectGenderIt": "लिंग का चयन करें क्योंकि कैलोरी और स्ट्राइड लंबाई गणना की आवश्यकता है।"
+    },
+    "dailyGoalSteps": {
+        "goalSteps": "दैनिक लक्ष्य चरण निर्धारित करें",
+        "description": "आइए कुछ सवाल का जवाब दें ताकि हम आपको बेहतर जान सकें ",
+        "steps": "कदम"
+    },
+    "currentWeight": {
+        "currentWeight": "अपना वर्तमान वजन चुनें?",
+        "weight": "वजन (किग्रा)",
+        "description": "हम कभी भी किसी तीसरे पक्ष के साथ आपकी व्यक्तिगत जानकारी साझा नहीं करते हैं"
+    },
+    "currentHeight": {
+        "chooseCurrentHeight": "अपनी वर्तमान ऊंचाई चुनें?",
+        "distanceIt": "दूरी और गति गणना इसकी आवश्यकता है",
+        "height": "Height(में)"
+    },
+    "chooseAge": {
+        "chooseYourAge": "अपनी उम्र चुनें?",
+        "distanceIt": "दूरी और गति गणना इसकी आवश्यकता है",
+        "age": "आयु"
+    },
+    "bottomTab": {
+        "home": "घर",
+        "report": "प्रतिवेदन",
+        "awards": "पुरस्कार",
+        "profile": "प्रोफ़ाइल",
+        "tapBack": "ऐप से बाहर निकलने के लिए फिर से टैप करें"
+    },
+    "homeScreen": {
+        "step": "कदम",
+        "goal": "लक्ष्य",
+        "kcalBurnt": "Kcal जल गया",
+        "activeTime": "सक्रिय काल",
+        "distance": "दूरी",
+        "start": "शुरू",
+        "pause": "रोकना",
+        "dailyAverage": "दैनिक औसत",
+        "achievement": "उपलब्धि",
+        "startingWalk": "शुरू करना",
+        "stepsLeft": "कदम बचे",
+        "other": "हेलो गाइ हॉकिन्स आपके स्टेप ट्रैकर ने शुरू किया। चलना और अपने लक्ष्य को प्राप्त करना"
+    },
+    "notificationScreen": {
+        "remove": "अधिसूचना हटा दी गई।",
+        "notification": "अधिसूचना",
+        "noNotification": "कोई नई अधिसूचना नहीं"
+    },
+    "reportScreen": {
+        "report": "प्रतिवेदन",
+        "week": "सप्ताह",
+        "month": "महीना",
+        "year": "वर्ष",
+        "steps": "कदम",
+        "calories": "कैलोरी",
+        "average": "औसत",
+        "distance": "दूरी"
+    },
+    "awardsScreen": {
+        "awards": "पुरस्कार",
+        "dailySteps": "दैनिक चरण",
+        "distance": "दूरी",
+        "caloriesWeek": "एक सप्ताह में कैलोरी",
+        "totalDays": "कुल दिन"
+    },
+    "awardsCategoryScreen": {
+        "yourLevel": "आपका स्तर",
+        "achievement": "उपलब्धि 10k जीतने के लिए 200 और कदम"
+    },
+    "achieveGoalScreen": {
+        "great": "महान!",
+        "achieved": "आपने 5K कदम हासिल किया है!",
+        "share": "सोशल मीडिया के साथ साझा करें"
+    },
+    "profileScreen": {
+        "profile": "प्रोफ़ाइल",
+        "personalInformation": "व्यक्तिगत जानकारी",
+        "gender": "लिंग",
+        "weight": "वज़न",
+        "height": "ऊंचाई",
+        "language": "भाषा",
+        "steps": "कदम",
+        "reminder": "अनुस्मारक",
+        "stepGoal": "चरण -लक्ष्य",
+        "history": "इतिहास",
+        "other": "अन्य",
+        "instruction": "अनुदेश",
+        "giveRate": "दर देना",
+        "privacyPolicy": "गोपनीयता नीति",
+        "termsCondition": "नियम व शर्तें",
+        "logout": "लॉग आउट",
+        "save": "बचाना",
+        "cancel": "रद्द करना"
+    },
+    "privacyPolicyScreen": {
+        "privacyPolicy": "गोपनीयता नीति",
+        "introduction": "परिचय"
+    },
+    "termsAndConditionScreen": {
+        "termsAndCondition": "नियम व शर्तें"
+    },
+    "editProfileScreen": {
+        "editProfile": "प्रोफ़ाइल संपादित करें",
+        "name": "उपयोगकर्ता नाम",
+        "enterName": "अपना उपयोगकर्ता नाम दर्ज करें",
+        "email": "मेल पता",
+        "enterEmail": "अपना ईमेल पता दर्ज करें",
+        "mobile": "मोबाइल नंबर",
+        "enterMobile": "अपना मोबाइल संख्या दर्ज करे",
+        "update": "अद्यतन",
+        "changeProfile": "चित्र को बदलें",
+        "camera": "कैमरा",
+        "gallery": "गेलरी",
+        "remove": "निकालना",
+        "removeImage": "प्रोफ़ाइल फोटो हटा दिया गया।",
+        "deny": "आपने कैमरा एक्सेस करने से इनकार कर दिया है !!!",
+        "changeUserName": "उपयोगकर्ता नाम परिवर्तन करें",
+        "changeMobileNumber": "मोबाइल नंबर बदलें",
+        "changeEmailAddress": "ईमेल पता बदलें",
+        "save": "बचाना",
+        "cancel": "रद्द करना"
+    },
+    "languageScreen": {
+        "language": "भाषा",
+        "update": "अद्यतन"
+    },
+    "weightBottomSheet": {
+        "weight": "वज़न",
+        "save": "बचाना",
+        "cancel": "रद्द करना"
+    },
+    "heightBottomSheet": {
+        "height": "ऊंचाई",
+        "save": "बचाना",
+        "cancel": "रद्द करना"
+    },
+    "stepGoalBottomSheet": {
+        "stepGoal": "चरण -लक्ष्य",
+        "steps": "कदम",
+        "save": "बचाना",
+        "cancel": "रद्द करना"
+    },
+    "reminderScreen": {
+        "reminder": "अनुस्मारक",
+        "walkingReminder": "पैदल चलने का अनुस्मारक",
+        "setYourWalking": "अपने चलने के अनुस्मारक को सेट करें ताकि आप नहीं भूल सकें",
+        "areYouSure": "क्या आप सुनिश्चित हैं कि आप रिमाइंडर को हटाना चाहते हैं?",
+        "cancel": "रद्द करना",
+        "remove": "निकालना",
+        "noReminderAdded": "कोई अनुस्मारक नहीं जोड़ा गया",
+        "success": "सफलतापूर्वक हटा दिया गया।"
+    },
+    "addReminderScreen": {
+        "addReminder": "अनुस्मारक जोड़ें",
+        "title": "शीर्षक",
+        "enterTitle": "शीर्षक दर्ज करें",
+        "time": "समय",
+        "repeat": "दोहराना",
+        "save": "बचाना",
+        "cancel": "रद्द करना",
+        "sunday": "रविवार",
+        "thursday": "गुरुवार",
+        "monday": "सोमवार",
+        "friday": "शुक्रवार",
+        "tuesday": "मंगलवार",
+        "saturday": "शनिवार",
+        "wednesday": "बुधवार"
+    },
+    "instructionsScreen": {
+        "instructions": "निर्देश",
+        "question1": "का उपयोग कैसे करें?",
+        "question2": "कदम गिनती?",
+        "question3": "फोन हिलाते समय गिनती?",
+        "question4": "ड्राइविंग करते समय गिनती?",
+        "question5": "कैलोरी और दूरी",
+        "question6": "बैटरी बचने वाला"
+    },
+    "giveRateScreen": {
+        "giveRate": "दर देना",
+        "enjoyingApp": "ऐप का आनंद ले रहे हैं?",
+        "pleaseTell": "कृपया हमें बताएं कि हमारे ऐप का उपयोग करने का आपका अनुभव कैसा था",
+        "comments": "टिप्पणियाँ",
+        "verify": "सत्यापित करना"
+    },
+    "logoutModal": {
+        "areYouSure": "क्या आप लॉग आउट करना चाहते हैं?",
+        "cancel": "रद्द करना",
+        "logout": "लॉग आउट"
+    },
+    "historyScreen": {
+        "history": "इतिहास",
+        "selectDate": "तारीख़ चुनें",
+        "from": "से",
+        "to": "को",
+        "ok": "ठीक",
+        "close": "बंद करना",
+        "areYouSure": "क्या आप अपने इतिहास को हटाना सुनिश्चित करते हैं?",
+        "cancel": "रद्द करना",
+        "delete": "मिटाना",
+        "steps": "कदम",
+        "kcalBurnt": "Kcal जल गया",
+        "activeTime": "सक्रिय काल",
+        "distance": "दूरी",
+        "empty": "खाली",
+        "recordAtTime": "इस समय आपके पास कोई रिकॉर्ड नहीं है"
+    },
+    "inactiveScreen": {
+        "inActiveNow": "यह स्तर निष्क्रिय है अब कृपया अपना लक्ष्य पूरा करें और 10k प्राप्त करें"
+    }
+}

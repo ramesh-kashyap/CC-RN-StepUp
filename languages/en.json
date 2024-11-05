@@ -1,0 +1,254 @@
+{
+    "onboardingScreen": {
+        "title1": "Welcome to StepUp",
+        "title2": "Challenge yourself",
+        "title3": "Stay strong & healthy",
+        "skip": "Skip",
+        "next": "Next",
+        "login": "Login",
+        "tapBack": "Tap back again to exit the App"
+    },
+    "loginScreen": {
+        "tapBack": "Tap back again to exit the App",
+        "welcome": "Welcome",
+        "loginAccount": "Login your account",
+        "mobileNumber": "Mobile number",
+        "enterMobileNumber": "Enter your mobile number",
+        "login": "Login",
+        "search": "Search",
+        "close": "Close"
+    },
+    "registerScreen": {
+        "welcome": "Welcome",
+        "registerAccount": "Register your account",
+        "userName": "User name",
+        "enterName": "Enter your name",
+        "emailAddress": "Email address",
+        "enterEmailAddress": "Enter your email address",
+        "mobileNumber": "Mobile number",
+        "enterMobileNumber": "Enter your mobile number",
+        "register": "Register"
+    },
+    "otpScreen": {
+        "verification": "Otp verification",
+        "enterOtp": "Enter otp sent to you on register mobile number",
+        "verify": "Verify",
+        "receiveCode": "Didn't receive code?",
+        "resend": "Resend"
+    },
+    "setGoalScreen": {
+        "continue": "Continue",
+        "weNeverShare": "We never share your personal information with any third party "
+    },
+    "selectGender": {
+        "selectGender": "Select Gender",
+        "selectGenderIt": "Select gender because calories and stride length calculation needs it."
+    },
+    "dailyGoalSteps": {
+        "goalSteps": "Set  daily goal steps",
+        "description": "Let's answer a few question so that we can know you better ",
+        "steps": "Steps"
+    },
+    "currentWeight": {
+        "currentWeight": "Choose your current weight?",
+        "weight": "Weight(kg)",
+        "description": "We never share your personal information with any third party "
+    },
+    "currentHeight": {
+        "chooseCurrentHeight": "Choose your current height?",
+        "distanceIt": "Distance & speed calculation need it",
+        "height": "Height(In)"
+    },
+    "chooseAge": {
+        "chooseYourAge": "Choose your age?",
+        "distanceIt": "Distance & speed calculation need it",
+        "age": "Age"
+    },
+    "bottomTab": {
+        "home": "Home",
+        "report": "Report",
+        "awards": "Awards",
+        "profile": "Profile",
+        "tapBack": "Tap back again to exit the App"
+    },
+    "homeScreen": {
+        "step": "Step",
+        "goal": "Goal",
+        "kcalBurnt": "Kcal burnt",
+        "activeTime": "Active time",
+        "distance": "Distance",
+        "start": "Start",
+        "pause": "Pause",
+        "dailyAverage": "Daily average",
+        "achievement": "Achievement",
+        "startingWalk": "Starting walk",
+        "stepsLeft": "steps left",
+        "other": "Hello  Guy hawkins your step tracker started.Keep walking and achieve your goal "
+    },
+    "notificationScreen": {
+        "remove": "Notification removed.",
+        "notification": "Notification",
+        "noNotification": "No new notification"
+    },
+    "reportScreen": {
+        "report": "Report",
+        "week": "Week",
+        "month": "Month",
+        "year": "Year",
+        "steps": "Steps",
+        "calories": "Calories",
+        "average": "Average",
+        "distance": "Distance"
+    },
+    "awardsScreen": {
+        "awards": "Awards",
+        "dailySteps": "Daily Steps",
+        "distance": "Distance",
+        "caloriesWeek": "Calories a week",
+        "totalDays": "Total days"
+    },
+    "awardsCategoryScreen": {
+        "yourLevel": "Your level",
+        "achievement": "200 more step to win the achievement 10K "
+    },
+    "achieveGoalScreen": {
+        "great": "GREAT!",
+        "achieved": "You have achieved 5K step!",
+        "share": "Share with social media "
+    },
+    "profileScreen": {
+        "profile": "Profile",
+        "personalInformation": "Personal information",
+        "gender": "Gender",
+        "weight": "Weight",
+        "height": "Height",
+        "language": "Language",
+        "steps": "Steps",
+        "reminder": "Reminder",
+        "stepGoal": "Step goal",
+        "history": "History",
+        "other": "Other",
+        "instruction": "Instruction",
+        "giveRate": "Give rate",
+        "privacyPolicy": "Privacy policy",
+        "termsCondition": "Terms and condition",
+        "logout": "Logout",
+        "save": "Save",
+        "cancel": "Cancel"
+    },
+    "privacyPolicyScreen": {
+        "privacyPolicy": "Privacy policy",
+        "introduction": "Introduction"
+    },
+    "termsAndConditionScreen": {
+        "termsAndCondition": "Terms and condition"
+    },
+    "editProfileScreen": {
+        "editProfile": "Edit profile",
+        "name": "User name",
+        "enterName": "Enter your user name",
+        "email": "Email address",
+        "enterEmail": "Enter your email address",
+        "mobile": "Mobile number",
+        "enterMobile": "Enter your mobile number",
+        "update": "Update",
+        "changeProfile": "Change image",
+        "camera": "Camera",
+        "gallery": "Gallery",
+        "remove": "Remove",
+        "removeImage": "Profile photo removed.",
+        "deny": "You has denied to access Camera!!!",
+        "changeUserName": "Change user name",
+        "changeMobileNumber": "Change mobile number",
+        "changeEmailAddress": "Change email address",
+        "save": "Save",
+        "cancel": "Cancel"
+    },
+    "languageScreen": {
+        "language": "Language",
+        "update": "Update"
+    },
+    "weightBottomSheet": {
+        "weight": "Weight",
+        "save": "Save",
+        "cancel": "Cancel"
+    },
+    "heightBottomSheet": {
+        "height": "Height",
+        "save": "Save",
+        "cancel": "Cancel"
+    },
+    "stepGoalBottomSheet": {
+        "stepGoal": "Step goal",
+        "steps": "Steps",
+        "save": "Save",
+        "cancel": "Cancel"
+    },
+    "reminderScreen": {
+        "reminder": "Reminder",
+        "walkingReminder": "Walking reminder",
+        "setYourWalking": "Set your walking reminder so you can not forgot",
+        "areYouSure": "Are you sure you want to remove reminder? ",
+        "cancel": "Cancel",
+        "remove": "Remove",
+        "noReminderAdded": "No reminder added",
+        "success": "Successfully removed."
+    },
+    "addReminderScreen": {
+        "addReminder": "Add reminder",
+        "title": "Title",
+        "enterTitle": "Enter title",
+        "time": "Time",
+        "repeat": "Repeat",
+        "save": "Save",
+        "cancel": "Cancel",
+        "sunday": "Sunday",
+        "thursday": "Thursday",
+        "monday": "Monday",
+        "friday": "Friday",
+        "tuesday": "Tuesday",
+        "saturday": "Saturday",
+        "wednesday": "Wednesday"
+    },
+    "instructionsScreen": {
+        "instructions": "Instructions",
+        "question1": "How to use?",
+        "question2": "Step counting?",
+        "question3": "Counting when shaking phone?",
+        "question4": "Counting when driving?",
+        "question5": "Calories & distance",
+        "question6": "Battery saving"
+    },
+    "giveRateScreen": {
+        "giveRate": "Give rate",
+        "enjoyingApp": "Enjoying app?",
+        "pleaseTell": " Please tell us how was your experience to using our app ",
+        "comments": "Comments",
+        "verify": "Verify"
+    },
+    "logoutModal": {
+        "areYouSure": "Are you sure you want to logout?",
+        "cancel": "Cancel",
+        "logout": "Logout"
+    },
+    "historyScreen": {
+        "history": "History",
+        "selectDate": "Select date",
+        "from": "From",
+        "to": "To",
+        "ok": "ok",
+        "close": "Close",
+        "areYouSure": "Are you sure to delete your history?",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "steps": "Steps",
+        "kcalBurnt": "Kcal burnt",
+        "activeTime": "Active time",
+        "distance": "Distance",
+        "empty": "Empty",
+        "recordAtTime": "You don't have any record at this time"
+    },
+    "inactiveScreen": {
+        "inActiveNow": "This level is  inactive now please  complete your goal and achieve 10K"
+    }
+}
