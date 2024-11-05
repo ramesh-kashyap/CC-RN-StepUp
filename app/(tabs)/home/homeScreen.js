@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Dimensions,Platform 
+  Dimensions,Platform 
 } from "react-native";
 import { Colors, Default, Fonts } from "../../../constants/styles";
 import MyStatusBar from "../../../components/myStatusBar";
@@ -21,10 +22,10 @@ import { BottomSheet } from "react-native-btr";
 import DashedLine from "react-native-dashed-line";
 import { useNavigation } from "expo-router";
 import GoogleFit, { Scopes } from 'react-native-google-fit';
-// @ts-ignore - Pedometer module doesn't have TypeScript types
-import Pedometer from 'react-native-pedometer';
 
 const { width, height } = Dimensions.get("window");
+
+
 
 
 
@@ -46,6 +47,8 @@ const HomeScreen = () => {
 
   // useEffect(() => {
   //   let interval;
+  // useEffect(() => {
+  //   let interval;
 
   //   if (running) {
   //     interval = setInterval(() => {
@@ -62,47 +65,27 @@ const HomeScreen = () => {
 
 
 
-  const [isPedometerAvailable, setIsPedometerAvailable] = useState('checking');
+
+
   const [stepCount, setStepCount] = useState(0);
-  const [distance, setDistance] = useState(0);
-  
+
   // useEffect(() => {
-  //   // Ensure Pedometer is defined
-  //   if (!Pedometer) {
-  //     Alert.alert('Error', 'Pedometer module is not available');
-  //     setIsPedometerAvailable('not available');
-  //     return;
+  //   let subscription;
+    
+  //   if (running) {
+  //     // Subscribe to step updates
+  //     subscription = Pedometer.subscribe(({ steps }) => {
+  //       setStepCount((prevCount) => prevCount + steps);
+  //     });
   //   }
 
-  //   // Check if step counting is available
-  //   Pedometer.isStepCountingAvailable()
-  //     .then(result => {
-  //       setIsPedometerAvailable(result ? 'available' : 'not available');
-  //     })
-  //     .catch(error => {
-  //       setIsPedometerAvailable('error');
-  //       console.error("Pedometer availability check failed:", error);
-  //     });
-
-  //   // Start tracking step count if Pedometer is available
-  //   const subscription = Pedometer.watchStepCount(result => {
-  //     if (result && result.steps != null) {
-  //       setStepCount(result.steps);
-  //       // Estimate distance (approximate conversion to km)
-  //       const distanceInKm = (result.steps * 0.0008).toFixed(2);
-  //       setDistance(distanceInKm);
-  //     }
-  //   });
-
-  //   // Clean up subscription on unmount
+  //   // Cleanup subscription on unmount or when 'running' changes
   //   return () => {
-  //     if (subscription) subscription.remove();
+  //     if (subscription) {
+  //       subscription.remove(); // Ensure to unsubscribe
+  //     }
   //   };
-  // }, []);
-
-  
-
-  
+  // }, [running]);
 
   const dailyAverageChartData = [
     {
@@ -253,6 +236,7 @@ const HomeScreen = () => {
             }}
           >
             <Text style={{ ...Fonts.SemiBold40primary }}>{stepCount}</Text>
+            <Text style={{ ...Fonts.SemiBold40primary }}>{stepCount}</Text>
             <Text
               numberOfLines={1}
               style={{ ...Fonts.Bold16grey, overflow: "hidden" }}
@@ -365,6 +349,7 @@ const HomeScreen = () => {
                 marginTop: Default.fixPadding,
               }}
             >
+              4.2 km
               4.2 km
             </Text>
             <Text
@@ -602,6 +587,7 @@ const HomeScreen = () => {
                     paddingHorizontal: Default.fixPadding * 1.5,
                   }}
                 >
+                  <Text style={{ ...Fonts.SemiBold20primary }}>{stepCount}</Text>
                   <Text style={{ ...Fonts.SemiBold20primary }}>{stepCount}</Text>
                   <Text
                     numberOfLines={1}
