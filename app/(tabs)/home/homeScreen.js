@@ -21,6 +21,8 @@ import { BottomSheet } from "react-native-btr";
 import DashedLine from "react-native-dashed-line";
 import { useNavigation } from "expo-router";
 import GoogleFit, { Scopes } from 'react-native-google-fit';
+// @ts-ignore - Pedometer module doesn't have TypeScript types
+import Pedometer from 'react-native-pedometer';
 
 const { width, height } = Dimensions.get("window");
 
@@ -60,27 +62,45 @@ const HomeScreen = () => {
 
 
 
-
-
+  const [isPedometerAvailable, setIsPedometerAvailable] = useState('checking');
   const [stepCount, setStepCount] = useState(0);
-
+  const [distance, setDistance] = useState(0);
+  
   // useEffect(() => {
-  //   let subscription;
-    
-  //   if (running) {
-  //     // Subscribe to step updates
-  //     subscription = Pedometer.subscribe(({ steps }) => {
-  //       setStepCount((prevCount) => prevCount + steps);
-  //     });
+  //   // Ensure Pedometer is defined
+  //   if (!Pedometer) {
+  //     Alert.alert('Error', 'Pedometer module is not available');
+  //     setIsPedometerAvailable('not available');
+  //     return;
   //   }
 
-  //   // Cleanup subscription on unmount or when 'running' changes
-  //   return () => {
-  //     if (subscription) {
-  //       subscription.remove(); // Ensure to unsubscribe
+  //   // Check if step counting is available
+  //   Pedometer.isStepCountingAvailable()
+  //     .then(result => {
+  //       setIsPedometerAvailable(result ? 'available' : 'not available');
+  //     })
+  //     .catch(error => {
+  //       setIsPedometerAvailable('error');
+  //       console.error("Pedometer availability check failed:", error);
+  //     });
+
+  //   // Start tracking step count if Pedometer is available
+  //   const subscription = Pedometer.watchStepCount(result => {
+  //     if (result && result.steps != null) {
+  //       setStepCount(result.steps);
+  //       // Estimate distance (approximate conversion to km)
+  //       const distanceInKm = (result.steps * 0.0008).toFixed(2);
+  //       setDistance(distanceInKm);
   //     }
+  //   });
+
+  //   // Clean up subscription on unmount
+  //   return () => {
+  //     if (subscription) subscription.remove();
   //   };
-  // }, [running]);
+  // }, []);
+
+  
 
   
 
