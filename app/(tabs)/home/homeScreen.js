@@ -21,7 +21,54 @@ import { Svg } from "react-native-svg";
 import { BottomSheet } from "react-native-btr";
 import DashedLine from "react-native-dashed-line";
 import { useNavigation } from "expo-router";
-import GoogleFit, { Scopes } from 'react-native-google-fit';
+import { authorize } from 'react-native-app-auth';
+import axios from 'axios';
+
+
+const config = {
+  clientId: '23PRJC',
+  clientSecret: 'a8a413c92518d43c50f880c9b9a99e08',
+  redirectUrl: 'https://www.rockwellsoftech.com://fitbit-auth', 
+  scopes: ['activity', 'heartrate', 'profile'],
+  serviceConfiguration: {
+    authorizationEndpoint: 'https://www.fitbit.com/oauth2/authorize',
+    tokenEndpoint: 'https://api.fitbit.com/oauth2/token',
+    revocationEndpoint: 'https://api.fitbit.com/oauth2/revoke',
+  },
+};
+
+const authenticateFitbit = async () => {
+  try {
+    const authResponse = await authorize(config);
+    console.log('OAuth Response:', authResponse);
+    if (authResponse.accessToken) {
+      // Use the access token for subsequent API requests
+      setAccessToken(authResponse.accessToken);
+    }
+  } catch (error) {
+    console.error('Error with Fitbit authentication', error);
+  }
+};
+
+
+const fetchStepData = async (accessToken) => {
+  try {
+    const response = await axios.get(
+      'https://api.fitbit.com/1/user/-/activities/steps/date/today/1d.json',
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    const steps = response.data['activities-steps'][0].value;
+    console.log('Steps for today:', steps);
+    return steps;
+  } catch (error) {
+    console.error('Error fetching step data:', error);
+  }
+};
+
 
 const { width, height } = Dimensions.get("window");
 
@@ -64,28 +111,27 @@ const HomeScreen = () => {
   // }, [running]);
 
 
+  const [steps, setSteps] = useState(0);
+  const [accessToken, setAccessToken] = useState(null);
 
+  const handleGetSteps = async () => {
+    if (!accessToken) {
+      const authResponse = await authenticateFitbit();
+      setAccessToken(authResponse.accessToken);
+    }
+    const todaySteps = await fetchStepData(accessToken);
+    setSteps(todaySteps);
+  };
 
+  
 
-  const [stepCount, setStepCount] = useState(0);
+  useEffect(() => {
+    if (running) {
+      handleGetSteps();
+    }
+  }, [running]);
 
-  // useEffect(() => {
-  //   let subscription;
-    
-  //   if (running) {
-  //     // Subscribe to step updates
-  //     subscription = Pedometer.subscribe(({ steps }) => {
-  //       setStepCount((prevCount) => prevCount + steps);
-  //     });
-  //   }
-
-  //   // Cleanup subscription on unmount or when 'running' changes
-  //   return () => {
-  //     if (subscription) {
-  //       subscription.remove(); // Ensure to unsubscribe
-  //     }
-  //   };
-  // }, [running]);
+  
 
   const dailyAverageChartData = [
     {
@@ -235,8 +281,7 @@ const HomeScreen = () => {
               backgroundColor: Colors.extraGrey,
             }}
           >
-            <Text style={{ ...Fonts.SemiBold40primary }}>{stepCount}</Text>
-            <Text style={{ ...Fonts.SemiBold40primary }}>{stepCount}</Text>
+            <Text style={{ ...Fonts.SemiBold40primary }}>{steps}</Text>
             <Text
               numberOfLines={1}
               style={{ ...Fonts.Bold16grey, overflow: "hidden" }}
@@ -587,8 +632,7 @@ const HomeScreen = () => {
                     paddingHorizontal: Default.fixPadding * 1.5,
                   }}
                 >
-                  <Text style={{ ...Fonts.SemiBold20primary }}>{stepCount}</Text>
-                  <Text style={{ ...Fonts.SemiBold20primary }}>{stepCount}</Text>
+                  <Text style={{ ...Fonts.SemiBold20primary }}>{steps}</Text>
                   <Text
                     numberOfLines={1}
                     style={{ ...Fonts.Bold16grey, overflow: "hidden" }}
