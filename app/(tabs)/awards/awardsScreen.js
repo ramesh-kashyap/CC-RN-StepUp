@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState ,useEffect} from "react"; 
 import {
   StyleSheet,
   Text,
@@ -6,13 +6,15 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  FlatList,
+  Platform,Alert,FlatList 
 } from "react-native";
 import { Colors, Default, Fonts } from "../../../constants/styles";
 import MyStatusBar from "../../../components/myStatusBar";
 import { useTranslation } from "react-i18next";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "expo-router";
+import Api from '../../../services/Api.js'; // Adjust path if necessary
+
 
 const AwardsScreen = () => {
   const navigation = useNavigation();
@@ -21,249 +23,118 @@ const AwardsScreen = () => {
 
   const isRtl = i18n.dir() == "rtl";
 
+  const [data, setData] = useState([]);
+  const [openHeightBottomSheet, setOpenHeightBottomSheet] = useState(false);
+
+
+
   function tr(key) {
     return t(`awardsScreen:${key}`);
   }
 
-  const dailyStepsList = [
-    {
-      key: "1",
-      title: "10K",
-    },
-    {
-      key: "2",
-      title: "20K",
-    },
-    {
-      key: "3",
-      title: "30K",
-    },
-    {
-      key: "4",
-      title: "35K",
-    },
-    {
-      key: "5",
-      title: "40K",
-    },
-  ];
+  const fetchData = async () => {
+    try {
+      const response = await Api.get('/transactionHistory'); // Replace with your actual GET endpoint
 
-  const renderItemDailySteps = ({ item, index }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          if (index > 1) {
-            navigation.push("inactive/inactiveScreen");
-          } else {
-            navigation.push("achieveGoal/achieveGoalScreen");
-          }
-        }}
-        style={{
-          paddingHorizontal: Default.fixPadding * 2.3,
-          ...styles.stepsBox,
-        }}
-      >
-        <Image
-          source={
-            index > 1
-              ? require("../../../assets/images/medal2.png")
-              : require("../../../assets/images/medal.png")
-          }
-          style={{ width: 40, height: 40, resizeMode: "contain" }}
-        />
-        <Text
-          style={{
-            ...(index > 1 ? Fonts.Bold16grey : Fonts.Bold16primary),
-            marginTop: Default.fixPadding * 0.6,
-          }}
-        >
-          {item.title}
-        </Text>
-      </TouchableOpacity>
-    );
+    
+      if (response.data.success) {
+        // Handle the successful response here
+        setData(response.data.data.level_income);
+
+      } else {
+        Alert.alert("Error", response.data.errors);
+      }
+    } catch (error) {
+      console.log("Error details:", error);
+      if (error.response) {
+        Alert.alert("Error", error.response.data.errors);
+      } else {
+        Alert.alert("Error", "An error occurred. Please try again.");
+      }
+    }
   };
 
-  const distanceList = [
-    {
-      key: "1",
-      title: "5km",
-    },
-    {
-      key: "2",
-      title: "10km",
-    },
-    {
-      key: "3",
-      title: "15km",
-    },
-    {
-      key: "4",
-      title: "20km",
-    },
-    {
-      key: "5",
-      title: "25km",
-    },
-    {
-      key: "6",
-      title: "30km",
-    },
-  ];
 
-  const renderItemDistance = ({ item, index }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          if (index > 2) {
-            navigation.push("inactive/inactiveScreen");
-          } else {
-            navigation.push("achieveGoal/achieveGoalScreen");
-          }
-        }}
+  useEffect(() => {
+
+    fetchData(); // Call fetchData when component mounts
+
+  }, []); 
+ 
+
+  const renderItem = ({ item }) => (
+    <View style={{ backgroundColor: Colors.extraLightGrey, paddingVertical: Default.fixPadding * 1 }}>
+      <View
         style={{
-          paddingHorizontal: Default.fixPadding * 2.3,
-          ...styles.stepsBox,
+          flexDirection: isRtl ? 'row-reverse' : 'row',
+          alignItems: 'center',
+          padding: Default.fixPadding,
+          marginHorizontal: Default.fixPadding * 2,
+          borderRadius: 10,
+          backgroundColor: Colors.white,
+          ...Default.shadow,
         }}
       >
-        <Image
-          source={
-            index > 2
-              ? require("../../../assets/images/medal4.png")
-              : require("../../../assets/images/starMedal.png")
-          }
-          style={{ width: 40, height: 40, resizeMode: "contain" }}
-        />
-        <Text
+        <View
           style={{
-            ...(index > 2 ? Fonts.Bold16grey : Fonts.Bold16primary),
-            marginTop: Default.fixPadding * 0.6,
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: 55,
+            height: 55,
+            borderRadius: 28,
+            borderWidth: 1,
+            borderColor: Colors.primary,
+            backgroundColor: Colors.lightRegularPrimary,
           }}
         >
-          {item.title}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
+         <Image
+              source={require("../../../assets/images/usdt.png")}
+              style={{ width: 50, height: 50, resizeMode: "contain" }}
+            />
+        </View>
 
-  const caloriesWeekList = [
-    {
-      key: "1",
-      title: "500kcal",
-    },
-    {
-      key: "2",
-      title: "1000kcal",
-    },
-    {
-      key: "3",
-      title: "1500kcal",
-    },
-    {
-      key: "4",
-      title: "2000kcal",
-    },
-    {
-      key: "5",
-      title: "2500kcal",
-    },
-  ];
-
-  const renderItemCaloriesWeek = ({ item, index }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          if (index > 1) {
-            navigation.push("inactive/inactiveScreen");
-          } else {
-            navigation.push("achieveGoal/achieveGoalScreen");
-          }
-        }}
-        style={{
-          paddingHorizontal: Default.fixPadding,
-          ...styles.stepsBox,
-        }}
-      >
-        <Image
-          source={
-            index > 1
-              ? require("../../../assets/images/starMedal2.png")
-              : require("../../../assets/images/medal3.png")
-          }
-          style={{ width: 40, height: 40, resizeMode: "contain" }}
-        />
-        <Text
+        <View
           style={{
-            ...(index > 1 ? Fonts.Bold16grey : Fonts.Bold16primary),
-            marginTop: Default.fixPadding * 0.6,
+            flex: 1,
+            alignItems: isRtl ? 'flex-end' : 'flex-start',
+            marginHorizontal: Default.fixPadding * 1.5,
           }}
         >
-          {item.title}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
+          <Text numberOfLines={1} style={{ ...Fonts.Bold16black }}>
+            {item.remarks}
+          </Text>
+          <Text
+            numberOfLines={2}
+            style={{
+              ...Fonts.SemiBold14black,
+              overflow: 'hidden',
+              textAlign: isRtl ? 'right' : 'left',
+              marginVertical: Default.fixPadding * 0.3,
+            }}
+          >
+            {item.status}
+          </Text>
+          <Text numberOfLines={1} style={{ ...Fonts.SemiBold14grey }}>
+            {item.created_at}
+          </Text>
+        </View>
 
-  const totalDaysList = [
-    {
-      key: "1",
-      title: "5d",
-    },
-    {
-      key: "2",
-      title: "10d",
-    },
-    {
-      key: "3",
-      title: "10d",
-    },
-    {
-      key: "4",
-      title: "15d",
-    },
-    {
-      key: "5",
-      title: "20d",
-    },
-    {
-      key: "6",
-      title: "25d",
-    },
-  ];
-
-  const renderItemTotalDays = ({ item, index }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          if (index > 2) {
-            navigation.push("inactive/inactiveScreen");
-          } else {
-            navigation.push("achieveGoal/achieveGoalScreen");
-          }
-        }}
-        style={{
-          paddingHorizontal: Default.fixPadding * 2.3,
-          ...styles.stepsBox,
-        }}
-      >
-        <Image
-          source={
-            index > 2
-              ? require("../../../assets/images/starRating2.png")
-              : require("../../../assets/images/starRatingMedal.png")
-          }
-          style={{ width: 40, height: 40, resizeMode: "contain" }}
-        />
         <Text
           style={{
-            ...(index > 2 ? Fonts.Bold16grey : Fonts.Bold16primary),
-            marginTop: Default.fixPadding * 0.6,
+            ...Fonts.Bold20black, // Same font style as Deposit
+            textAlign: 'right',
+            marginLeft: 'auto', // Ensures the amount is aligned to the right
+            paddingRight: Default.fixPadding,
           }}
         >
-          {item.title}
+          ${item.comm}
         </Text>
-      </TouchableOpacity>
-    );
-  };
+      </View>
+    </View>
+  );
+
+
+  
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.extraLightGrey }}>
@@ -280,185 +151,206 @@ const AwardsScreen = () => {
         <Text style={{ ...Fonts.Bold20white }}>{tr("awards")}</Text>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ marginTop: Default.fixPadding * 2 }}>
-          <View
-            style={{
-              flexDirection: isRtl ? "row-reverse" : "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginHorizontal: Default.fixPadding * 2,
-            }}
-          >
-            <Text
-              numberOfLines={1}
-              style={{
-                flex: 1,
-                textAlign: isRtl ? "right" : "left",
-                marginRight: isRtl ? 0 : Default.fixPadding,
-                marginLeft: isRtl ? Default.fixPadding : 0,
-                ...Fonts.Bold16primary,
-              }}
-            >
-              {tr("dailySteps")}(1/5)
-            </Text>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.push("awardsCategory/awardsCategoryScreen", {
-                  title: tr("dailySteps"),
-                })
-              }
-            >
-              <Ionicons
-                name={isRtl ? "chevron-back" : "chevron-forward"}
-                size={20}
-                color={Colors.primary}
-              />
-            </TouchableOpacity>
-          </View>
-          <FlatList
-            horizontal
-            inverted={isRtl}
-            data={dailyStepsList}
-            renderItem={renderItemDailySteps}
-            keyExtractor={(item) => item.key}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ paddingHorizontal: Default.fixPadding }}
-          />
-
-          <View
-            style={{
-              flexDirection: isRtl ? "row-reverse" : "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginHorizontal: Default.fixPadding * 2,
-            }}
-          >
-            <Text
-              numberOfLines={1}
-              style={{
-                flex: 1,
-                textAlign: isRtl ? "right" : "left",
-                marginRight: isRtl ? 0 : Default.fixPadding,
-                marginLeft: isRtl ? Default.fixPadding : 0,
-                ...Fonts.Bold16primary,
-              }}
-            >
-              {tr("distance")}(1/5)
-            </Text>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.push("awardsCategory/awardsCategoryScreen", {
-                  title: tr("distance"),
-                })
-              }
-            >
-              <Ionicons
-                name={isRtl ? "chevron-back" : "chevron-forward"}
-                size={20}
-                color={Colors.primary}
-              />
-            </TouchableOpacity>
-          </View>
-
-          <FlatList
-            horizontal
-            inverted={isRtl}
-            data={distanceList}
-            renderItem={renderItemDistance}
-            keyExtractor={(item) => item.key}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ paddingHorizontal: Default.fixPadding }}
-          />
-
-          <View
-            style={{
-              flexDirection: isRtl ? "row-reverse" : "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginHorizontal: Default.fixPadding * 2,
-            }}
-          >
-            <Text
-              numberOfLines={1}
-              style={{
-                flex: 1,
-                textAlign: isRtl ? "right" : "left",
-                marginRight: isRtl ? 0 : Default.fixPadding,
-                marginLeft: isRtl ? Default.fixPadding : 0,
-                ...Fonts.Bold16primary,
-              }}
-            >
-              {tr("caloriesWeek")}(1/5)
-            </Text>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.push("awardsCategory/awardsCategoryScreen", {
-                  title: tr("caloriesWeek"),
-                })
-              }
-            >
-              <Ionicons
-                name={isRtl ? "chevron-back" : "chevron-forward"}
-                size={20}
-                color={Colors.primary}
-              />
-            </TouchableOpacity>
-          </View>
-          <FlatList
-            horizontal
-            inverted={isRtl}
-            data={caloriesWeekList}
-            renderItem={renderItemCaloriesWeek}
-            keyExtractor={(item) => item.key}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ paddingHorizontal: Default.fixPadding }}
-          />
-
-          <View
-            style={{
-              flexDirection: isRtl ? "row-reverse" : "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginHorizontal: Default.fixPadding * 2,
-            }}
-          >
-            <Text
-              numberOfLines={1}
-              style={{
-                flex: 1,
-                textAlign: isRtl ? "right" : "left",
-                marginRight: isRtl ? 0 : Default.fixPadding,
-                marginLeft: isRtl ? Default.fixPadding : 0,
-                ...Fonts.Bold16primary,
-              }}
-            >
-              {tr("totalDays")}(1/5)
-            </Text>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.push("awardsCategory/awardsCategoryScreen", {
-                  title: tr("totalDays"),
-                })
-              }
-            >
-              <Ionicons
-                name={isRtl ? "chevron-back" : "chevron-forward"}
-                size={20}
-                color={Colors.primary}
-              />
-            </TouchableOpacity>
-          </View>
-          <FlatList
-            horizontal
-            inverted={isRtl}
-            data={totalDaysList}
-            renderItem={renderItemTotalDays}
-            keyExtractor={(item) => item.key}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ paddingHorizontal: Default.fixPadding }}
-          />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        automaticallyAdjustKeyboardInsets={true}
+        contentContainerStyle={{
+          flexGrow: Platform.OS === "ios" ? null : 1,
+        }}
+      >
+       <View
+        style={{
+          marginTop: Default.fixPadding * 2 ,
+          marginHorizontal: Default.fixPadding * 2,
+          borderRadius: 10,
+          backgroundColor: Colors.white,
+          ...Default.shadow,
+        }}
+      >
+        <View
+          style={{
+            paddingTop: Default.fixPadding * 0.7,
+            paddingBottom: Default.fixPadding,
+            borderBottomWidth: 1,
+            borderBottomColor: Colors.extraLightPrimary,
+          }}
+        >
+          <Text style={{ ...Fonts.Bold14black, textAlign: "center" }}>
+            My Assets
+          </Text>
+          <Text style={{ ...Fonts.SemiBold20black, textAlign: "center" }}>
+           $200
+          </Text>
         </View>
+        <View
+          style={{
+            flexDirection: isRtl ? "row-reverse" : "row",
+            alignItems: "center",
+            padding: Default.fixPadding,
+          }}
+        >
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              source={require("../../../assets/images/usdt.png")}
+              style={{ width: 25, height: 25, resizeMode: "contain" }}
+            />
+            <Text
+              style={{
+                ...Fonts.SemiBold14black,
+                marginTop: Default.fixPadding,
+              }}
+            >
+              $100
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
+            >
+             Total Balance
+            </Text>
+          </View>
+
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              borderLeftWidth: 1,
+              borderLeftColor: Colors.extraLightPrimary,
+            }}
+          >
+            <Image
+              source={require("../../../assets/images/usdt.png")}
+              style={{ width: 25, height: 25, resizeMode: "contain" }}
+            />
+            <Text
+              style={{
+                ...Fonts.SemiBold14black,
+                marginTop: Default.fixPadding,
+              }}
+            >
+             $30
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
+            >
+              Active Balance
+            </Text>
+          </View>
+        </View>
+      </View>
+
+      <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
+  {/* First Button */}
+  <TouchableOpacity
+    onPress={() => {
+      navigation.push("deposit/deposit")
+    }}
+    style={{
+      flexDirection: isRtl ? "row-reverse" : "row",
+      alignItems: "center",
+      justifyContent: "center",
+      paddingHorizontal: Default.fixPadding * 1,
+      paddingVertical: Default.fixPadding * 0.8,
+      marginTop: Default.fixPadding * 2,
+      marginBottom: Default.fixPadding * 2.5,
+      marginHorizontal: Default.fixPadding * 0.5, // Space between buttons
+      borderRadius: 10,
+      backgroundColor: Colors.white,
+      ...Default.shadow,
+    }}
+  >
+    <Image
+              source={require("../../../assets/images/usdt.png")}
+              style={{ width: 25, height: 25, resizeMode: "contain", paddingRight: isRtl ? 10 : Default.fixPadding,
+                paddingLeft: isRtl ? Default.fixPadding : 10, }}
+            />
+    <Text
+      numberOfLines={1}
+      style={{
+        ...Fonts.SemiBold16primary,
+        overflow: "hidden",
+        paddingLeft: isRtl ? 0 : Default.fixPadding,
+        paddingRight: isRtl ? Default.fixPadding : 0,
+        borderLeftWidth: isRtl ? null : 1,
+        borderLeftColor: isRtl ? null : Colors.grey,
+        borderRightWidth: isRtl ? 1 : null,
+        borderRightColor: isRtl ? Colors.grey : null,
+      }}
+    >
+      Deposit
+    </Text>
+  </TouchableOpacity>
+
+  {/* Second Button */}
+  <TouchableOpacity
+    onPress={() => {
+      setOtherAction(); // Replace with the function you need for the second button
+    }}
+    style={{
+      flexDirection: isRtl ? "row-reverse" : "row",
+      alignItems: "center",
+      justifyContent: "center",
+      paddingHorizontal: Default.fixPadding * 1,
+      paddingVertical: Default.fixPadding * 0.8,
+      marginTop: Default.fixPadding * 2,
+      marginBottom: Default.fixPadding * 2.5,
+      marginHorizontal: Default.fixPadding * 0.5, // Space between buttons
+      borderRadius: 10,
+      backgroundColor: Colors.white,
+      ...Default.shadow,
+    }}
+  >
+    <Image
+              source={require("../../../assets/images/usdt.png")}
+              style={{ width: 25, height: 25, resizeMode: "contain", paddingRight: isRtl ? 10 : Default.fixPadding,
+                paddingLeft: isRtl ? Default.fixPadding : 10, }}
+            />
+    <Text
+      numberOfLines={1}
+      style={{
+        ...Fonts.SemiBold16primary,
+        overflow: "hidden",
+        paddingLeft: isRtl ? 0 : Default.fixPadding,
+        paddingRight: isRtl ? Default.fixPadding : 0,
+        borderLeftWidth: isRtl ? null : 1,
+        borderLeftColor: isRtl ? null : Colors.grey,
+        borderRightWidth: isRtl ? 1 : null,
+        borderRightColor: isRtl ? Colors.grey : null,
+      }}
+    >
+     Withdraw
+    </Text>
+  </TouchableOpacity>
+</View>
+
+          <Text
+            style={{ textAlign: isRtl ? "right" : "left", ...Fonts.Bold16grey,  marginHorizontal: Default.fixPadding*1.8, }}
+          >
+           Recent Assets
+          </Text>
+
+          <View
+      >
+
+<FlatList
+      data={data} // Array of data to display
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id} // Unique identifier for each item
+    />
+
+
+</View>
+
+
+
       </ScrollView>
     </View>
   );

@@ -26,7 +26,10 @@ const MainNavigation = () => {
       <Stack.Screen name="auth/setGoalScreen" />
       <Stack.Screen name="(tabs)" options={{ gestureEnabled: false }} />
       <Stack.Screen name="notification/notificationScreen" />
-      <Stack.Screen name="awardsCategory/awardsCategoryScreen" />
+      <Stack.Screen name="editProfile/inviteScreen" />
+      <Stack.Screen name="editProfile/teamReport" />
+      <Stack.Screen name="awardsCategory/awardsCategoryScreen" /> 
+      <Stack.Screen name="deposit/deposit" /> 
       <Stack.Screen name="achieveGoal/achieveGoalScreen" />
       <Stack.Screen name="inactive/inactiveScreen" />
       <Stack.Screen name="privacyPolicy/privacyPolicyScreen" />

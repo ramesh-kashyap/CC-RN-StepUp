@@ -20,6 +20,9 @@
     "android": {
       "package": "com.camelcase.rnstepup",
       "versionCode": 1,
+      "permissions": [
+        "ACTIVITY_RECOGNITION"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

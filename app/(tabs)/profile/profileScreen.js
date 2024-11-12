@@ -307,7 +307,7 @@ const ProfileScreen = () => {
             </View>
 
             <TouchableOpacity
-              onPress={() => navigation.push("history/historyScreen")}
+              onPress={() => navigation.push("editProfile/teamReport")}
               style={{
                 flexDirection: isRtl ? "row-reverse" : "row",
                 alignItems: "center",
@@ -366,6 +366,36 @@ const ProfileScreen = () => {
                   }}
                 >
                   {tr("instruction")}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.borderLine}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.push("editProfile/inviteScreen")
+                }
+                style={{
+                  flexDirection: isRtl ? "row-reverse" : "row",
+                  alignItems: "center",
+                  paddingVertical: Default.fixPadding,
+                }}
+              >
+                <SimpleLineIcons
+                  name="cursor"
+                  size={18}
+                  color={Colors.primary}
+                />
+                <Text
+                  numberOfLines={1}
+                  style={{
+                    flex: 1,
+                    textAlign: isRtl ? "right" : "left",
+                    ...Fonts.SemiBold15black,
+                    marginHorizontal: Default.fixPadding,
+                  }}
+                >
+                  {tr("Invite")}
                 </Text>
               </TouchableOpacity>
             </View>

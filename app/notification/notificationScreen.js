@@ -107,64 +107,76 @@ const NotificationScreen = () => {
   const renderItem = ({ item }) => {
     return (
       <View style={{ backgroundColor: Colors.extraLightGrey }}>
+      <View
+        style={{
+          flexDirection: isRtl ? "row-reverse" : "row",
+          alignItems: "center",
+          padding: Default.fixPadding,
+          marginHorizontal: Default.fixPadding * 2,
+          marginBottom: Default.fixPadding * 1.5,
+          borderRadius: 10,
+          backgroundColor: Colors.white,
+          ...Default.shadow,
+        }}
+      >
         <View
           style={{
-            flexDirection: isRtl ? "row-reverse" : "row",
+            justifyContent: "center",
             alignItems: "center",
-            padding: Default.fixPadding,
-            marginHorizontal: Default.fixPadding * 2,
-            marginBottom: Default.fixPadding * 1.5,
-            borderRadius: 10,
-            backgroundColor: Colors.white,
-            ...Default.shadow,
+            width: 55,
+            height: 55,
+            borderRadius: 28,
+            borderWidth: 1,
+            borderColor: Colors.primary,
+            backgroundColor: Colors.lightRegularPrimary,
           }}
         >
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              width: 55,
-              height: 55,
-              borderRadius: 28,
-              borderWidth: 1,
-              borderColor: Colors.primary,
-              backgroundColor: Colors.lightRegularPrimary,
-            }}
-          >
-            <Ionicons
-              name="notifications-outline"
-              size={30}
-              color={Colors.primary}
-            />
-          </View>
-
-          <View
-            style={{
-              flex: 1,
-              alignItems: isRtl ? "flex-end" : "flex-start",
-              marginHorizontal: Default.fixPadding * 1.5,
-            }}
-          >
-            <Text numberOfLines={1} style={{ ...Fonts.Bold16black }}>
-              {item.title}
-            </Text>
-            <Text
-              numberOfLines={2}
-              style={{
-                ...Fonts.SemiBold14black,
-                overflow: "hidden",
-                textAlign: isRtl ? "right" : "left",
-                marginVertical: Default.fixPadding * 0.3,
-              }}
-            >
-              {item.other}
-            </Text>
-            <Text numberOfLines={1} style={{ ...Fonts.SemiBold14grey }}>
-              {item.time}
-            </Text>
-          </View>
+          <Ionicons
+            name="notifications-outline"
+            size={30}
+            color={Colors.primary}
+          />
         </View>
+    
+        <View
+          style={{
+            flex: 1,
+            alignItems: isRtl ? "flex-end" : "flex-start",
+            marginHorizontal: Default.fixPadding * 1.5,
+          }}
+        >
+          <Text numberOfLines={1} style={{ ...Fonts.Bold16black }}>
+            Deposit
+          </Text>
+          <Text
+            numberOfLines={2}
+            style={{
+              ...Fonts.SemiBold14black,
+              overflow: "hidden",
+              textAlign: isRtl ? "right" : "left",
+              marginVertical: Default.fixPadding * 0.3,
+            }}
+          >
+            Success
+          </Text>
+          <Text numberOfLines={1} style={{ ...Fonts.SemiBold14grey }}>
+            {item.time}
+          </Text>
+        </View>
+    
+        <Text
+          style={{
+            ...Fonts.Bold20black,  // Same font style as Deposit
+            textAlign: "right",
+            marginLeft: "auto", // Ensures the amount is aligned to the right
+            paddingRight: Default.fixPadding,
+          }}
+        >
+          $100 
+        </Text>
       </View>
+    </View>
+    
     );
   };
 

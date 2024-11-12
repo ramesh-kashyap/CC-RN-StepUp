@@ -12,9 +12,9 @@ const CurrentHeight = () => {
   function tr(key) {
     return t(`currentHeight:${key}`);
   }
-  const [selectedIndex, setSelectedIndex] = useState(2);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const heightList = ["02", "03", "04", "05", "06", "07", "08", "09", "10"];
+  const heightList = ["01", "02", "03", "04", "05", "06", "07", "08","09", "10","11","12","13","14","15","16","17","18","19","20"];
 
   return (
     <View style={{ marginTop: Default.fixPadding * 4 }}>

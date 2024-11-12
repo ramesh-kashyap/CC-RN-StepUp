@@ -6,7 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  Dimensions,Platform 
+  Dimensions,PermissionsAndroid,Alert
 } from "react-native";
 import { Colors, Default, Fonts } from "../../../constants/styles";
 import MyStatusBar from "../../../components/myStatusBar";
@@ -20,53 +20,11 @@ import { Svg } from "react-native-svg";
 import { BottomSheet } from "react-native-btr";
 import DashedLine from "react-native-dashed-line";
 import { useNavigation } from "expo-router";
-import { authorize } from 'react-native-app-auth';
-import axios from 'axios';
+import { Pedometer } from 'expo-sensors';
+import MapView, { Marker } from 'react-native-maps';
+import * as Location from 'expo-location';
 
 
-const config = {
-  clientId: '23PRJC',
-  clientSecret: 'a8a413c92518d43c50f880c9b9a99e08',
-  redirectUrl: 'https://www.rockwellsoftech.com://fitbit-auth', 
-  scopes: ['activity', 'heartrate', 'profile'],
-  serviceConfiguration: {
-    authorizationEndpoint: 'https://www.fitbit.com/oauth2/authorize',
-    tokenEndpoint: 'https://api.fitbit.com/oauth2/token',
-    revocationEndpoint: 'https://api.fitbit.com/oauth2/revoke',
-  },
-};
-
-const authenticateFitbit = async () => {
-  try {
-    const authResponse = await authorize(config);
-    console.log('OAuth Response:', authResponse);
-    if (authResponse.accessToken) {
-      // Use the access token for subsequent API requests
-      setAccessToken(authResponse.accessToken);
-    }
-  } catch (error) {
-    console.error('Error with Fitbit authentication', error);
-  }
-};
-
-
-const fetchStepData = async (accessToken) => {
-  try {
-    const response = await axios.get(
-      'https://api.fitbit.com/1/user/-/activities/steps/date/today/1d.json',
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
-    const steps = response.data['activities-steps'][0].value;
-    console.log('Steps for today:', steps);
-    return steps;
-  } catch (error) {
-    console.error('Error fetching step data:', error);
-  }
-};
 
 
 const { width, height } = Dimensions.get("window");
@@ -87,7 +45,84 @@ const HomeScreen = () => {
   const [startStepsBottomSheet, setStartStepsBottomSheet] = useState(false);
 
   const [progress, setProgress] = useState(100);
+  const [isPedometerAvailable, setPedometerAvailable] = useState('checking');
+  const [stepCount, setStepCount] = useState(0);
   const [running, setRunning] = useState(false);
+  const [subscription, setSubscription] = useState(null);
+  const [previousStepCount, setPreviousStepCount] = useState(0); // Store previous step count
+
+  const [location, setLocation] = useState(null);
+  const [distance, setDistance] = useState(0);
+  const [lastLocation, setLastLocation] = useState(null);
+
+
+
+  // Check if the Pedometer is available on the device
+ // Function to request permission for activity recognition on Android
+ const requestActivityPermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACTIVITY_RECOGNITION
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      Alert.alert("Permission granted", "Start walking!");
+    } else {
+      Alert.alert("Permission denied", "You cannot track steps without this permission.");
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+};
+
+// Check if the pedometer is available on the device
+useEffect(() => {
+  const checkAvailability = async () => {
+    const available = await Pedometer.isAvailableAsync();
+    setPedometerAvailable(available ? 'Available' : 'Not Available');
+    console.log('Pedometer available:', available);
+  };
+  checkAvailability();
+}, []);
+
+// Start or stop tracking steps based on `running`
+useEffect(() => {
+  if (running) {
+    requestActivityPermission();  // Request permission here
+
+    console.log('Starting step count...');
+    const sub = Pedometer.watchStepCount(result => {
+      console.log('Step result callback triggered');
+      if (result && result.steps !== undefined) {
+        console.log('Steps detected:', result.steps); // Log each step update
+        setStepCount(result.steps);
+
+        setDistance(result.steps*0.8);
+
+
+
+      } else {
+        console.log('No steps detected or error with step count data');
+      }
+    });
+
+    if (sub) {
+      console.log('Subscription successfully created.');
+    } else {
+      console.log('Failed to create subscription.');
+    }
+    setSubscription(sub);
+  } else {
+    console.log('Stopping step count...');
+    subscription && subscription.remove();
+    setSubscription(null);
+  }
+
+  // Cleanup subscription on component unmount or when `running` changes
+  return () => {
+    subscription && subscription.remove();
+  };
+}, [running]); // Re-run this useEffect when `running` changes
+
 
   // useEffect(() => {
   //   let interval;
@@ -104,67 +139,36 @@ const HomeScreen = () => {
   //   }
   //   return () => clearInterval(interval);
   // }, [running]);
-
-
-  const [steps, setSteps] = useState(0);
-  const [accessToken, setAccessToken] = useState(null);
-
-  const handleGetSteps = async () => {
-    if (!accessToken) {
-      const authResponse = await authenticateFitbit();
-      setAccessToken(authResponse.accessToken);
-    }
-    const todaySteps = await fetchStepData(accessToken);
-    setSteps(todaySteps);
-  };
-
-  
-
   useEffect(() => {
-    if (running) {
-      handleGetSteps();
-    }
-  }, [running]);
+    const getLocationPermissions = async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission Denied', 'Permission to access location was denied');
+        return;
+      }
+      startTracking();
+    };
+
+    const startTracking = () => {
+      Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.High,
+          timeInterval: 1000,
+          distanceInterval: 1,
+        },
+        (newLocation) => {
+          const coords = newLocation.coords;
+          setLocation(coords);
+
+          setLastLocation(coords);
+        }
+      );
+    };
+
+    getLocationPermissions();
+  }, []);
 
   
-
-  const dailyAverageChartData = [
-    {
-      key: "1",
-      title: "Mon",
-      progress: 0.4,
-    },
-    {
-      key: "2",
-      title: "Tue",
-      progress: 0.5,
-    },
-    {
-      key: "3",
-      title: "Wed",
-      progress: 0.6,
-    },
-    {
-      key: "4",
-      title: "Thu",
-      progress: 0.4,
-    },
-    {
-      key: "5",
-      title: "Fri",
-      progress: 0.7,
-    },
-    {
-      key: "6",
-      title: "Sat",
-      progress: 0.6,
-    },
-    {
-      key: "7",
-      title: "Sun",
-      progress: 0.4,
-    },
-  ];
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.extraLightGrey }}>
@@ -276,7 +280,7 @@ const HomeScreen = () => {
               backgroundColor: Colors.extraGrey,
             }}
           >
-            <Text style={{ ...Fonts.SemiBold40primary }}>{steps}</Text>
+            <Text style={{ ...Fonts.SemiBold40primary }}>{stepCount}</Text>
             <Text
               numberOfLines={1}
               style={{ ...Fonts.Bold16grey, overflow: "hidden" }}
@@ -400,6 +404,8 @@ const HomeScreen = () => {
           </View>
         </View>
 
+
+
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <TouchableOpacity
             onPress={() => {
@@ -447,152 +453,34 @@ const HomeScreen = () => {
           </TouchableOpacity>
         </View>
 
-        <View
-          style={{
-            marginHorizontal: Default.fixPadding * 2,
-            marginBottom: Default.fixPadding * 2.5,
-            paddingVertical: Default.fixPadding,
-            paddingHorizontal: Default.fixPadding * 0.7,
-            borderRadius: 10,
-            backgroundColor: Colors.white,
-            ...Default.shadow,
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <DashedLine
-              dashGap={2.5}
-              dashLength={2.5}
-              dashThickness={1.5}
-              dashColor={Colors.grey}
-              style={{ flex: 1 }}
-            />
-            <Text
-              numberOfLines={1}
-              style={{
-                ...Fonts.Bold14black,
-                textAlign: "center",
-                overflow: "hidden",
-                top: -Default.fixPadding * 0.5,
-                paddingTop: Default.fixPadding * 0.7,
-                maxWidth: 200,
-              }}
-            >
-              {tr("dailyAverage")}
-              {` : 2141`}
-            </Text>
-            <DashedLine
-              dashGap={2.5}
-              dashLength={2.5}
-              dashThickness={1.5}
-              dashColor={Colors.grey}
-              style={{ flex: 1 }}
-            />
-          </View>
-
-          <View
-            style={{
-              flexDirection: isRtl ? "row-reverse" : "row",
-              marginTop: Default.fixPadding * 2.5,
-            }}
-          >
-            {dailyAverageChartData.map((item) => {
-              return (
-                <View
-                  key={item.key}
-                  style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: 250,
-                  }}
-                >
-                  <View
-                    style={{
-                      flex: 9,
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Progress.Bar
-                      width={220}
-                      height={10}
-                      borderWidth={0}
-                      progress={item.progress}
-                      color={Colors.primary}
-                      unfilledColor={Colors.regularPrimary}
-                      style={{
-                        transform: [{ rotate: "-90deg" }],
-                      }}
-                    />
-                  </View>
-
-                  <View
-                    style={{
-                      flex: 1,
-                      justifyContent: "flex-end",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Text style={{ ...Fonts.Bold14grey }}>{item.title}</Text>
-                  </View>
-                </View>
-              );
-            })}
-          </View>
-        </View>
-
-        <View
-          style={{
-            flexDirection: isRtl ? "row-reverse" : "row",
-            alignItems: "center",
-            padding: Default.fixPadding,
-            marginHorizontal: Default.fixPadding * 2,
-            marginBottom: Default.fixPadding * 2,
-            borderRadius: 10,
-            backgroundColor: Colors.white,
-            ...Default.shadow,
-          }}
-        >
-          <View
-            style={{ flex: 1, alignItems: isRtl ? "flex-end" : "flex-start" }}
-          >
-            <Text style={{ ...Fonts.Bold14black }}>
-              {`${tr("achievement")} : `}
-              <Text style={{ ...Fonts.Bold14grey }}>{tr("startingWalk")}</Text>
-            </Text>
-            <Text
-              style={{
-                ...Fonts.Bold15black,
-                marginTop: Default.fixPadding * 0.3,
-                marginBottom: Default.fixPadding,
-              }}
-            >{`1226 ${tr("stepsLeft")}`}</Text>
-
-            <Progress.Bar
-              width={width / 1.6}
-              height={10}
-              borderWidth={0}
-              progress={0.5}
-              color={Colors.primary}
-              unfilledColor={Colors.lightGrey}
-            />
-          </View>
-
-          <Image
-            source={require("../../../assets/images/medal.png")}
-            style={{ width: 63, height: 63, resizeMode: "contain" }}
-          />
-        </View>
+       
+      
       </ScrollView>
 
       <BottomSheet visible={startStepsBottomSheet}>
+      <MapView
+        style={{ flex: 1,height:"50%",width:"100%",zIndex:1 }}
+        region={{
+          latitude: location?.latitude || 37.78825,
+          longitude: location?.longitude || -122.4324,
+          latitudeDelta: 0.0005,
+          longitudeDelta: 0.0005,
+        }}
+      >
+        {location && (
+         <Marker coordinate={{ latitude: location.latitude, longitude: location.longitude }}>
+         <Image
+           source={require('../../../assets/images/walk.png')} // Path to your image
+           style={{ width: 40, height: 40 }} // Adjust width and height here
+           resizeMode="contain"
+         />
+         
+       </Marker>
+        )}
+      </MapView>
         <View style={styles.bottomSheetMain}>
+
+          
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ padding: Default.fixPadding * 4 }}>
               <View style={{ justifyContent: "center", alignItems: "center" }}>
@@ -626,7 +514,7 @@ const HomeScreen = () => {
                     paddingHorizontal: Default.fixPadding * 1.5,
                   }}
                 >
-                  <Text style={{ ...Fonts.SemiBold20primary }}>{steps}</Text>
+                  <Text style={{ ...Fonts.SemiBold20primary }}>{stepCount}</Text>
                   <Text
                     numberOfLines={1}
                     style={{ ...Fonts.Bold16grey, overflow: "hidden" }}
@@ -655,6 +543,9 @@ const HomeScreen = () => {
                 </View>
               </View>
 
+              
+     
+
               <Text
                 style={{
                   ...Fonts.SemiBold18black,
@@ -662,8 +553,10 @@ const HomeScreen = () => {
                   marginVertical: Default.fixPadding * 3.3,
                 }}
               >
-                {tr("other")}
+               Total Distance: {distance.toFixed(2)} m
+
               </Text>
+
 
               <View style={{ justifyContent: "center", alignItems: "center" }}>
                 <TouchableOpacity
@@ -722,8 +615,7 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
   bottomSheetMain: {
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+   
     maxHeight: height / 1.5,
     backgroundColor: Colors.white,
   },

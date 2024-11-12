@@ -1,1101 +1,881 @@
-import React, { useState } from "react";
 import {
-  StyleSheet,
   Text,
   View,
   TouchableOpacity,
+  Image,
+  FlatList,
+  Modal,
+  Dimensions,
+  TouchableWithoutFeedback,
   ScrollView,
 } from "react-native";
+import React, { useState } from "react"; 
+import { useTranslation } from "react-i18next";
 import { Colors, Default, Fonts } from "../../../constants/styles";
 import MyStatusBar from "../../../components/myStatusBar";
-import { useTranslation } from "react-i18next";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import * as Progress from "react-native-progress";
-import MonthBarChart from "../../../components/monthBarChart";
-import YearAreaChart from "../../../components/yearAreaChart";
-import DashedLine from "react-native-dashed-line";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import AwesomeButton from "react-native-really-awesome-button";
+import moment from "moment";
+import DateTimePicker from "react-native-ui-datepicker";
+import { useNavigation } from "expo-router";
 
-const ReportScreen = () => {
+const { width, height } = Dimensions.get("window");
+
+const HistoryScreen = () => {
+  const navigation = useNavigation();
+
   const { t, i18n } = useTranslation();
 
   const isRtl = i18n.dir() == "rtl";
 
   function tr(key) {
-    return t(`reportScreen:${key}`);
+    return t(`historyScreen:${key}`);
   }
 
-  const reportList = [
-    { title: tr("week") },
-    { title: tr("month") },
-    { title: tr("year") },
-  ];
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [AllDelete, setAllDelete] = useState(false);
 
-  const [selectedReport, setSelectedReport] = useState(tr("week"));
+  const [openDateModal, setOpenDateModal] = useState(false);
 
-  const stepsWeekList = [
+  const today = moment().format("YYYY-MM-DD");
+
+  const historyList = [
     {
       key: "1",
-      title: "Mon",
-      other: "1250",
-      progress: 0.4,
+      date: "01 -04-2022",
+      steps: "1000",
+      kcalBurnt: "2154",
+      activeTime: "1h 36m",
+      distance: "4.8 km",
     },
     {
       key: "2",
-      title: "Tue",
-      other: "450",
-      progress: 0.5,
+      date: "02 -04-2022",
+      steps: "2000",
+      kcalBurnt: "2324",
+      activeTime: "2h 30m",
+      distance: "2.8 km",
     },
     {
       key: "3",
-      title: "Wed",
-      other: "4560",
-      progress: 0.6,
+      date: "03 -04-2022",
+      steps: "1500",
+      kcalBurnt: "1050",
+      activeTime: "3h 36m",
+      distance: "4.8 km",
     },
     {
       key: "4",
-      title: "Thu",
-      other: "1234",
-      progress: 0.4,
+      date: "04 -04-2022",
+      steps: "1000",
+      kcalBurnt: "2154",
+      activeTime: "1h 10m",
+      distance: "1.8 km",
     },
     {
       key: "5",
-      title: "Fri",
-      other: "1000",
-      progress: 0.7,
+      date: "05 -04-2022",
+      steps: "1800",
+      kcalBurnt: "2154",
+      activeTime: "1h 36m",
+      distance: "3.5 km",
     },
     {
       key: "6",
-      title: "Sat",
-      other: "2000",
-      progress: 0.6,
+      date: "06 -04-2022",
+      steps: "3000",
+      kcalBurnt: "2504",
+      activeTime: "1h 40m",
+      distance: "4.8 km",
     },
     {
       key: "7",
-      title: "Sun",
-      other: "500",
-      progress: 0.4,
+      date: "07 -04-2022",
+      steps: "1540",
+      kcalBurnt: "2254",
+      activeTime: "2h 36m",
+      distance: "5.8 km",
     },
   ];
 
-  const caloriesWeekList = [
-    {
-      key: "1",
-      title: "Mon",
-      other: "345",
-      progress: 0.4,
-    },
-    {
-      key: "2",
-      title: "Tue",
-      other: "450",
-      progress: 0.5,
-    },
-    {
-      key: "3",
-      title: "Wed",
-      other: "560",
-      progress: 0.6,
-    },
-    {
-      key: "4",
-      title: "Thu",
-      other: "1234",
-      progress: 0.4,
-    },
-    {
-      key: "5",
-      title: "Fri",
-      other: "1000",
-      progress: 0.7,
-    },
-    {
-      key: "6",
-      title: "Sat",
-      other: "2000",
-      progress: 0.6,
-    },
-    {
-      key: "7",
-      title: "Sun",
-      other: "500",
-      progress: 0.4,
-    },
-  ];
+  const renderItem = ({ item, index }) => {
+    const firstItem = index === 0;
+    return (
+      <View
+        style={{
+          marginTop: firstItem ? Default.fixPadding * 2 : null,
+          marginHorizontal: Default.fixPadding * 2,
+          marginBottom: Default.fixPadding * 2.5,
+          borderRadius: 10,
+          backgroundColor: Colors.white,
+          ...Default.shadow,
+        }}
+      >
+        <View
+          style={{
+            paddingTop: Default.fixPadding * 0.7,
+            paddingBottom: Default.fixPadding,
+            borderBottomWidth: 1,
+            borderBottomColor: Colors.extraLightPrimary,
+          }}
+        >
+          <Text style={{ ...Fonts.SemiBold14primary, textAlign: "center" }}>
+            {item.date}
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: isRtl ? "row-reverse" : "row",
+            alignItems: "center",
+            padding: Default.fixPadding,
+          }}
+        >
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              source={require("../../../assets/images/img4.png")}
+              style={{ width: 25, height: 25, resizeMode: "contain" }}
+            />
+            <Text
+              style={{
+                ...Fonts.SemiBold14black,
+                marginTop: Default.fixPadding,
+              }}
+            >
+              {item.steps}
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
+            >
+              {tr("steps")}
+            </Text>
+          </View>
 
-  const distanceWeekList = [
-    {
-      key: "1",
-      title: "Mon",
-      km: "0.9km",
-      progress: 0.4,
-    },
-    {
-      key: "2",
-      title: "Tue",
-      km: "5.0km",
-      progress: 0.5,
-    },
-    {
-      key: "3",
-      title: "Wed",
-      km: "2.0km",
-      progress: 0.6,
-    },
-    {
-      key: "4",
-      title: "Thu",
-      km: "1.0km",
-      progress: 0.4,
-    },
-    {
-      key: "5",
-      title: "Fri",
-      km: "2.0km",
-      progress: 0.7,
-    },
-    {
-      key: "6",
-      title: "Sat",
-      km: "5.0km",
-      progress: 0.6,
-    },
-    {
-      key: "7",
-      title: "Sun",
-      km: "3.0km",
-      progress: 0.4,
-    },
-  ];
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              paddingHorizontal: Default.fixPadding * 0.5,
+              borderLeftWidth: 1,
+              borderLeftColor: Colors.extraLightPrimary,
+              borderRightWidth: 1,
+              borderRightColor: Colors.extraLightPrimary,
+            }}
+          >
+            <Image
+              source={require("../../../assets/images/icon2.png")}
+              style={{ width: 25, height: 25, resizeMode: "contain" }}
+            />
+            <Text
+              style={{
+                ...Fonts.SemiBold14black,
+                marginTop: Default.fixPadding,
+              }}
+            >
+              {item.kcalBurnt}
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
+            >
+              {tr("kcalBurnt")}
+            </Text>
+          </View>
 
-  const stepsMonthData = [
-    { label: "J", value: 500 },
-    { label: "F", value: 600 },
-    { label: "M", value: 800 },
-    { label: "A", value: 1200 },
-    { label: "M", value: 1000 },
-    { label: "J", value: 700 },
-    { label: "J", value: 800 },
-    { label: "A", value: 900 },
-    { label: "S", value: 500 },
-    { label: "O", value: 1000 },
-    { label: "N", value: 1200 },
-    { label: "D", value: 1000 },
-  ];
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              paddingHorizontal: Default.fixPadding * 0.5,
+              borderRightWidth: isRtl ? null : 1,
+              borderRightColor: isRtl ? null : Colors.extraLightPrimary,
+              borderLeftWidth: isRtl ? 1 : null,
+              borderLeftColor: isRtl ? Colors.extraLightPrimary : null,
+            }}
+          >
+            <Image
+              source={require("../../../assets/images/icon3.png")}
+              style={{ width: 25, height: 25, resizeMode: "contain" }}
+            />
+            <Text
+              style={{
+                ...Fonts.SemiBold14black,
+                marginTop: Default.fixPadding,
+              }}
+            >
+              {item.activeTime}
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
+            >
+              {tr("activeTime")}
+            </Text>
+          </View>
 
-  const caloriesMonthData = [
-    { label: "J", value: 500 },
-    { label: "F", value: 600 },
-    { label: "M", value: 800 },
-    { label: "A", value: 1100 },
-    { label: "M", value: 1000 },
-    { label: "J", value: 700 },
-    { label: "J", value: 800 },
-    { label: "A", value: 900 },
-    { label: "S", value: 500 },
-    { label: "O", value: 1000 },
-    { label: "N", value: 1200 },
-    { label: "D", value: 1100 },
-  ];
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              source={require("../../../assets/images/icon4.png")}
+              style={{ width: 25, height: 25, resizeMode: "contain" }}
+            />
+            <Text
+              style={{
+                ...Fonts.SemiBold14black,
+                marginTop: Default.fixPadding,
+              }}
+            >
+              {item.distance}
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
+            >
+              {tr("distance")}
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
 
-  const distanceMonthData = [
-    { label: "J", value: 500 },
-    { label: "F", value: 600 },
-    { label: "M", value: 800 },
-    { label: "A", value: 1100 },
-    { label: "M", value: 1000 },
-    { label: "J", value: 700 },
-    { label: "J", value: 800 },
-    { label: "A", value: 900 },
-    { label: "S", value: 500 },
-    { label: "O", value: 1000 },
-    { label: "N", value: 1100 },
-    { label: "D", value: 1000 },
-  ];
+  const [fromDate, setFromDate] = useState(today);
+  const [toDate, setToDate] = useState(today);
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
+
+  const [confirmDate, setConfirmDate] = useState(null);
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.extraLightGrey }}>
       <MyStatusBar />
-
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          paddingHorizontal: Default.fixPadding * 2,
-          paddingVertical: Default.fixPadding * 1.2,
-          backgroundColor: Colors.primary,
-        }}
-      >
-        <Text style={{ ...Fonts.Bold20white }}>{tr("report")}</Text>
-      </View>
       <View
         style={{
           flexDirection: isRtl ? "row-reverse" : "row",
           alignItems: "center",
-          backgroundColor: Colors.extraGrey,
+          paddingVertical: Default.fixPadding * 1.2,
+          paddingHorizontal: Default.fixPadding * 2,
+          backgroundColor: Colors.primary,
         }}
       >
-        {reportList.map((item) => {
-          return (
-            <TouchableOpacity
-              key={item.title}
-              onPress={() => setSelectedReport(item.title)}
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                paddingVertical: Default.fixPadding * 1.3,
-                paddingHorizontal: Default.fixPadding,
-                backgroundColor: Colors.extraGrey,
-              }}
-            >
-              <Text
-                style={{
-                  ...(selectedReport === item.title
-                    ? Fonts.Bold16primary
-                    : Fonts.Bold16grey),
-                }}
-              >
-                {item.title}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
+        <View
+          style={{
+            flex: 9,
+            flexDirection: isRtl ? "row-reverse" : "row",
+            alignItems: "center",
+          }}
+        >
+          <TouchableOpacity onPress={() => navigation.pop()}>
+            <Ionicons
+              name={isRtl ? "arrow-forward-outline" : "arrow-back-outline"}
+              size={25}
+              color={Colors.white}
+            />
+          </TouchableOpacity>
+          <Text
+            style={{
+              ...Fonts.Bold20white,
+              marginHorizontal: Default.fixPadding * 1.8,
+            }}
+          >
+            {tr("history")}
+          </Text>
+        </View>
+        {AllDelete ? null : (
+          <TouchableOpacity
+            onPress={() => setOpenDeleteModal(true)}
+            style={{ flex: 1, alignItems: isRtl ? "flex-start" : "flex-end" }}
+          >
+            <AntDesign name="delete" size={24} color={Colors.white} />
+          </TouchableOpacity>
+        )}
       </View>
 
-      {selectedReport === tr("week") ? (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View
+      {AllDelete ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginHorizontal: Default.fixPadding,
+          }}
+        >
+          <Image
+            source={require("../../../assets/images/empty.png")}
+            style={{ width: 145, height: 110, resizeMode: "contain" }}
+          />
+          <Text
+            style={{ ...Fonts.Bold20grey, marginTop: Default.fixPadding * 2 }}
+          >
+            {tr("empty")}
+          </Text>
+          <Text
             style={{
-              marginTop: Default.fixPadding * 1.5,
+              ...Fonts.SemiBold16grey,
+              textAlign: "center",
+              marginTop: Default.fixPadding,
               marginHorizontal: Default.fixPadding * 2,
             }}
           >
-            <Text
-              style={{
-                textAlign: isRtl ? "right" : "left",
-                ...Fonts.Bold18black,
-              }}
-            >
-              {tr("steps")}
-            </Text>
-            <View
-              style={{
-                ...styles.chartViewBox,
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Ionicons
-                  name="chevron-back-outline"
-                  size={20}
-                  color={Colors.grey}
-                />
-                <Text
-                  style={{
-                    ...Fonts.Bold15grey,
-                    marginHorizontal: Default.fixPadding * 3,
-                  }}
-                >
-                  April 2022
-                </Text>
-                <Ionicons
-                  name="chevron-forward-outline"
-                  size={20}
-                  color={Colors.grey}
-                />
-              </View>
-
+            {tr("recordAtTime")}
+          </Text>
+        </View>
+      ) : (
+        <FlatList
+          data={historyList}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.key}
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={() => (
+            <>
               <View
                 style={{
                   flexDirection: isRtl ? "row-reverse" : "row",
-                  marginTop: Default.fixPadding * 2,
+                  alignItems: "center",
+                  paddingHorizontal: Default.fixPadding * 2,
+                  paddingVertical: Default.fixPadding,
+                  borderBottomWidth: 1,
+                  borderBottomColor: Colors.lightGrey,
+                  backgroundColor: Colors.regularGrey,
                 }}
               >
-                {stepsWeekList.map((item) => {
-                  return (
-                    <View
-                      key={item.key}
-                      style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        height: 200,
-                      }}
-                    >
-                      <View
-                        style={{
-                          flex: 8.5,
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Progress.Bar
-                          width={155}
-                          height={10}
-                          borderWidth={0}
-                          progress={item.progress}
-                          color={Colors.primary}
-                          unfilledColor={Colors.regularPrimary}
-                          style={{
-                            transform: [{ rotate: "-90deg" }],
-                          }}
-                        />
-                      </View>
+                <View
+                  style={{
+                    flex: 9,
+                    flexDirection: isRtl ? "row-reverse" : "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="calendar-range"
+                    size={20}
+                    Colors={Colors.black}
+                  />
+                  <Text
+                    numberOfLines={1}
+                    style={{
+                      ...Fonts.SemiBold15black,
+                      overflow: "hidden",
+                      marginHorizontal: Default.fixPadding,
+                    }}
+                  >
+                    {confirmDate
+                      ? `${confirmDate.fromConfirmDate} to ${confirmDate.toConfirmDate}`
+                      : "11-06-2024 to 11-06-2024"}
+                  </Text>
+                </View>
 
-                      <View
-                        style={{
-                          flex: 1.5,
-                          justifyContent: "flex-end",
-                          alignItems: "center",
-                          paddingTop: Default.fixPadding * 0.5,
-                        }}
-                      >
-                        <Text numberOfLines={1} style={{ ...Fonts.Bold12grey }}>
-                          {item.title}
-                        </Text>
-                        <Text numberOfLines={1} style={{ ...Fonts.Bold12grey }}>
-                          {item.other}
-                        </Text>
-                      </View>
-                    </View>
-                  );
-                })}
+                <TouchableOpacity
+                  onPress={() => setOpenDateModal(true)}
+                  style={{
+                    flex: 1,
+                    alignItems: isRtl ? "flex-start" : "flex-end",
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="pencil-outline"
+                    size={22}
+                    color={Colors.grey}
+                  />
+                </TouchableOpacity>
               </View>
-
               <View
                 style={{
-                  flexDirection: "row",
+                  flexDirection: isRtl ? "row-reverse" : "row",
                   alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: Default.fixPadding * 1.5,
+                  paddingVertical: Default.fixPadding * 2,
+                  paddingHorizontal: Default.fixPadding,
+                  backgroundColor: Colors.regularGrey,
+                  ...Default.shadow,
                 }}
               >
-                <DashedLine
-                  dashGap={2.5}
-                  dashLength={2.5}
-                  dashThickness={1.5}
-                  dashColor={Colors.grey}
-                  style={{ flex: 1 }}
-                />
-                <Text
-                  numberOfLines={1}
+                <View
                   style={{
-                    ...Fonts.Bold14black,
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image
+                    source={require("../../../assets/images/img4.png")}
+                    style={{ width: 25, height: 25, resizeMode: "contain" }}
+                  />
+                  <Text
+                    style={{
+                      ...Fonts.SemiBold14black,
+                      marginTop: Default.fixPadding,
+                    }}
+                  >
+                    10,000
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
+                  >
+                    {tr("steps")}
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    paddingHorizontal: Default.fixPadding * 0.5,
+                    borderLeftWidth: 1,
+                    borderLeftColor: Colors.extraLightPrimary,
+                    borderRightWidth: 1,
+                    borderRightColor: Colors.extraLightPrimary,
+                  }}
+                >
+                  <Image
+                    source={require("../../../assets/images/icon2.png")}
+                    style={{ width: 25, height: 25, resizeMode: "contain" }}
+                  />
+                  <Text
+                    style={{
+                      ...Fonts.SemiBold14black,
+                      marginTop: Default.fixPadding,
+                    }}
+                  >
+                    65248
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
+                  >
+                    {tr("kcalBurnt")}
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    paddingHorizontal: Default.fixPadding * 0.5,
+                    borderRightWidth: isRtl ? null : 1,
+                    borderRightColor: isRtl ? null : Colors.extraLightPrimary,
+                    borderLeftWidth: isRtl ? 1 : null,
+                    borderLeftColor: isRtl ? Colors.extraLightPrimary : null,
+                  }}
+                >
+                  <Image
+                    source={require("../../../assets/images/icon3.png")}
+                    style={{ width: 25, height: 25, resizeMode: "contain" }}
+                  />
+                  <Text
+                    style={{
+                      ...Fonts.SemiBold14black,
+                      marginTop: Default.fixPadding,
+                    }}
+                  >
+                    24h 60m
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
+                  >
+                    {tr("activeTime")}
+                  </Text>
+                </View>
+
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image
+                    source={require("../../../assets/images/icon4.png")}
+                    style={{ width: 25, height: 25, resizeMode: "contain" }}
+                  />
+                  <Text
+                    style={{
+                      ...Fonts.SemiBold14black,
+                      marginTop: Default.fixPadding,
+                    }}
+                  >
+                    15.50 km
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
+                  >
+                    {tr("distance")}
+                  </Text>
+                </View>
+              </View>
+            </>
+          )}
+        />
+      )}
+
+      <Modal
+        transparent={true}
+        animationType="fade"
+        visible={openDeleteModal}
+        onRequestClose={() => setOpenDeleteModal(false)}
+      >
+        <TouchableOpacity
+          activeOpacity={1}
+          onPressOut={() => setOpenDeleteModal(false)}
+          style={{ flex: 1 }}
+        >
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: Colors.transparentBlack,
+            }}
+          >
+            <TouchableOpacity
+              activeOpacity={1}
+              style={{
+                padding: Default.fixPadding * 2,
+                width: width * 0.9,
+                borderRadius: 10,
+                backgroundColor: Colors.white,
+                ...Default.shadow,
+              }}
+            >
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: 48,
+                    height: 48,
+                    borderRadius: 24,
+                    backgroundColor: Colors.extraLightGrey,
+                  }}
+                >
+                  <AntDesign name="delete" size={24} color={Colors.red} />
+                </View>
+                <Text
+                  style={{
+                    ...Fonts.SemiBold16black,
                     textAlign: "center",
-                    overflow: "hidden",
-                    top: -Default.fixPadding * 0.5,
-                    paddingTop: Default.fixPadding * 0.7,
-                    marginHorizontal: Default.fixPadding * 0.5,
-                    maxWidth: 140,
+                    marginVertical: Default.fixPadding * 2,
                   }}
                 >
-                  {tr("average")}
-                  {` : 2141`}
+                  {tr("areYouSure")}
                 </Text>
-                <DashedLine
-                  dashGap={2.5}
-                  dashLength={2.5}
-                  dashThickness={1.5}
-                  dashColor={Colors.grey}
-                  style={{ flex: 1 }}
-                />
-              </View>
-            </View>
-          </View>
-
-          <View style={{ marginHorizontal: Default.fixPadding * 2 }}>
-            <Text
-              style={{
-                textAlign: isRtl ? "right" : "left",
-                ...Fonts.Bold18black,
-              }}
-            >
-              {tr("calories")}
-            </Text>
-            <View
-              style={{
-                ...styles.chartViewBox,
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Ionicons
-                  name="chevron-back-outline"
-                  size={20}
-                  color={Colors.grey}
-                />
-                <Text
-                  style={{
-                    ...Fonts.Bold15grey,
-                    marginHorizontal: Default.fixPadding * 3,
-                  }}
-                >
-                  April 2022
-                </Text>
-                <Ionicons
-                  name="chevron-forward-outline"
-                  size={20}
-                  color={Colors.grey}
-                />
               </View>
 
               <View
                 style={{
                   flexDirection: isRtl ? "row-reverse" : "row",
-                  marginTop: Default.fixPadding * 2,
-                }}
-              >
-                {caloriesWeekList.map((item) => {
-                  return (
-                    <View
-                      key={item.key}
-                      style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        height: 220,
-                      }}
-                    >
-                      <View
-                        style={{
-                          flex: 7.8,
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Progress.Bar
-                          width={155}
-                          height={10}
-                          borderWidth={0}
-                          progress={item.progress}
-                          color={Colors.primary}
-                          unfilledColor={Colors.regularPrimary}
-                          style={{
-                            transform: [{ rotate: "-90deg" }],
-                          }}
-                        />
-                      </View>
-
-                      <View
-                        style={{
-                          flex: 2.2,
-                          justifyContent: "flex-end",
-                          alignItems: "center",
-                          paddingTop: Default.fixPadding * 0.5,
-                        }}
-                      >
-                        <Text numberOfLines={1} style={{ ...Fonts.Bold12grey }}>
-                          {item.title}
-                        </Text>
-                        <Text numberOfLines={1} style={{ ...Fonts.Bold12grey }}>
-                          {item.other}
-                        </Text>
-                        <Text numberOfLines={1} style={{ ...Fonts.Bold12grey }}>
-                          kcal
-                        </Text>
-                      </View>
-                    </View>
-                  );
-                })}
-              </View>
-
-              <View
-                style={{
-                  flexDirection: "row",
                   alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: Default.fixPadding * 1.5,
                 }}
               >
-                <DashedLine
-                  dashGap={2.5}
-                  dashLength={2.5}
-                  dashThickness={1.5}
-                  dashColor={Colors.grey}
-                  style={{ flex: 1 }}
-                />
-                <Text
-                  numberOfLines={1}
+                <TouchableOpacity
+                  onPress={() => setOpenDeleteModal(false)}
                   style={{
-                    ...Fonts.Bold14black,
-                    textAlign: "center",
-                    overflow: "hidden",
-                    top: -Default.fixPadding * 0.5,
-                    paddingTop: Default.fixPadding * 0.7,
-                    maxWidth: 140,
-                    marginHorizontal: Default.fixPadding * 0.5,
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: Default.fixPadding,
+                    marginRight: isRtl ? 0 : Default.fixPadding * 2,
+                    marginLeft: isRtl ? Default.fixPadding * 2 : 0,
+                    borderWidth: 1,
+                    borderColor: Colors.primary,
+                    borderRadius: 5,
+                    backgroundColor: Colors.white,
+                    ...Default.shadowBtn,
                   }}
                 >
-                  {tr("average")}
-                  {` : 2141`}
-                </Text>
-                <DashedLine
-                  dashGap={2.5}
-                  dashLength={2.5}
-                  dashThickness={1.5}
-                  dashColor={Colors.grey}
-                  style={{ flex: 1 }}
-                />
-              </View>
-            </View>
-          </View>
+                  <Text
+                    numberOfLines={1}
+                    style={{ ...Fonts.Bold16primary, overflow: "hidden" }}
+                  >
+                    {tr("cancel")}
+                  </Text>
+                </TouchableOpacity>
 
-          <View style={{ marginHorizontal: Default.fixPadding * 2 }}>
-            <Text
-              style={{
-                textAlign: isRtl ? "right" : "left",
-                ...Fonts.Bold18black,
-              }}
-            >
-              {tr("distance")}
-            </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    setAllDelete(true);
+                    setOpenDeleteModal(false);
+                  }}
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: Default.fixPadding,
+                    borderRadius: 5,
+                    backgroundColor: Colors.primary,
+                    ...Default.shadowBtn,
+                  }}
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={{ ...Fonts.Bold16white, overflow: "hidden" }}
+                  >
+                    {tr("delete")}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+
+      <Modal
+        transparent={true}
+        animationType="fade"
+        visible={openDateModal}
+        onRequestClose={() => setOpenDateModal(false)}
+      >
+        <TouchableOpacity
+          activeOpacity={1}
+          onPressOut={() => setOpenDateModal(false)}
+          style={{ flex: 1 }}
+        >
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: Colors.transparentBlack,
+            }}
+          >
             <View
               style={{
-                ...styles.chartViewBox,
+                maxHeight: height / 1.3,
+                width: width * 0.9,
+                borderRadius: 10,
+                backgroundColor: Colors.white,
+                ...Default.shadow,
               }}
             >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Ionicons
-                  name="chevron-back-outline"
-                  size={20}
-                  color={Colors.grey}
-                />
-                <Text
-                  style={{
-                    ...Fonts.Bold15grey,
-                    marginHorizontal: Default.fixPadding * 3,
-                  }}
-                >
-                  April 2022
-                </Text>
-                <Ionicons
-                  name="chevron-forward-outline"
-                  size={20}
-                  color={Colors.grey}
-                />
-              </View>
+              <TouchableWithoutFeedback>
+                <View>
+                  <Text
+                    style={{
+                      ...Fonts.Bold18black,
+                      textAlign: "center",
+                      marginVertical: Default.fixPadding * 1.5,
+                      marginHorizontal: Default.fixPadding * 2,
+                    }}
+                  >
+                    {tr("selectDate")}
+                  </Text>
+                </View>
+              </TouchableWithoutFeedback>
 
-              <View
-                style={{
-                  flexDirection: isRtl ? "row-reverse" : "row",
-                  marginTop: Default.fixPadding * 2,
-                }}
-              >
-                {distanceWeekList.map((item) => {
-                  return (
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <TouchableWithoutFeedback>
+                  <View
+                    style={{
+                      paddingHorizontal: Default.fixPadding * 2,
+                    }}
+                  >
                     <View
-                      key={item.key}
                       style={{
-                        flex: 1,
-                        justifyContent: "center",
+                        flexDirection: isRtl ? "row-reverse" : "row",
+                        justifyContent: "space-between",
                         alignItems: "center",
-                        height: 200,
+                        marginTop: Default.fixPadding * 0.5,
                       }}
                     >
                       <View
                         style={{
-                          flex: 8.5,
+                          flex: 1,
+                          flexDirection: isRtl ? "row-reverse" : "row",
                           justifyContent: "center",
                           alignItems: "center",
-                        }}
-                      >
-                        <Progress.Bar
-                          width={155}
-                          height={10}
-                          borderWidth={0}
-                          progress={item.progress}
-                          color={Colors.primary}
-                          unfilledColor={Colors.regularPrimary}
-                          style={{
-                            transform: [{ rotate: "-90deg" }],
-                          }}
-                        />
-                      </View>
-
-                      <View
-                        style={{
-                          flex: 1.5,
-                          justifyContent: "flex-end",
-                          alignItems: "center",
-                          paddingTop: Default.fixPadding * 0.5,
                         }}
                       >
                         <Text
-                          numberOfLines={2}
-                          style={{ ...Fonts.Bold12grey, overflow: "hidden" }}
+                          numberOfLines={1}
+                          style={{
+                            ...Fonts.Bold16black,
+                            overflow: "hidden",
+                            maxWidth: 50,
+                            marginRight: isRtl ? 0 : Default.fixPadding,
+                            marginLeft: isRtl ? Default.fixPadding : 0,
+                          }}
                         >
-                          {item.title}
+                          {tr("from")}
                         </Text>
-                        <Text numberOfLines={1} style={{ ...Fonts.Bold12grey }}>
-                          {item.km}
+                        <View
+                          style={{
+                            flex: 1,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            paddingVertical: Default.fixPadding,
+                            paddingHorizontal: Default.fixPadding * 0.5,
+                            borderRadius: 10,
+                            backgroundColor: Colors.white,
+                            ...Default.shadow,
+                          }}
+                        >
+                          <Text
+                            numberOfLines={1}
+                            style={{ ...Fonts.Bold14black, overflow: "hidden" }}
+                          >
+                            {formatDate(fromDate)}
+                          </Text>
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          flex: 1,
+                          flexDirection: isRtl ? "row-reverse" : "row",
+                          justifyContent: "flex-end",
+                          alignItems: "center",
+                          marginLeft: isRtl ? 0 : Default.fixPadding,
+                          marginRight: isRtl ? Default.fixPadding : 0,
+                        }}
+                      >
+                        <Text
+                          numberOfLines={1}
+                          style={{
+                            ...Fonts.Bold16black,
+                            overflow: "hidden",
+                            maxWidth: 50,
+                            marginRight: isRtl ? 0 : Default.fixPadding,
+                            marginLeft: isRtl ? Default.fixPadding : 0,
+                          }}
+                        >
+                          {tr("to")}
                         </Text>
+                        <View
+                          style={{
+                            flex: 1,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            paddingVertical: Default.fixPadding,
+                            paddingHorizontal: Default.fixPadding * 0.5,
+                            borderRadius: 10,
+                            backgroundColor: Colors.white,
+                            ...Default.shadow,
+                          }}
+                        >
+                          <Text
+                            numberOfLines={1}
+                            style={{ ...Fonts.Bold14black, overflow: "hidden" }}
+                          >
+                            {toDate ? formatDate(toDate) : formatDate(fromDate)}
+                          </Text>
+                        </View>
                       </View>
                     </View>
-                  );
-                })}
-              </View>
 
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: Default.fixPadding * 1.5,
-                }}
-              >
-                <DashedLine
-                  dashGap={2.5}
-                  dashLength={2.5}
-                  dashThickness={1.5}
-                  dashColor={Colors.grey}
-                  style={{ flex: 1 }}
-                />
-                <Text
-                  numberOfLines={1}
-                  style={{
-                    ...Fonts.Bold14black,
-                    textAlign: "center",
-                    overflow: "hidden",
-                    top: -Default.fixPadding * 0.5,
-                    paddingTop: Default.fixPadding * 0.7,
-                    maxWidth: 140,
-                    marginHorizontal: Default.fixPadding * 0.5,
-                  }}
-                >
-                  {tr("average")}
-                  {` : 2141`}
-                </Text>
-                <DashedLine
-                  dashGap={2.5}
-                  dashLength={2.5}
-                  dashThickness={1.5}
-                  dashColor={Colors.grey}
-                  style={{ flex: 1 }}
-                />
-              </View>
+                    <View
+                      style={{
+                        marginTop: Default.fixPadding * 2,
+                        marginBottom: Default.fixPadding,
+                      }}
+                    >
+                      <DateTimePicker
+                        mode="range"
+                        locale="en"
+                        minDate={today}
+                        height={280}
+                        startDate={fromDate}
+                        endDate={toDate}
+                        onChange={({ startDate, endDate }) => {
+                          setFromDate(startDate);
+                          setToDate(endDate);
+                        }}
+                        displayFullDays={true}
+                        headerButtonsPosition="around"
+                        selectedItemColor={Colors.primary}
+                        headerTextStyle={{
+                          ...Fonts.Bold16black,
+                        }}
+                        timePickerDecelerationRate="fast"
+                        dayContainerStyle={{
+                          borderRadius: 5,
+                          margin: 0,
+                        }}
+                        selectedTextStyle={{
+                          ...Fonts.Bold16white,
+                        }}
+                        todayTextStyle={{
+                          ...Fonts.Bold16riverBedColor,
+                        }}
+                        todayContainerStyle={{
+                          borderWidth: null,
+                        }}
+                        calendarTextStyle={{ ...Fonts.Bold16riverBedColor }}
+                      />
+                    </View>
+                  </View>
+                </TouchableWithoutFeedback>
+              </ScrollView>
+              <TouchableWithoutFeedback>
+                <View>
+                  <View
+                    style={{
+                      marginVertical: Default.fixPadding * 2,
+                      marginHorizontal: Default.fixPadding * 4,
+                    }}
+                  >
+                    <AwesomeButton
+                      height={50}
+                      onPress={() => {
+                        setConfirmDate({
+                          fromConfirmDate: formatDate(fromDate),
+                          toConfirmDate: toDate
+                            ? formatDate(toDate)
+                            : formatDate(fromDate),
+                        });
+                        setOpenDateModal(false);
+                      }}
+                      raiseLevel={1}
+                      stretch={true}
+                      borderRadius={10}
+                      backgroundShadow={Colors.primary}
+                      backgroundDarker={Colors.primary}
+                      backgroundColor={Colors.primary}
+                    >
+                      <Text style={{ ...Fonts.Bold18white }}>{tr("ok")}</Text>
+                    </AwesomeButton>
+                  </View>
+
+                  <TouchableOpacity
+                    onPress={() => setOpenDateModal(false)}
+                    style={{
+                      alignSelf: "center",
+                      marginBottom: Default.fixPadding * 2,
+                    }}
+                  >
+                    <Text style={{ ...Fonts.Bold16grey }}>{tr("close")}</Text>
+                  </TouchableOpacity>
+                </View>
+              </TouchableWithoutFeedback>
             </View>
           </View>
-        </ScrollView>
-      ) : selectedReport === tr("month") ? (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View
-            style={{
-              marginTop: Default.fixPadding * 1.5,
-              marginHorizontal: Default.fixPadding * 2,
-            }}
-          >
-            <Text
-              style={{
-                textAlign: isRtl ? "right" : "left",
-                ...Fonts.Bold18black,
-              }}
-            >
-              {tr("steps")}
-            </Text>
-
-            <View
-              style={{
-                ...styles.chartViewBox,
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Ionicons
-                  name="chevron-back-outline"
-                  size={20}
-                  color={Colors.grey}
-                />
-                <Text
-                  style={{
-                    ...Fonts.Bold15grey,
-                    marginHorizontal: Default.fixPadding * 3,
-                  }}
-                >
-                  Year 2022
-                </Text>
-                <Ionicons
-                  name="chevron-forward-outline"
-                  size={20}
-                  color={Colors.grey}
-                />
-              </View>
-
-              <MonthBarChart data={stepsMonthData} />
-
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: Default.fixPadding * 1.5,
-                }}
-              >
-                <DashedLine
-                  dashGap={2.5}
-                  dashLength={2.5}
-                  dashThickness={1.5}
-                  dashColor={Colors.grey}
-                  style={{ flex: 1 }}
-                />
-                <Text
-                  numberOfLines={1}
-                  style={{
-                    ...Fonts.Bold14black,
-                    textAlign: "center",
-                    overflow: "hidden",
-                    top: -Default.fixPadding * 0.5,
-                    paddingTop: Default.fixPadding * 0.7,
-                    maxWidth: 140,
-                    marginHorizontal: Default.fixPadding * 0.5,
-                  }}
-                >
-                  {tr("average")}
-                  {` : 3541`}
-                </Text>
-                <DashedLine
-                  dashGap={2.5}
-                  dashLength={2.5}
-                  dashThickness={1.5}
-                  dashColor={Colors.grey}
-                  style={{ flex: 1 }}
-                />
-              </View>
-            </View>
-
-            <Text
-              style={{
-                textAlign: isRtl ? "right" : "left",
-                ...Fonts.Bold18black,
-              }}
-            >
-              {tr("calories")}
-            </Text>
-
-            <View
-              style={{
-                ...styles.chartViewBox,
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Ionicons
-                  name="chevron-back-outline"
-                  size={20}
-                  color={Colors.grey}
-                />
-                <Text
-                  style={{
-                    ...Fonts.Bold15grey,
-                    marginHorizontal: Default.fixPadding * 3,
-                  }}
-                >
-                  Year 2022
-                </Text>
-                <Ionicons
-                  name="chevron-forward-outline"
-                  size={20}
-                  color={Colors.grey}
-                />
-              </View>
-
-              <MonthBarChart data={caloriesMonthData} title={"(Kcal)"} />
-
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: Default.fixPadding * 1.5,
-                }}
-              >
-                <DashedLine
-                  dashGap={2.5}
-                  dashLength={2.5}
-                  dashThickness={1.5}
-                  dashColor={Colors.grey}
-                  style={{ flex: 1 }}
-                />
-                <Text
-                  numberOfLines={1}
-                  style={{
-                    ...Fonts.Bold14black,
-                    textAlign: "center",
-                    overflow: "hidden",
-                    top: -Default.fixPadding * 0.5,
-                    paddingTop: Default.fixPadding * 0.7,
-                    maxWidth: 140,
-                    marginHorizontal: Default.fixPadding * 0.5,
-                  }}
-                >
-                  {tr("average")}
-                  {` : 52544`}
-                </Text>
-                <DashedLine
-                  dashGap={2.5}
-                  dashLength={2.5}
-                  dashThickness={1.5}
-                  dashColor={Colors.grey}
-                  style={{ flex: 1 }}
-                />
-              </View>
-            </View>
-
-            <Text
-              style={{
-                textAlign: isRtl ? "right" : "left",
-                ...Fonts.Bold18black,
-              }}
-            >
-              {tr("distance")}
-            </Text>
-
-            <View
-              style={{
-                ...styles.chartViewBox,
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Ionicons
-                  name="chevron-back-outline"
-                  size={20}
-                  color={Colors.grey}
-                />
-                <Text
-                  style={{
-                    ...Fonts.Bold15grey,
-                    marginHorizontal: Default.fixPadding * 3,
-                  }}
-                >
-                  Year 2022
-                </Text>
-                <Ionicons
-                  name="chevron-forward-outline"
-                  size={20}
-                  color={Colors.grey}
-                />
-              </View>
-
-              <MonthBarChart data={distanceMonthData} title={"(Km)"} />
-
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: Default.fixPadding * 1.5,
-                }}
-              >
-                <DashedLine
-                  dashGap={2.5}
-                  dashLength={2.5}
-                  dashThickness={1.5}
-                  dashColor={Colors.grey}
-                  style={{ flex: 1 }}
-                />
-                <Text
-                  numberOfLines={1}
-                  style={{
-                    ...Fonts.Bold14black,
-                    textAlign: "center",
-                    overflow: "hidden",
-                    top: -Default.fixPadding * 0.5,
-                    paddingTop: Default.fixPadding * 0.7,
-                    maxWidth: 140,
-                    marginHorizontal: Default.fixPadding * 0.5,
-                  }}
-                >
-                  {tr("average")}
-                  {` : 2141`}
-                </Text>
-                <DashedLine
-                  dashGap={2.5}
-                  dashLength={2.5}
-                  dashThickness={1.5}
-                  dashColor={Colors.grey}
-                  style={{ flex: 1 }}
-                />
-              </View>
-            </View>
-          </View>
-        </ScrollView>
-      ) : (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View
-            style={{
-              marginTop: Default.fixPadding * 1.5,
-              marginHorizontal: Default.fixPadding * 2,
-            }}
-          >
-            <Text
-              style={{
-                textAlign: isRtl ? "right" : "left",
-                ...Fonts.Bold18black,
-              }}
-            >
-              {tr("steps")}
-            </Text>
-
-            <View
-              style={{
-                paddingVertical: Default.fixPadding,
-                marginTop: Default.fixPadding,
-                marginBottom: Default.fixPadding * 1.5,
-                borderRadius: 10,
-                backgroundColor: Colors.white,
-                ...Default.shadow,
-              }}
-            >
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={{
-                    ...Fonts.Bold15grey,
-                  }}
-                >
-                  Year 2016-2022
-                </Text>
-              </View>
-
-              <YearAreaChart
-                title={tr("average")}
-                average={2141}
-                other={tr("steps")}
-              />
-            </View>
-
-            <Text
-              style={{
-                textAlign: isRtl ? "right" : "left",
-                ...Fonts.Bold18black,
-              }}
-            >
-              {tr("calories")}
-            </Text>
-
-            <View
-              style={{
-                paddingVertical: Default.fixPadding,
-                marginTop: Default.fixPadding,
-                marginBottom: Default.fixPadding * 1.5,
-                borderRadius: 10,
-                backgroundColor: Colors.white,
-                ...Default.shadow,
-              }}
-            >
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={{
-                    ...Fonts.Bold15grey,
-                  }}
-                >
-                  Year 2016-2022
-                </Text>
-              </View>
-
-              <YearAreaChart
-                title={tr("average")}
-                average={2141}
-                other={"kcal"}
-              />
-            </View>
-
-            <Text
-              style={{
-                textAlign: isRtl ? "right" : "left",
-                ...Fonts.Bold18black,
-              }}
-            >
-              {tr("distance")}
-            </Text>
-
-            <View
-              style={{
-                paddingVertical: Default.fixPadding,
-                marginTop: Default.fixPadding,
-                marginBottom: Default.fixPadding * 1.5,
-                borderRadius: 10,
-                backgroundColor: Colors.white,
-                ...Default.shadow,
-              }}
-            >
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={{
-                    ...Fonts.Bold15grey,
-                  }}
-                >
-                  Year 2016-2022
-                </Text>
-              </View>
-
-              <YearAreaChart
-                title={tr("average")}
-                average={254141}
-                other={"km"}
-              />
-            </View>
-          </View>
-        </ScrollView>
-      )}
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 };
 
-export default ReportScreen;
-
-const styles = StyleSheet.create({
-  chartViewBox: {
-    padding: Default.fixPadding,
-    marginTop: Default.fixPadding,
-    marginBottom: Default.fixPadding * 1.5,
-    borderRadius: 10,
-    backgroundColor: Colors.white,
-    ...Default.shadow,
-  },
-});
+export default HistoryScreen;

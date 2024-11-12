@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState } from "react"; 
 import { useTranslation } from "react-i18next";
 import { Colors, Default, Fonts } from "../../constants/styles";
 import MyStatusBar from "../../components/myStatusBar";
@@ -121,8 +121,11 @@ const HistoryScreen = () => {
             borderBottomColor: Colors.extraLightPrimary,
           }}
         >
-          <Text style={{ ...Fonts.SemiBold14primary, textAlign: "center" }}>
-            {item.date}
+          <Text style={{ ...Fonts.Bold14black, textAlign: "center" }}>
+            My Assets
+          </Text>
+          <Text style={{ ...Fonts.SemiBold20black, textAlign: "center" }}>
+            200
           </Text>
         </View>
         <View
@@ -140,7 +143,7 @@ const HistoryScreen = () => {
             }}
           >
             <Image
-              source={require("../../assets/images/img4.png")}
+              source={require("../../assets/images/income.png")}
               style={{ width: 25, height: 25, resizeMode: "contain" }}
             />
             <Text
@@ -149,13 +152,13 @@ const HistoryScreen = () => {
                 marginTop: Default.fixPadding,
               }}
             >
-              {item.steps}
+              $100
             </Text>
             <Text
               numberOfLines={1}
               style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
             >
-              {tr("steps")}
+             Total Balance
             </Text>
           </View>
 
@@ -164,15 +167,12 @@ const HistoryScreen = () => {
               flex: 1,
               justifyContent: "center",
               alignItems: "center",
-              paddingHorizontal: Default.fixPadding * 0.5,
               borderLeftWidth: 1,
               borderLeftColor: Colors.extraLightPrimary,
-              borderRightWidth: 1,
-              borderRightColor: Colors.extraLightPrimary,
             }}
           >
             <Image
-              source={require("../../assets/images/icon2.png")}
+              source={require("../../assets/images/withdraw.png")}
               style={{ width: 25, height: 25, resizeMode: "contain" }}
             />
             <Text
@@ -181,72 +181,13 @@ const HistoryScreen = () => {
                 marginTop: Default.fixPadding,
               }}
             >
-              {item.kcalBurnt}
+             $30
             </Text>
             <Text
               numberOfLines={1}
               style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
             >
-              {tr("kcalBurnt")}
-            </Text>
-          </View>
-
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              paddingHorizontal: Default.fixPadding * 0.5,
-              borderRightWidth: isRtl ? null : 1,
-              borderRightColor: isRtl ? null : Colors.extraLightPrimary,
-              borderLeftWidth: isRtl ? 1 : null,
-              borderLeftColor: isRtl ? Colors.extraLightPrimary : null,
-            }}
-          >
-            <Image
-              source={require("../../assets/images/icon3.png")}
-              style={{ width: 25, height: 25, resizeMode: "contain" }}
-            />
-            <Text
-              style={{
-                ...Fonts.SemiBold14black,
-                marginTop: Default.fixPadding,
-              }}
-            >
-              {item.activeTime}
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
-            >
-              {tr("activeTime")}
-            </Text>
-          </View>
-
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Image
-              source={require("../../assets/images/icon4.png")}
-              style={{ width: 25, height: 25, resizeMode: "contain" }}
-            />
-            <Text
-              style={{
-                ...Fonts.SemiBold14black,
-                marginTop: Default.fixPadding,
-              }}
-            >
-              {item.distance}
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
-            >
-              {tr("distance")}
+              Active Balance
             </Text>
           </View>
         </View>

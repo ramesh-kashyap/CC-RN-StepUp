@@ -67,7 +67,7 @@
     "bottomTab": {
         "home": "Home",
         "report": "Report",
-        "awards": "Awards",
+        "awards": "Assets",
         "profile": "Profile",
         "tapBack": "Tap back again to exit the App"
     },
@@ -101,7 +101,7 @@
         "distance": "Distance"
     },
     "awardsScreen": {
-        "awards": "Awards",
+        "awards": "Assets",
         "dailySteps": "Daily Steps",
         "distance": "Distance",
         "caloriesWeek": "Calories a week",
