@@ -16,6 +16,8 @@ import {
   import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
   import { useNavigation } from "expo-router";
   import QRCode from 'react-native-qrcode-svg';
+  import * as Clipboard from 'expo-clipboard';
+
 
 
   const { height } = Dimensions.get("window");
@@ -39,8 +41,37 @@ import {
   
     const [data, setData] = useState([]);
     
+    const checkPaymentStatus = async () => {
+        try {
+          // Make the API call
+          const response = await Api.post('/checkPaymentStatus', { orderId: data.orderId });
+       
+          if (response.data===1) {
+           
+           navigation.push("(tabs)");
+
+          } else {
+            console.log(response.data);
+          }
+        } catch (error) {
+          console.log("Error details:", error);
+          if (error.response) {
+            Alert.alert("Error", error.response.data.error);
+          } else {
+            Alert.alert("Error", "An error occurred. Please try again.");
+          }
+        } 
+      };
 
 
+      useEffect(() => {
+        // Set an interval to call `checkPaymentStatus` every 3 seconds
+        const intervalId = setInterval(checkPaymentStatus, 3000);
+    
+        // Clear the interval on component unmount
+        return () => clearInterval(intervalId);
+      }, [data.orderId]);
+    
    
 
   
@@ -166,8 +197,7 @@ import {
     paddingRight: Default.fixPadding,
   }}
   onPress={() => {
-    // Copy to clipboard logic goes here
-    Clipboard.setString(yourTextToCopy); // Replace `yourTextToCopy` with the text you want to copy
+    Clipboard.setStringAsync(data.usdt_address);  // Use Expo Clipboard API
     Alert.alert('Copied to clipboard');
   }}
 />
@@ -250,7 +280,7 @@ import {
               marginVertical: Default.fixPadding * 0.3,
             }}
           >
-              {data.amount}
+             $ {data.amount}
           </Text>
           
         </View>
