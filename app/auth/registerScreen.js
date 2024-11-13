@@ -29,9 +29,11 @@ const RegisterScreen = () => {
     return t(`registerScreen:${key}`);
   }
 
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
+  
   const [number, setNumber] = useState();
+  const [password, setPassword] = useState();
+  const [confirmpassword, setConfirmPassword] = useState();
+  const [referral, setReferral] = useState();
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.white }}>
@@ -118,68 +120,7 @@ const RegisterScreen = () => {
           </View>
 
           <View style={{ marginHorizontal: Default.fixPadding * 2 }}>
-            <Text
-              style={{
-                textAlign: isRtl ? "right" : "left",
-                ...Fonts.SemiBold16black,
-              }}
-            >
-              {tr("userName")}
-            </Text>
-            <View
-              style={{
-                flexDirection: isRtl ? "row-reverse" : "row",
-                ...styles.textInputCard,
-              }}
-            >
-              <Ionicons name="person-outline" color={Colors.grey} size={18} />
-              <TextInput
-                value={name}
-                onChangeText={setName}
-                placeholder={tr("enterName")}
-                placeholderTextColor={Colors.grey}
-                selectionColor={Colors.primary}
-                style={{
-                  ...Fonts.SemiBold16black,
-                  flex: 1,
-                  textAlign: isRtl ? "right" : "left",
-                  marginHorizontal: Default.fixPadding * 1.2,
-                }}
-              />
-            </View>
-
-            <Text
-              style={{
-                textAlign: isRtl ? "right" : "left",
-                ...Fonts.SemiBold16black,
-              }}
-            >
-              {tr("emailAddress")}
-            </Text>
-            <View
-              style={{
-                flexDirection: isRtl ? "row-reverse" : "row",
-                ...styles.textInputCard,
-              }}
-            >
-              <Ionicons name="mail-outline" color={Colors.grey} size={18} />
-              <TextInput
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                placeholder={tr("enterEmailAddress")}
-                placeholderTextColor={Colors.grey}
-                selectionColor={Colors.primary}
-                style={{
-                  ...Fonts.SemiBold16black,
-                  flex: 1,
-                  textAlign: isRtl ? "right" : "left",
-                  marginHorizontal: Default.fixPadding * 1.2,
-                }}
-              />
-            </View>
-
-            <Text
+          <Text
               style={{
                 textAlign: isRtl ? "right" : "left",
                 ...Fonts.SemiBold16black,
@@ -215,6 +156,100 @@ const RegisterScreen = () => {
               />
             </View>
 
+            <Text
+              style={{
+                textAlign: isRtl ? "right" : "left",
+                ...Fonts.SemiBold16black,
+              }}
+            >
+              {tr("Password")}
+            </Text>
+            <View
+              style={{
+                flexDirection: isRtl ? "row-reverse" : "row",
+                ...styles.textInputCard,
+              }}
+            >
+              <Ionicons name="lock-closed-outline" color={Colors.grey} size={18} />
+              <TextInput
+                value={password}
+                onChangeText={setPassword}
+                placeholder="Enter Your Password"
+                placeholderTextColor={Colors.grey}
+                selectionColor={Colors.primary}
+                secureTextEntry={true}
+                style={{
+                  ...Fonts.SemiBold16black,
+                  flex: 1,
+                  textAlign: isRtl ? "right" : "left",
+                  marginHorizontal: Default.fixPadding * 1.2,
+                }}
+              />
+            </View>
+
+            <Text
+              style={{
+                textAlign: isRtl ? "right" : "left",
+                ...Fonts.SemiBold16black,
+              }}
+            >
+              Confirm Password
+            </Text>
+            <View
+              style={{
+                flexDirection: isRtl ? "row-reverse" : "row",
+                ...styles.textInputCard,
+              }}
+            >
+              <Ionicons name="lock-closed-outline" color={Colors.grey} size={18} />
+              <TextInput
+                value={confirmpassword}
+                onChangeText={setConfirmPassword}
+                keyboardType="email-address"
+                placeholder="Enter Your Confirm Password"
+                placeholderTextColor={Colors.grey}
+                selectionColor={Colors.primary}
+                secureTextEntry={true}
+                style={{
+                  ...Fonts.SemiBold16black,
+                  flex: 1,
+                  textAlign: isRtl ? "right" : "left",
+                  marginHorizontal: Default.fixPadding * 1.2,
+                }}
+              />
+            </View>
+            <Text
+              style={{
+                textAlign: isRtl ? "right" : "left",
+                ...Fonts.SemiBold16black,
+              }}
+            >
+              Sponsor
+            </Text>
+            <View
+              style={{
+                flexDirection: isRtl ? "row-reverse" : "row",
+                ...styles.textInputCard,
+              }}
+            >
+              <Ionicons name="share-social-outline" color={Colors.grey} size={18} />
+              <TextInput
+                value={referral}
+                onChangeText={setReferral}
+                keyboardType="email-address"
+                placeholder="Enter Your Referral Code"
+                placeholderTextColor={Colors.grey}
+                selectionColor={Colors.primary}
+                style={{
+                  ...Fonts.SemiBold16black,
+                  flex: 1,
+                  textAlign: isRtl ? "right" : "left",
+                  marginHorizontal: Default.fixPadding * 1.2,
+                }}
+              />
+            </View>
+
+           
             <View
               style={{
                 marginTop: Default.fixPadding * 1.5,
@@ -242,6 +277,23 @@ const RegisterScreen = () => {
                   {tr("register")}
                 </Text>
               </AwesomeButton>
+              <View
+            style={{
+              marginTop: 10,
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            <Text style={{ ...Fonts.Regular14 }}>
+            Already have an account?
+            </Text>
+            <TouchableOpacity  onPress={() =>
+                  navigation.push("auth/loginScreen")}>
+              <Text style={{ color: Colors.linkColor, fontWeight: 'bold',marginLeft: 4,  ...Fonts.Regular16 }}>
+                Login
+              </Text>
+            </TouchableOpacity>
+          </View>
             </View>
           </View>
         </ScrollView>
