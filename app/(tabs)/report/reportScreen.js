@@ -41,6 +41,7 @@ const HistoryScreen = () => {
 
   const [data, setData] = useState([]);
   const [total, setTotal] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
 
 

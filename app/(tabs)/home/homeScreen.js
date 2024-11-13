@@ -23,6 +23,7 @@ import { useNavigation } from "expo-router";
 import { Pedometer } from 'expo-sensors';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
+import Api from '../../../services/Api.js'; // Adjust path if necessary
 
 
 
@@ -47,6 +48,7 @@ const HomeScreen = () => {
   const [progress, setProgress] = useState(100);
   const [isPedometerAvailable, setPedometerAvailable] = useState('checking');
   const [stepCount, setStepCount] = useState(0);
+  const [storedCount, setStoredCount] = useState(0);
   const [running, setRunning] = useState(false);
   const [subscription, setSubscription] = useState(null);
   const [previousStepCount, setPreviousStepCount] = useState(0); // Store previous step count
@@ -54,7 +56,74 @@ const HomeScreen = () => {
   const [location, setLocation] = useState(null);
   const [distance, setDistance] = useState(0);
   const [lastLocation, setLastLocation] = useState(null);
+  const [userInfo, setUserInfo] = useState([]);
 
+
+  const storeSteps = async () => {
+    try {
+      setStoredCount(stepCount);
+      // Make the API call
+      const response = await Api.post('/Step', { step: stepCount });
+
+      console.log(response.data);
+
+   
+      if (response.data.success) {
+       
+      //  navigation.push("(tabs)");
+
+      } else {
+        console.log(response.data);
+      }
+    } catch (error) {
+      console.log("Error details:", error);
+      if (error.response) {
+        Alert.alert("Error", error.response.data.error);
+      } else {
+        Alert.alert("Error", "An error occurred. Please try again.");
+      }
+    } 
+  };
+
+
+  const fetchData = async () => {
+    try {
+      const response = await Api.get('/userInfo'); // Replace with your actual GET endpoint
+
+    
+      if (response.data.success) {
+        // Handle the successful response here
+        // console.log(response.data.data);
+
+        setUserInfo(response.data.data);
+
+        if(response.data.data){
+          const todaySteps = Number(response.data.data.todaysteps);
+
+           setStepCount(todaySteps);
+           setStoredCount(todaySteps);
+        }
+
+      } else {
+        Alert.alert("Error", response.data.errors);
+      }
+    } catch (error) {
+      console.log("Error details:", error);
+      if (error.response) {
+        Alert.alert("Error", error.response.data.errors);
+      } else {
+        Alert.alert("Error", "An error occurred. Please try again.");
+      }
+    }
+  };
+
+
+  useEffect(() => {
+
+    fetchData(); // Call fetchData when component mounts
+
+
+  }, []); 
 
 
   // Check if the Pedometer is available on the device
@@ -94,10 +163,11 @@ useEffect(() => {
       console.log('Step result callback triggered');
       if (result && result.steps !== undefined) {
         console.log('Steps detected:', result.steps); // Log each step update
-        setStepCount(result.steps);
+        if(result.steps>1){
+          setStepCount(result.steps+storedCount); // Accumulate the new steps
 
         setDistance(result.steps*0.8);
-
+        }
 
 
       } else {
@@ -201,7 +271,7 @@ useEffect(() => {
             }}
           >
             <Text numberOfLines={1} style={{ ...Fonts.Bold16white }}>
-              Guy Hawkins
+             {}
             </Text>
             <View
               style={{
@@ -333,7 +403,7 @@ useEffect(() => {
                 marginTop: Default.fixPadding,
               }}
             >
-              2154
+              {stepCount*0.04}
             </Text>
             <Text
               numberOfLines={1}
@@ -366,7 +436,7 @@ useEffect(() => {
                 marginTop: Default.fixPadding,
               }}
             >
-              1h 36m
+                           {stepCount*0.01} s
             </Text>
             <Text
               numberOfLines={1}
@@ -393,7 +463,8 @@ useEffect(() => {
                 marginTop: Default.fixPadding,
               }}
             >
-              4.2 km
+                           {(stepCount*0.7).toFixed(2)} m
+
             </Text>
             <Text
               numberOfLines={1}
@@ -454,7 +525,7 @@ useEffect(() => {
         </View>
 
        
-      
+       
       </ScrollView>
 
       <BottomSheet visible={startStepsBottomSheet}>
@@ -563,6 +634,7 @@ useEffect(() => {
                   onPress={() => {
                     setRunning(false);
                     setStartStepsBottomSheet(false);
+                    storeSteps(); // Call the storeSteps function
                   }}
                   style={{
                     flexDirection: isRtl ? "row-reverse" : "row",

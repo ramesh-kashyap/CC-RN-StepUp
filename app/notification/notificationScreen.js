@@ -3,9 +3,9 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
-  Animated,
+  Animated,Alert
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Colors, Default, Fonts } from "../../constants/styles";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -13,6 +13,8 @@ import { SwipeListView } from "react-native-swipe-list-view";
 import SnackbarToast from "../../components/snackbarToast";
 import MyStatusBar from "../../components/myStatusBar";
 import { useNavigation } from "expo-router";
+import Api from '../../services/Api.js'; // Adjust path if necessary
+
 
 const NotificationScreen = () => {
   const navigation = useNavigation();
@@ -29,80 +31,43 @@ const NotificationScreen = () => {
   const onDismissRemoveNotificationToast = () =>
     setRemoveNotificationToast(false);
 
-  const notificationList = [
-    {
-      key: "1",
-      title: "Awards",
-      other: "Congratulation you completed 1000 step you get a 10k award",
-      time: "2min ago",
-    },
-    {
-      key: "2",
-      title: "Goal achieve",
-      other:
-        "Congratulation today  you completed 1000 step you achieve your goal",
-      time: "4min ago",
-    },
-    {
-      key: "3",
-      title: "Calories",
-      other: "Today you walked 2500 step and burnt 3500 calories",
-      time: "10min ago",
-    },
-    {
-      key: "4",
-      title: "Awards",
-      other: "Congratulation you completed 1000 step you get a 10k award",
-      time: "15min ago",
-    },
-    {
-      key: "5",
-      title: "Goal achieve",
-      other:
-        "Congratulation today  you completed 1000 step you achieve your goal",
-      time: "20min ago",
-    },
-    {
-      key: "6",
-      title: "Calories",
-      other: "Today you walked 2500 step and burnt 3500 calories",
-      time: "25min ago",
-    },
-  ];
+  const [notificationList, setNotificationList] = useState([]);
 
-  const rowTranslateAnimatedValues = {};
-  notificationList.forEach((_, i) => {
-    rowTranslateAnimatedValues[`${i}`] = new Animated.Value(1);
-  });
 
-  const [notification, setNotification] = useState(
-    notificationList.map((NotificationItem, i) => ({
-      key: `${i}`,
-      title: NotificationItem.title,
-      other: NotificationItem.other,
-      time: NotificationItem.time,
-    }))
-  );
+  const fetchData = async () => {
+    try {
+      const response = await Api.get('/incomeReport'); // Replace with your actual GET endpoint
 
-  const onSwipeValueChange = (swipeData) => {
-    const { key, value } = swipeData;
-    if (
-      value < -Dimensions.get("window").width ||
-      value > Dimensions.get("window").width
-    ) {
-      Animated.timing(rowTranslateAnimatedValues[key], {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: false,
-      }).start(() => {
-        const newData = [...notification];
-        const prevIndex = notification.findIndex((item) => item.key === key);
-        newData.splice(prevIndex, 1);
-        setNotification(newData);
-        setRemoveNotificationToast(true);
-      });
+    
+      if (response.data.success) {
+        // Handle the successful response here
+        console.log(response.data.incomeReport);
+        setNotificationList(response.data.incomeReport);
+
+      } else {
+        Alert.alert("Error", response.data.errors);
+      }
+    } catch (error) {
+      console.log("Error details:", error);
+      if (error.response) {
+        Alert.alert("Error", error.response.data.errors);
+      } else {
+        Alert.alert("Error", "An error occurred. Please try again.");
+      }
     }
   };
+
+
+  useEffect(() => {
+
+    fetchData(); // Call fetchData when component mounts
+
+  }, []); 
+
+  
+
+  const [notification, setNotification] = useState([]);
+ 
 
   const renderItem = ({ item }) => {
     return (
@@ -119,7 +84,7 @@ const NotificationScreen = () => {
           ...Default.shadow,
         }}
       >
-        <View
+        {/* <View
           style={{
             justifyContent: "center",
             alignItems: "center",
@@ -136,7 +101,7 @@ const NotificationScreen = () => {
             size={30}
             color={Colors.primary}
           />
-        </View>
+        </View> */}
     
         <View
           style={{
@@ -146,7 +111,7 @@ const NotificationScreen = () => {
           }}
         >
           <Text numberOfLines={1} style={{ ...Fonts.Bold16black }}>
-            Deposit
+            {item.remarks}
           </Text>
           <Text
             numberOfLines={2}
@@ -157,10 +122,11 @@ const NotificationScreen = () => {
               marginVertical: Default.fixPadding * 0.3,
             }}
           >
-            Success
+           Amount ${item.amt}
+
           </Text>
           <Text numberOfLines={1} style={{ ...Fonts.SemiBold14grey }}>
-            {item.time}
+            {item.ttime}
           </Text>
         </View>
     
@@ -172,23 +138,13 @@ const NotificationScreen = () => {
             paddingRight: Default.fixPadding,
           }}
         >
-          $100 
+          ${item.comm} 
         </Text>
       </View>
     </View>
     
     );
   };
-
-  const renderHiddenItem = () => (
-    <View
-      style={{
-        flex: 1,
-        marginBottom: Default.fixPadding * 1.5,
-        backgroundColor: Colors.primary,
-      }}
-    />
-  );
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.extraLightGrey }}>
@@ -219,7 +175,7 @@ const NotificationScreen = () => {
         </Text>
       </View>
 
-      {notification.length === 0 ? (
+      {notificationList.length === 0 ? (
         <View
           style={{
             flex: 1,
@@ -244,16 +200,13 @@ const NotificationScreen = () => {
         </View>
       ) : (
         <SwipeListView
-          data={notification}
-          renderItem={renderItem}
-          renderHiddenItem={renderHiddenItem}
-          onSwipeValueChange={onSwipeValueChange}
-          useNativeDriver={false}
-          showsVerticalScrollIndicator={false}
-          rightOpenValue={-Dimensions.get("window").width}
-          leftOpenValue={Dimensions.get("window").width}
-          contentContainerStyle={{ paddingTop: Default.fixPadding * 2 }}
-        />
+  data={notificationList}
+  renderItem={renderItem}
+  rightOpenValue={0} // Set to 0 to disable right swipe
+  leftOpenValue={0} // Set to 0 to disable left swipe
+  contentContainerStyle={{ paddingTop: Default.fixPadding * 2 }}
+/>
+
       )}
 
       <SnackbarToast
