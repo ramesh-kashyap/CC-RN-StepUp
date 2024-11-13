@@ -113,18 +113,7 @@ const NotificationScreen = () => {
           <Text numberOfLines={1} style={{ ...Fonts.Bold16black }}>
             {item.remarks}
           </Text>
-          <Text
-            numberOfLines={2}
-            style={{
-              ...Fonts.SemiBold14black,
-              overflow: "hidden",
-              textAlign: isRtl ? "right" : "left",
-              marginVertical: Default.fixPadding * 0.3,
-            }}
-          >
-           Amount ${item.amt}
-
-          </Text>
+          
           <Text numberOfLines={1} style={{ ...Fonts.SemiBold14grey }}>
             {item.ttime}
           </Text>
@@ -132,13 +121,13 @@ const NotificationScreen = () => {
     
         <Text
           style={{
-            ...Fonts.Bold20black,  // Same font style as Deposit
+            ...Fonts.SemiBold20primary,  // Same font style as Deposit
             textAlign: "right",
             marginLeft: "auto", // Ensures the amount is aligned to the right
             paddingRight: Default.fixPadding,
           }}
         >
-          ${item.comm} 
+          ${item.comm}  
         </Text>
       </View>
     </View>
