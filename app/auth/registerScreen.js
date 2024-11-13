@@ -205,7 +205,7 @@ const RegisterScreen = () => {
               <TextInput
                 value={confirmpassword}
                 onChangeText={setConfirmPassword}
-                keyboardType="email-address"
+               
                 placeholder="Enter Your Confirm Password"
                 placeholderTextColor={Colors.grey}
                 selectionColor={Colors.primary}
