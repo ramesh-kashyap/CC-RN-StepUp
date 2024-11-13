@@ -291,8 +291,8 @@ const AwardsScreen = () => {
 
   {/* Second Button */}
   <TouchableOpacity
-    onPress={() => {
-      setOtherAction(); // Replace with the function you need for the second button
+     onPress={() => {
+      navigation.push("withdraw/withdraw")
     }}
     style={{
       flexDirection: isRtl ? "row-reverse" : "row",

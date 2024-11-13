@@ -30,6 +30,7 @@ const MainNavigation = () => {
       <Stack.Screen name="editProfile/teamReport" />
       <Stack.Screen name="awardsCategory/awardsCategoryScreen" /> 
       <Stack.Screen name="deposit/deposit" /> 
+      <Stack.Screen name="withdraw/withdraw" /> 
       <Stack.Screen name="deposit/ConfirmDeposit" /> 
       <Stack.Screen name="achieveGoal/achieveGoalScreen" />
       <Stack.Screen name="inactive/inactiveScreen" />

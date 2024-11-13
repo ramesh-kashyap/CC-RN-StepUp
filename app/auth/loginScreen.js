@@ -7,7 +7,10 @@ import {
   BackHandler,
   ScrollView,
   Dimensions,
-  Platform,TextInput,Alert 
+  Platform,
+  TextInput,
+  Alert,
+  TouchableOpacity,
 } from "react-native";
 import { Colors, Fonts, Default } from "../../constants/styles";
 import { useTranslation } from "react-i18next";
@@ -17,10 +20,8 @@ import IntlPhoneInput from "react-native-intl-phone-input";
 import AwesomeButton from "react-native-really-awesome-button";
 import { useFocusEffect } from "@react-navigation/native";
 import { useNavigation } from "expo-router";
-import Api from '../../services/Api.js'; // Adjust path if necessary
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
+import Api from "../../services/Api.js"; // Adjust path if necessary
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width } = Dimensions.get("window");
 
@@ -29,20 +30,19 @@ const LoginScreen = () => {
 
   const { t, i18n } = useTranslation();
 
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
 
   const handleLogin = async () => {
     try {
-      const response = await Api.post('/login', { phone, password });
-  
+      const response = await Api.post("/login", { phone, password });
+
       if (response.data.success) {
         Alert.alert("Success", response.data.message);
-  
+
         if (response.data.token) {
-          await AsyncStorage.setItem('auth_token', response.data.token);
+          await AsyncStorage.setItem("auth_token", response.data.token);
           navigation.push("(tabs)");
         }
       } else {
@@ -55,10 +55,8 @@ const LoginScreen = () => {
       } else {
         Alert.alert("Error", "An error occurred. Please try again.");
       }
-    } 
+    }
   };
-  
-  
 
   const isRtl = i18n.dir() == "rtl";
 
@@ -158,7 +156,9 @@ const LoginScreen = () => {
             closeText={tr("close")}
             filterText={tr("search")}
             placeholder={tr("enterMobileNumber")}
-            onChangeText={({ dialCode, unmaskedPhoneNumber }) => setPhone(unmaskedPhoneNumber)} // capture unmasked phone number
+            onChangeText={({ dialCode, unmaskedPhoneNumber }) =>
+              setPhone(unmaskedPhoneNumber)
+            } // capture unmasked phone number
             placeholderTextColor={Colors.grey}
             flagStyle={{ width: 0, height: 0 }}
             modalCountryItemCountryNameStyle={{ ...Fonts.SemiBold15black }}
@@ -189,36 +189,35 @@ const LoginScreen = () => {
             }}
           />
 
-<Text
-    style={{
-      textAlign: isRtl ? "right" : "left",
-      ...Fonts.SemiBold16black,
-    }}
-  >
-    {tr("Password")}
-  </Text>
+          <Text
+            style={{
+              textAlign: isRtl ? "right" : "left",
+              ...Fonts.SemiBold16black,
+            }}
+          >
+            {tr("Password")}
+          </Text>
 
-  <TextInput
-    placeholder={"Enter Your Password"}
-    placeholderTextColor={Colors.grey}
-    value={password}
-    onChangeText={setPassword}
-    secureTextEntry={true}
-    style={{
-      ...Fonts.SemiBold16black,
-      paddingVertical: Default.fixPadding * 1.2,
-      paddingHorizontal: isRtl ? 0 : Default.fixPadding * 1.2,
-      marginBottom: Default.fixPadding * 5,
-      marginTop: Default.fixPadding,
-      borderRadius: 10,
-      backgroundColor: Colors.white,
-      textAlign: isRtl ? "right" : "left",
-      ...Default.shadow,
-      borderLeftWidth: 2,
-      borderLeftColor: Colors.lightGrey,
-    }}
-  />
-
+          <TextInput
+            placeholder={"Enter Your Password"}
+            placeholderTextColor={Colors.grey}
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={true}
+            style={{
+              ...Fonts.SemiBold16black,
+              paddingVertical: Default.fixPadding * 1.2,
+              paddingHorizontal: isRtl ? 0 : Default.fixPadding * 1.2,
+              marginBottom: Default.fixPadding * 5,
+              marginTop: Default.fixPadding,
+              borderRadius: 10,
+              backgroundColor: Colors.white,
+              textAlign: isRtl ? "right" : "left",
+              ...Default.shadow,
+              borderLeftWidth: 2,
+              borderLeftColor: Colors.lightGrey,
+            }}
+          />
         </View>
 
         <View
@@ -228,7 +227,6 @@ const LoginScreen = () => {
           }}
         >
           <AwesomeButton
-            
             height={50}
             onPress={handleLogin}
             raiseLevel={1}
@@ -240,11 +238,29 @@ const LoginScreen = () => {
           >
             <Text style={{ ...Fonts.ExtraBold18white }}>{tr("login")}</Text>
           </AwesomeButton>
+
+          <View
+            style={{
+              marginTop: 10,
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
+          >
+            <Text style={{ ...Fonts.Regular14 }}>
+             Don't have an account? 
+            </Text>
+            <TouchableOpacity  onPress={() =>
+                  navigation.push("auth/registerScreen")}>
+              <Text style={{ color: Colors.linkColor, fontWeight: 'bold',marginLeft: 4,  ...Fonts.Regular16 }}>
+                Register
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
       <SnackbarToast
         visible={visibleToast}
-        title={tr("tapBack")} 
+        title={tr("tapBack")}
         onDismiss={onDismissVisibleToast}
       />
     </View>
