@@ -7,9 +7,9 @@ import {
   Modal,
   Dimensions,
   TouchableWithoutFeedback,
-  ScrollView,
+  ScrollView,Alert,
 } from "react-native";
-import React, { useState } from "react"; 
+import React, { useState ,useEffect} from "react"; 
 import { useTranslation } from "react-i18next";
 import { Colors, Default, Fonts } from "../../../constants/styles";
 import MyStatusBar from "../../../components/myStatusBar";
@@ -20,6 +20,8 @@ import AwesomeButton from "react-native-really-awesome-button";
 import moment from "moment";
 import DateTimePicker from "react-native-ui-datepicker";
 import { useNavigation } from "expo-router";
+import Api from '../../../services/Api.js'; // Adjust path if necessary
+
 
 const { width, height } = Dimensions.get("window");
 
@@ -37,68 +39,47 @@ const HistoryScreen = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [AllDelete, setAllDelete] = useState(false);
 
+  const [data, setData] = useState([]);
+  const [total, setTotal] = useState([]);
+
+
+
   const [openDateModal, setOpenDateModal] = useState(false);
 
   const today = moment().format("YYYY-MM-DD");
 
-  const historyList = [
-    {
-      key: "1",
-      date: "01 -04-2022",
-      steps: "1000",
-      kcalBurnt: "2154",
-      activeTime: "1h 36m",
-      distance: "4.8 km",
-    },
-    {
-      key: "2",
-      date: "02 -04-2022",
-      steps: "2000",
-      kcalBurnt: "2324",
-      activeTime: "2h 30m",
-      distance: "2.8 km",
-    },
-    {
-      key: "3",
-      date: "03 -04-2022",
-      steps: "1500",
-      kcalBurnt: "1050",
-      activeTime: "3h 36m",
-      distance: "4.8 km",
-    },
-    {
-      key: "4",
-      date: "04 -04-2022",
-      steps: "1000",
-      kcalBurnt: "2154",
-      activeTime: "1h 10m",
-      distance: "1.8 km",
-    },
-    {
-      key: "5",
-      date: "05 -04-2022",
-      steps: "1800",
-      kcalBurnt: "2154",
-      activeTime: "1h 36m",
-      distance: "3.5 km",
-    },
-    {
-      key: "6",
-      date: "06 -04-2022",
-      steps: "3000",
-      kcalBurnt: "2504",
-      activeTime: "1h 40m",
-      distance: "4.8 km",
-    },
-    {
-      key: "7",
-      date: "07 -04-2022",
-      steps: "1540",
-      kcalBurnt: "2254",
-      activeTime: "2h 36m",
-      distance: "5.8 km",
-    },
-  ];
+
+
+  const fetchData = async () => {
+    try {
+      const response = await Api.get('/stepHistory'); // Replace with your actual GET endpoint
+
+    
+      if (response.data.success) {
+        // Handle the successful response here
+        // console.log(response.data.stepHistory);
+        setData(response.data.stepHistory);
+        setTotal(response.data.totalStep);
+
+      } else {
+        Alert.alert("Error", response.data.errors);
+      }
+    } catch (error) {
+      console.log("Error details:", error);
+      if (error.response) {
+        Alert.alert("Error", error.response.data.errors);
+      } else {
+        Alert.alert("Error", "An error occurred. Please try again.");
+      }
+    }
+  };
+
+
+  useEffect(() => {
+
+    fetchData(); // Call fetchData when component mounts
+
+  }, []); 
 
   const renderItem = ({ item, index }) => {
     const firstItem = index === 0;
@@ -122,7 +103,7 @@ const HistoryScreen = () => {
           }}
         >
           <Text style={{ ...Fonts.SemiBold14primary, textAlign: "center" }}>
-            {item.date}
+            {item.today}
           </Text>
         </View>
         <View
@@ -149,7 +130,7 @@ const HistoryScreen = () => {
                 marginTop: Default.fixPadding,
               }}
             >
-              {item.steps}
+              {item.step}
             </Text>
             <Text
               numberOfLines={1}
@@ -181,8 +162,8 @@ const HistoryScreen = () => {
                 marginTop: Default.fixPadding,
               }}
             >
-              {item.kcalBurnt}
-            </Text>
+              {item.step*0.04}
+              </Text>
             <Text
               numberOfLines={1}
               style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
@@ -213,8 +194,8 @@ const HistoryScreen = () => {
                 marginTop: Default.fixPadding,
               }}
             >
-              {item.activeTime}
-            </Text>
+              {item.step*0.01} s
+              </Text>
             <Text
               numberOfLines={1}
               style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
@@ -240,8 +221,8 @@ const HistoryScreen = () => {
                 marginTop: Default.fixPadding,
               }}
             >
-              {item.distance}
-            </Text>
+       {(item.step * 0.7).toFixed(2)} m
+</Text>
             <Text
               numberOfLines={1}
               style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
@@ -343,7 +324,7 @@ const HistoryScreen = () => {
         </View>
       ) : (
         <FlatList
-          data={historyList}
+          data={data}
           renderItem={renderItem}
           keyExtractor={(item) => item.key}
           showsVerticalScrollIndicator={false}
@@ -427,7 +408,7 @@ const HistoryScreen = () => {
                       marginTop: Default.fixPadding,
                     }}
                   >
-                    10,000
+                   {total}
                   </Text>
                   <Text
                     numberOfLines={1}
@@ -459,7 +440,8 @@ const HistoryScreen = () => {
                       marginTop: Default.fixPadding,
                     }}
                   >
-                    65248
+                                       {total*0.04}
+
                   </Text>
                   <Text
                     numberOfLines={1}
@@ -491,7 +473,8 @@ const HistoryScreen = () => {
                       marginTop: Default.fixPadding,
                     }}
                   >
-                    24h 60m
+                       {total*0.01} s
+
                   </Text>
                   <Text
                     numberOfLines={1}
@@ -518,7 +501,9 @@ const HistoryScreen = () => {
                       marginTop: Default.fixPadding,
                     }}
                   >
-                    15.50 km
+                                                         {(total * 0.7).toFixed(2)} m
+
+
                   </Text>
                   <Text
                     numberOfLines={1}

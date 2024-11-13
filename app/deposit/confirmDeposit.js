@@ -4,20 +4,19 @@ import {
     TouchableOpacity,
     StyleSheet,
     ScrollView,
-    TextInput,
-    Platform,Alert,
-    KeyboardAvoidingView,Dimensions
+    Alert
+    ,Dimensions
   } from "react-native";
-  import React, { useState } from "react";
+  import React, { useState,useEffect } from "react";
   import { useTranslation } from "react-i18next";
-  import WheelPicker from "react-native-wheely";
   import Api from '../../services/Api.js'; // Adjust path if necessary
   import { Colors, Default, Fonts } from "../../constants/styles";
   import MyStatusBar from "../../components/myStatusBar";
   import Ionicons from "react-native-vector-icons/Ionicons";
-  import { BottomSheet } from "react-native-btr";
-  import AwesomeButton from "react-native-really-awesome-button";
+  import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
   import { useNavigation } from "expo-router";
+  import QRCode from 'react-native-qrcode-svg';
+
 
   const { height } = Dimensions.get("window");
 
@@ -38,27 +37,28 @@ import {
         "USDTBEP20",
       ];
   
-    const [wallet, setWallet] = useState(stepsList[1]);
+    const [data, setData] = useState([]);
+    
 
-    const [selectedIndex, setSelectedIndex] = useState(1);
 
    
 
   
-    const [amount, setAmount] = useState("100");
-    const [confirmAmount, setConfirmAmount] = useState("100");
-  
-   
-    const handleDeposit = async () => {
+    const fetchData = async () => {
         try {
-          // Make the API call
-          const response = await Api.post('/confirmDeposit', { Sum: amount, PSys: wallet });
-      
+          const response = await Api.get('/confirmPay'); // Replace with your actual GET endpoint
+    
+        
           if (response.data.success) {
-           
-      
-
+            // Handle the successful response here
+            console.log(response.data.data);
+            setData(response.data.data);
+    
           } else {
+           
+            console.log(response.data.error);
+
+
             Alert.alert("Error", response.data.error);
           }
         } catch (error) {
@@ -68,8 +68,15 @@ import {
           } else {
             Alert.alert("Error", "An error occurred. Please try again.");
           }
-        } 
+        }
       };
+    
+    
+      useEffect(() => {
+    
+        fetchData(); // Call fetchData when component mounts
+    
+      }, []); 
       
    
   
@@ -113,258 +120,279 @@ import {
   
           <View style={{ marginHorizontal: Default.fixPadding * 2,marginTop: Default.fixPadding * 2  }}>
 
-            
-           
-  
-            <Text
-              style={{
-                textAlign: isRtl ? "right" : "left",
-                ...Fonts.SemiBold16black,
-              }}
-            >
-              Select Wallet
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                setWalletAddressBottomSheet(true);
-              }}
-              style={{
-                alignItems: isRtl ? "flex-end" : "flex-start",
-                ...styles.touchableOpacityStyle,
-              }}
-            >
-              <Text
-                style={{
-                  ...( !wallet
-                    ? Fonts.SemiBold15grey
-                    : Fonts.SemiBold15black),
-                }}
-              >
-                {wallet
-                  ? wallet
-                  :  "Select Wallet" 
-                  }
-              </Text>
-            </TouchableOpacity>
-  
-            <Text
-              style={{
-                textAlign: isRtl ? "right" : "left",
-                ...Fonts.SemiBold16black,
-              }}
-            >
-              Amount
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                setAmount(confirmAmount);
-                setAmountBottomSheet(true);
-              }}
-              style={{
-                alignItems: isRtl ? "flex-end" : "flex-start",
-                ...styles.touchableOpacityStyle,
-              }}
-            >
-              <Text
-                style={{
-                  ...(!confirmAmount && !amount
-                    ? Fonts.SemiBold15grey
-                    : Fonts.SemiBold15black),
-                }}
-              >
-                {confirmAmount
-                  ? `$ ${confirmAmount}`
-                  : !amount
-                  ? tr("enterAmount")
-                  : "1234567890"}
-              </Text>
-            </TouchableOpacity>
+          <View style={{ marginHorizontal: Default.fixPadding * 2,marginTop: Default.fixPadding * 2 ,marginBottom: Default.fixPadding * 2 , alignItems: 'center', }}>
+           <QRCode
+              value={data.usdt_address} 
+              size={170}
+             color="black"
+             backgroundColor="white"
+           />
+        
           </View>
-        </ScrollView>
+
+          <View style={{ backgroundColor: Colors.extraLightGrey, paddingVertical: Default.fixPadding * 1 }}>
+      <View
+        style={{
+          flexDirection: isRtl ? 'row-reverse' : 'row',
+          alignItems: 'center',
+          padding: Default.fixPadding,
+          marginHorizontal: Default.fixPadding * 2,
+          borderRadius: 10,
+          backgroundColor: Colors.white,
+          ...Default.shadow,
+        }}
+      >
+        
+
         <View
           style={{
-            margin: Default.fixPadding * 2,
+            flex: 1,
+            alignItems: isRtl ? 'flex-end' : 'flex-start',
+            marginHorizontal: Default.fixPadding * 1.5,
           }}
         >
-          <AwesomeButton
-      height={50}
-      raiseLevel={1}
-      stretch={true}
-      borderRadius={10}
-      backgroundShadow={Colors.primary}
-      backgroundDarker={Colors.primary}
-      backgroundColor={Colors.primary}
-      onPress={handleDeposit} // Simply call handleDeposit without loading logic
-    >
-      <Text style={{ ...Fonts.ExtraBold18white }}>Confirm</Text>
-    </AwesomeButton>
+          <Text numberOfLines={1} style={{ ...Fonts.Bold16black }}>
+            {data.usdt_address}
+          </Text>
+          
         </View>
+
+        <MaterialCommunityIcons
+  name="content-copy"  // The copy-to-clipboard icon
+  size={20}  // Set the icon size
+  color="black"  // Set the icon color, adjust as needed
+  style={{
+    marginLeft: 'auto', // Ensures the icon is aligned to the right
+    paddingRight: Default.fixPadding,
+  }}
+  onPress={() => {
+    // Copy to clipboard logic goes here
+    Clipboard.setString(yourTextToCopy); // Replace `yourTextToCopy` with the text you want to copy
+    Alert.alert('Copied to clipboard');
+  }}
+/>
+      </View>
+    </View>
+
+          <View style={{ backgroundColor: Colors.extraLightGrey, paddingVertical: Default.fixPadding * 1 }}>
+      <View
+        style={{
+          flexDirection: isRtl ? 'row-reverse' : 'row',
+          alignItems: 'center',
+          padding: Default.fixPadding,
+          marginHorizontal: Default.fixPadding * 1,
+          borderRadius: 10,
+          backgroundColor: Colors.white,
+          ...Default.shadow,
+        }}
+      >
+        
+
+        <View
+          style={{
+            flex: 1,
+            alignItems: isRtl ? 'flex-end' : 'flex-start',
+            marginHorizontal: Default.fixPadding * 1.5,
+          }}
+        >
+          <Text numberOfLines={1} style={{ ...Fonts.Bold16black }}>
+            Selected Currency
+          </Text>
+          <Text
+            numberOfLines={2}
+            style={{
+              ...Fonts.SemiBold14black,
+              overflow: 'hidden',
+              textAlign: isRtl ? 'right' : 'left',
+              marginVertical: Default.fixPadding * 0.3,
+            }}
+          >
+                       {data.payment_mode}
+
+          </Text>
+          
+        </View>
+
+       
+      </View>
+    </View>
+           
+    <View style={{ backgroundColor: Colors.extraLightGrey, paddingVertical: Default.fixPadding * 1 }}>
+      <View
+        style={{
+          flexDirection: isRtl ? 'row-reverse' : 'row',
+          alignItems: 'center',
+          padding: Default.fixPadding,
+          marginHorizontal: Default.fixPadding * 1,
+          borderRadius: 10,
+          backgroundColor: Colors.white,
+          ...Default.shadow,
+        }}
+      >
+        
+
+        <View
+          style={{
+            flex: 1,
+            alignItems: isRtl ? 'flex-end' : 'flex-start',
+            marginHorizontal: Default.fixPadding * 1.5,
+          }}
+        >
+          <Text numberOfLines={1} style={{ ...Fonts.Bold16black }}>
+            Amount
+          </Text>
+          <Text
+            numberOfLines={2}
+            style={{
+              ...Fonts.SemiBold14black,
+              overflow: 'hidden',
+              textAlign: isRtl ? 'right' : 'left',
+              marginVertical: Default.fixPadding * 0.3,
+            }}
+          >
+              {data.amount}
+          </Text>
+          
+        </View>
+
+       
+      </View>
+    </View>
+
+    <View style={{ backgroundColor: Colors.extraLightGrey, paddingVertical: Default.fixPadding * 1 }}>
+      <View
+        style={{
+          flexDirection: isRtl ? 'row-reverse' : 'row',
+          alignItems: 'center',
+          padding: Default.fixPadding,
+          marginHorizontal: Default.fixPadding * 1,
+          borderRadius: 10,
+          backgroundColor: Colors.white,
+          ...Default.shadow,
+        }}
+      >
+        
+
+        <View
+          style={{
+            flex: 1,
+            alignItems: isRtl ? 'flex-end' : 'flex-start',
+            marginHorizontal: Default.fixPadding * 1.5,
+          }}
+        >
+          <Text numberOfLines={1} style={{ ...Fonts.Bold16black }}>
+            Order ID
+          </Text>
+          <Text
+            numberOfLines={2}
+            style={{
+              ...Fonts.SemiBold14black,
+              overflow: 'hidden',
+              textAlign: isRtl ? 'right' : 'left',
+              marginVertical: Default.fixPadding * 0.3,
+            }}
+          >
+              {data.orderId}
+          </Text>
+          
+        </View>
+
+       
+      </View>
+    </View>
+
+    <View style={{ backgroundColor: Colors.extraLightGrey, paddingVertical: Default.fixPadding * 1 }}>
+      <View
+        style={{
+          flexDirection: isRtl ? 'row-reverse' : 'row',
+          alignItems: 'center',
+          padding: Default.fixPadding,
+          marginHorizontal: Default.fixPadding * 1,
+          borderRadius: 10,
+          backgroundColor: Colors.white,
+          ...Default.shadow,
+        }}
+      >
+        
+
+        <View
+          style={{
+            flex: 1,
+            alignItems: isRtl ? 'flex-end' : 'flex-start',
+            marginHorizontal: Default.fixPadding * 1.5,
+          }}
+        >
+          <Text numberOfLines={1} style={{ ...Fonts.Bold16black }}>
+            Transaction ID
+          </Text>
+          <Text
+            numberOfLines={2}
+            style={{
+              ...Fonts.SemiBold14black,
+              overflow: 'hidden',
+              textAlign: isRtl ? 'right' : 'left',
+              marginVertical: Default.fixPadding * 0.3,
+            }}
+          >
+            {data.transaction_id}
+          </Text>
+          
+        </View>
+
+       
+      </View>
+    </View>
+
+    <View style={{ backgroundColor: Colors.extraLightGrey, paddingVertical: Default.fixPadding * 1 }}>
+      <View
+        style={{
+          flexDirection: isRtl ? 'row-reverse' : 'row',
+          alignItems: 'center',
+          padding: Default.fixPadding,
+          marginHorizontal: Default.fixPadding * 1,
+          borderRadius: 10,
+          backgroundColor: Colors.white,
+          ...Default.shadow,
+        }}
+      >
+        
+
+        <View
+          style={{
+            flex: 1,
+            alignItems: isRtl ? 'flex-end' : 'flex-start',
+            marginHorizontal: Default.fixPadding * 1.5,
+          }}
+        >
+          <Text numberOfLines={1} style={{ ...Fonts.Bold16black }}>
+           Send {data.payment_mode}
+          </Text>
+          <Text
+            numberOfLines={2}
+            style={{
+              ...Fonts.SemiBold14black,
+              overflow: 'hidden',
+              textAlign: isRtl ? 'right' : 'left',
+              marginVertical: Default.fixPadding * 0.3,
+            }}
+          >
+             {data.amount}
+          </Text>
+          
+        </View>
+
+       
+      </View>
+    </View>
+  
+            
+          </View>
+        </ScrollView>
+       
           
   
 
-<BottomSheet
-     visible={walletAddressBottomSheet}
-     onBackButtonPress={() => setWalletAddressBottomSheet(false)}
-     onBackdropPress={() => setWalletAddressBottomSheet(false)}
-    >
-      <View style={styles.bottomSheetMain}>
-        <View
-          style={{
-            paddingTop: Default.fixPadding * 1.5,
-            paddingBottom: Default.fixPadding * 2,
-            borderBottomWidth: 1,
-            borderBottomColor: Colors.lightGrey,
-          }}
-        >
-          <Text style={{ ...Fonts.Bold20black, textAlign: "center" }}>
-           Wallets
-          </Text>
-        </View>
 
-        <Text
-          style={{
-            ...Fonts.SemiBold16black,
-            textAlign: "center",
-            marginTop: Default.fixPadding * 3,
-            marginBottom: Default.fixPadding * 2,
-          }}
-        >
-          Choose wallet
-        </Text>
-        <View
-          style={{
-            justifyContent: "center",
-            height: height / 3.1,
-          }}
-        >
-          <WheelPicker
-            selectedIndex={selectedIndex}
-            options={stepsList}
-            visibleRest={5}
-            itemHeight={50}
-            decelerationRate="fast"
-            itemTextStyle={{ ...Fonts.Bold25black }}
-            onChange={(index) => {
-                setSelectedIndex(index);
-              }}
-              
-            containerStyle={{
-              marginHorizontal: Default.fixPadding * 2,
-            }}
-            selectedIndicatorStyle={{
-              borderRadius: 10,
-              backgroundColor: Colors.regularGrey,
-            }}
-          />
-        </View>
-
-        <View
-          style={{
-            margin: Default.fixPadding * 2,
-          }}
-        >
-          <AwesomeButton
-            height={50}
-            onPress={() => {
-                setWalletAddressBottomSheet(false);
-                setWallet(stepsList[selectedIndex]);
-
-              }}
-            raiseLevel={1}
-            stretch={true}
-            borderRadius={10}
-            backgroundShadow={Colors.primary}
-            backgroundDarker={Colors.primary}
-            backgroundColor={Colors.primary}
-          >
-            <Text style={{ ...Fonts.ExtraBold18white }}>{tr("save")}</Text>
-          </AwesomeButton>
-        </View>
-        <TouchableOpacity
-           onPress={() => setWalletAddressBottomSheet(false)}
-          style={{
-            alignSelf: "center",
-            marginBottom: Default.fixPadding * 2,
-          }}
-        >
-          <Text style={{ ...Fonts.Bold16black }}>{tr("cancel")}</Text>
-        </TouchableOpacity>
-      </View>
-    </BottomSheet>
-  
-        <BottomSheet
-          visible={amountBottomSheet}
-          onBackButtonPress={() => setAmountBottomSheet(false)}
-          onBackdropPress={() => setAmountBottomSheet(false)}
-        >
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : null}
-            style={styles.bottomSheetMain}
-          >
-            <Text
-              style={{
-                ...Fonts.Bold18black,
-                textAlign: "center",
-                marginBottom: Default.fixPadding * 4,
-              }}
-            >
-            Change Amount(Minimum $25)
-            </Text>
-  
-            <View style={styles.textInputStyle}>
-              <TextInput
-                maxLength={10}
-                value={amount}
-                onChangeText={setAmount}
-                keyboardType={"amount-pad"}
-                selectionColor={Colors.primary}
-                placeholder={tr("enterAmount")}
-                placeholderTextColor={Colors.grey}
-                style={{
-                  ...Fonts.SemiBold15black,
-                  textAlign: isRtl ? "right" : "left",
-                }}
-              />
-            </View>
-  
-            <View
-              style={{
-                marginBottom: Default.fixPadding * 2,
-                marginTop: Default.fixPadding * 1.5,
-              }}
-            >
-              <AwesomeButton
-                height={50}
-                onPress={() => {
-                  setAmountBottomSheet(false);
-                  if(amount>=25){
-                  setConfirmAmount(amount);
-                  }else{
-                    Alert.alert("Error", "Minimum Deposit is $25");
-                  }
-                }}
-                raiseLevel={1}
-                stretch={true}
-                borderRadius={10}
-                backgroundShadow={Colors.primary}
-                backgroundDarker={Colors.primary}
-                backgroundColor={Colors.primary}
-              >
-                <Text style={{ ...Fonts.ExtraBold18white }}>{tr("save")}</Text>
-              </AwesomeButton>
-            </View>
-            <TouchableOpacity
-              onPress={() => setAmountBottomSheet(false)}
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                marginBottom: Default.fixPadding,
-              }}
-            >
-              <Text style={{ ...Fonts.Bold16black }}>{tr("cancel")}</Text>
-            </TouchableOpacity>
-          </KeyboardAvoidingView>
-        </BottomSheet>
   
       
       </View>

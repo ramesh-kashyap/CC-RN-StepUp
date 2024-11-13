@@ -53,10 +53,10 @@ import {
         try {
           // Make the API call
           const response = await Api.post('/confirmDeposit', { Sum: amount, PSys: wallet });
-      
+       
           if (response.data.success) {
            
-      
+           navigation.push("deposit/confirmDeposit");
 
           } else {
             Alert.alert("Error", response.data.error);
