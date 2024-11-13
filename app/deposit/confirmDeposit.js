@@ -138,7 +138,7 @@ import {
               marginHorizontal: Default.fixPadding * 1.8,
             }}
           >
-           Deposit
+           Confirm Deposit
           </Text>
         </View>
   
@@ -191,7 +191,7 @@ import {
         <MaterialCommunityIcons
   name="content-copy"  // The copy-to-clipboard icon
   size={20}  // Set the icon size
-  color="black"  // Set the icon color, adjust as needed
+  color="#01875F"  // Set the icon color, adjust as needed
   style={{
     marginLeft: 'auto', // Ensures the icon is aligned to the right
     paddingRight: Default.fixPadding,

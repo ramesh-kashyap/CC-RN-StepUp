@@ -93,12 +93,12 @@ const HomeScreen = () => {
     
       if (response.data.success) {
         // Handle the successful response here
-        // console.log(response.data.data);
+        console.log(response.data.data);
 
         setUserInfo(response.data.data);
 
         if(response.data.data){
-          const todaySteps = Number(response.data.data.todaysteps);
+          const todaySteps = Number(response.data.data.todaySteps);
 
            setStepCount(todaySteps);
            setStoredCount(todaySteps);
@@ -271,7 +271,7 @@ useEffect(() => {
             }}
           >
             <Text numberOfLines={1} style={{ ...Fonts.Bold16white }}>
-             {}
+              {userInfo.userName}
             </Text>
             <View
               style={{
@@ -304,7 +304,7 @@ useEffect(() => {
           onPress={() => navigation.push("notification/notificationScreen")}
         >
           <Ionicons
-            name="notifications-outline"
+            name="document-text-outline"
             size={24}
             color={Colors.white}
           />

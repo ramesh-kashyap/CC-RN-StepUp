@@ -160,7 +160,7 @@ const NotificationScreen = () => {
             marginHorizontal: Default.fixPadding * 1.8,
           }}
         >
-          {tr("notification")}
+          Income Record
         </Text>
       </View>
 
