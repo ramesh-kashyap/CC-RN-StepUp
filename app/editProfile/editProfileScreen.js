@@ -20,9 +20,15 @@ import { BottomSheet } from "react-native-btr";
 import * as ImagePicker from "expo-image-picker";
 import AwesomeButton from "react-native-really-awesome-button";
 import { useNavigation } from "expo-router";
+import { useRouter } from 'expo-router';  // Make sure to import useRouter
+import * as FileSystem from 'expo-file-system';
+
 
 const EditProfileScreen = () => {
   const navigation = useNavigation();
+
+  const router = useRouter();
+
 
   const { t, i18n } = useTranslation();
 
@@ -32,14 +38,17 @@ const EditProfileScreen = () => {
     return t(`editProfileScreen:${key}`);
   }
 
-  const [name, setName] = useState("Sahil");
-  const [confirmName, setConfirmName] = useState("Guy hawkins");
+  const [name, setName] = useState("");
+  const [confirmName, setConfirmName] = useState("");
 
-  const [email, setEmail] = useState("guyhawkins@mail.com");
-  const [confirmEmail, setConfirmEmail] = useState("guyhawkins@mail.com");
+  const [email, setEmail] = useState("");
+  const [confirmEmail, setConfirmEmail] = useState("");
 
-  const [number, setNumber] = useState("1234567890");
-  const [confirmNumber, setConfirmNumber] = useState("1234567890");
+  const [bep, setBep] = useState("");
+  const [confirmBep, setConfirmBep] = useState("");
+
+  const [trc, setTrc] = useState("");
+  const [confirmTrc, setConfirmTrc] = useState("");
 
   const [changeImageBottomSheet, setChangeImageBottomSheet] = useState(false);
   const toggleCloseChangeImage = () => {
@@ -52,8 +61,33 @@ const EditProfileScreen = () => {
   const [removeImageToast, setRemoveImageToast] = useState(false);
   const onDismissRemoveImage = () => setRemoveImageToast(false);
 
+  const handleUpdate = () => {
+    // Use router.push to navigate to 'auth/otpProfile' with parameters
+    console.log({ bep, trc, name, email, pickedImage });
+
+    router.push({
+      pathname: 'auth/otpProfile',
+      params: { bep, trc, name, email, pickedImage },
+    });
+  };
+
+  const saveImageToFileSystem = async (uri) => {
+    try {
+      // Define a path in the file system for the saved image
+      const newUri = `${FileSystem.documentDirectory}picked_image.jpg`;
+      // Save the image file to the new path
+      await FileSystem.copyAsync({ from: uri, to: newUri });
+      console.log('Image saved to:', newUri);
+      setPickedImage(newUri); // Update state with saved file path
+    } catch (error) {
+      console.error('Error saving image:', error);
+      Alert.alert('Error', 'Failed to save the image.');
+    }
+  };
+
+
   const galleryHandler = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
@@ -61,8 +95,9 @@ const EditProfileScreen = () => {
     });
 
     if (!result.canceled) {
-      setPickedImage(result.assets[0].uri);
-      toggleCloseChangeImage();
+      const uri = result.assets[0].uri;
+      console.log('Picked image URI:', uri);
+      await saveImageToFileSystem(uri); // Save and update picked image
     }
   };
 
@@ -72,21 +107,23 @@ const EditProfileScreen = () => {
   const cameraHandler = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
-    if (permissionResult.granted === false) {
+    if (!permissionResult.granted) {
       setCameraNotGranted(true);
       return;
     }
     const result = await ImagePicker.launchCameraAsync();
 
     if (!result.canceled) {
-      setPickedImage(result.assets[0].uri);
-      toggleCloseChangeImage();
+      const uri = result.assets[0].uri;
+      await saveImageToFileSystem(uri); // Save and update picked image
     }
   };
 
   const [userNameBottomSheet, setUserNameBottomSheet] = useState(false);
   const [emailAddressBottomSheet, setEmailAddressBottomSheet] = useState(false);
-  const [mobileNumberBottomSheet, setMobileNumberBottomSheet] = useState(false);
+  const [mobileBepBottomSheet, setMobileBepBottomSheet] = useState(false);
+  const [mobileTrcBottomSheet, setMobileTrcBottomSheet] = useState(false);
+
   return (
     <View style={{ flex: 1, backgroundColor: Colors.extraLightGrey }}>
       <MyStatusBar />
@@ -186,7 +223,7 @@ const EditProfileScreen = () => {
               ...Fonts.SemiBold16black,
             }}
           >
-            {tr("name")}
+           Name
           </Text>
           <TouchableOpacity
             onPress={() => {
@@ -252,12 +289,12 @@ const EditProfileScreen = () => {
               ...Fonts.SemiBold16black,
             }}
           >
-            {tr("mobile")}
+            USDT BEP20
           </Text>
           <TouchableOpacity
             onPress={() => {
-              setNumber(confirmNumber);
-              setMobileNumberBottomSheet(true);
+              setBep(confirmBep);
+              setMobileBepBottomSheet(true);
             }}
             style={{
               alignItems: isRtl ? "flex-end" : "flex-start",
@@ -266,18 +303,52 @@ const EditProfileScreen = () => {
           >
             <Text
               style={{
-                ...(!confirmNumber && !number
+                ...(!confirmBep && !bep
                   ? Fonts.SemiBold15grey
                   : Fonts.SemiBold15black),
               }}
             >
-              {confirmNumber
-                ? confirmNumber
-                : !number
-                ? tr("enterMobile")
-                : "1234567890"}
+              {confirmBep
+                ? confirmBep
+                : !bep
+                ? "Enter your USDT BEP20"
+                : ""}
             </Text>
           </TouchableOpacity>
+
+          <Text
+            style={{
+              textAlign: isRtl ? "right" : "left",
+              ...Fonts.SemiBold16black,
+            }}
+          >
+            USDT TRC20
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              setTrc(confirmTrc);
+              setMobileTrcBottomSheet(true);
+            }}
+            style={{
+              alignItems: isRtl ? "flex-end" : "flex-start",
+              ...styles.touchableOpacityStyle,
+            }}
+          >
+            <Text
+              style={{
+                ...(!confirmTrc && !trc
+                  ? Fonts.SemiBold15grey
+                  : Fonts.SemiBold15black),
+              }}
+            >
+              {confirmTrc
+                ? confirmTrc
+                : !trc
+                ? "Enter your USDT TRC20"
+                : ""}
+            </Text>
+          </TouchableOpacity>
+
         </View>
       </ScrollView>
       <View
@@ -286,15 +357,9 @@ const EditProfileScreen = () => {
         }}
       >
         <AwesomeButton
-          progress
+         
           height={50}
-          progressLoadingTime={1000}
-          onPress={(next) => {
-            setTimeout(() => {
-              next();
-              navigation.pop();
-            }, 1000);
-          }}
+          onPress={handleUpdate}
           raiseLevel={1}
           stretch={true}
           borderRadius={10}
@@ -342,7 +407,7 @@ const EditProfileScreen = () => {
                 <Ionicons name="camera" size={24} color={Colors.blue} />
               </View>
               <Text
-                numberOfLines={1}
+                bepOfLines={1}
                 style={{
                   ...Fonts.SemiBold16black,
                   marginTop: Default.fixPadding,
@@ -366,7 +431,7 @@ const EditProfileScreen = () => {
                 <Ionicons name="image" size={24} color={Colors.green} />
               </View>
               <Text
-                numberOfLines={1}
+                bepOfLines={1}
                 style={{
                   ...Fonts.SemiBold16black,
                   marginTop: Default.fixPadding,
@@ -393,7 +458,7 @@ const EditProfileScreen = () => {
                 <Ionicons name="trash" size={24} color={Colors.lightRed} />
               </View>
               <Text
-                numberOfLines={1}
+                bepOfLines={1}
                 style={{
                   ...Fonts.SemiBold16black,
                   marginTop: Default.fixPadding,
@@ -551,9 +616,9 @@ const EditProfileScreen = () => {
       </BottomSheet>
 
       <BottomSheet
-        visible={mobileNumberBottomSheet}
-        onBackButtonPress={() => setMobileNumberBottomSheet(false)}
-        onBackdropPress={() => setMobileNumberBottomSheet(false)}
+        visible={mobileBepBottomSheet}
+        onBackButtonPress={() => setMobileBepBottomSheet(false)}
+        onBackdropPress={() => setMobileBepBottomSheet(false)}
       >
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : null}
@@ -566,17 +631,16 @@ const EditProfileScreen = () => {
               marginBottom: Default.fixPadding * 4,
             }}
           >
-            {tr("changeMobileNumber")}
+            Change USDT BEP20
           </Text>
 
           <View style={styles.textInputStyle}>
             <TextInput
-              maxLength={10}
-              value={number}
-              onChangeText={setNumber}
-              keyboardType={"number-pad"}
+              value={bep}
+              onChangeText={setBep}
+              keyboardType={"bep-pad"}
               selectionColor={Colors.primary}
-              placeholder={tr("enterMobile")}
+              placeholder="Enter your USDT BEP20"
               placeholderTextColor={Colors.grey}
               style={{
                 ...Fonts.SemiBold15black,
@@ -594,8 +658,8 @@ const EditProfileScreen = () => {
             <AwesomeButton
               height={50}
               onPress={() => {
-                setMobileNumberBottomSheet(false);
-                setConfirmNumber(number);
+                setMobileBepBottomSheet(false);
+                setConfirmBep(bep);
               }}
               raiseLevel={1}
               stretch={true}
@@ -608,7 +672,76 @@ const EditProfileScreen = () => {
             </AwesomeButton>
           </View>
           <TouchableOpacity
-            onPress={() => setMobileNumberBottomSheet(false)}
+            onPress={() => setMobileBepBottomSheet(false)}
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: Default.fixPadding,
+            }}
+          >
+            <Text style={{ ...Fonts.Bold16black }}>{tr("cancel")}</Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+      </BottomSheet>
+
+      <BottomSheet
+        visible={mobileTrcBottomSheet}
+        onBackButtonPress={() => setMobileTrcBottomSheet(false)}
+        onBackdropPress={() => setMobileTrcBottomSheet(false)}
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : null}
+          style={styles.bottomSheetMain}
+        >
+          <Text
+            style={{
+              ...Fonts.Bold18black,
+              textAlign: "center",
+              marginBottom: Default.fixPadding * 4,
+            }}
+          >
+            Change USDT TRC20
+          </Text>
+
+          <View style={styles.textInputStyle}>
+            <TextInput
+              value={trc}
+              onChangeText={setTrc}
+              keyboardType={"bep-pad"}
+              selectionColor={Colors.primary}
+              placeholder="Enter your USDT TRC20"
+              placeholderTextColor={Colors.grey}
+              style={{
+                ...Fonts.SemiBold15black,
+                textAlign: isRtl ? "right" : "left",
+              }}
+            />
+          </View>
+
+          <View
+            style={{
+              marginBottom: Default.fixPadding * 2,
+              marginTop: Default.fixPadding * 1.5,
+            }}
+          >
+            <AwesomeButton
+              height={50}
+              onPress={() => {
+                setMobileTrcBottomSheet(false);
+                setConfirmTrc(trc);
+              }}
+              raiseLevel={1}
+              stretch={true}
+              borderRadius={10}
+              backgroundShadow={Colors.primary}
+              backgroundDarker={Colors.primary}
+              backgroundColor={Colors.primary}
+            >
+              <Text style={{ ...Fonts.ExtraBold18white }}>{tr("save")}</Text>
+            </AwesomeButton>
+          </View>
+          <TouchableOpacity
+            onPress={() => setMobileTrcBottomSheet(false)}
             style={{
               justifyContent: "center",
               alignItems: "center",

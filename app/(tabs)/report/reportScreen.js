@@ -163,7 +163,7 @@ const HistoryScreen = () => {
                 marginTop: Default.fixPadding,
               }}
             >
-              {item.step*0.04}
+              {(item.step*0.04).toFixed(2)}
               </Text>
             <Text
               numberOfLines={1}
@@ -195,7 +195,7 @@ const HistoryScreen = () => {
                 marginTop: Default.fixPadding,
               }}
             >
-              {item.step*0.01} s
+              {(item.step*0.01).toFixed(2)} s
               </Text>
             <Text
               numberOfLines={1}
@@ -441,7 +441,7 @@ const HistoryScreen = () => {
                       marginTop: Default.fixPadding,
                     }}
                   >
-                                       {total*0.04}
+                                       {(total*0.04).toFixed(2)}
 
                   </Text>
                   <Text
@@ -474,7 +474,7 @@ const HistoryScreen = () => {
                       marginTop: Default.fixPadding,
                     }}
                   >
-                       {total*0.01} s
+                       {(total*0.01).toFixed(2)} s
 
                   </Text>
                   <Text

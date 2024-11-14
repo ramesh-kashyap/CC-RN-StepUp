@@ -4,11 +4,15 @@ import { withTranslation } from "react-i18next";
 import { LogBox } from "react-native";
 import { Stack } from "expo-router";
 import i18n from "../languages/index"; //don't remove this line
+import { ImageProvider } from "../components/ImageContext"; // Make sure this path is correct
+
 
 LogBox.ignoreAllLogs();
 
 const MainNavigation = () => {
   return (
+    <ImageProvider>
+
     <Stack
       screenOptions={{ headerShown: false, animation: "slide_from_right" }}
     >
@@ -44,6 +48,9 @@ const MainNavigation = () => {
       <Stack.Screen name="giveRate/giveRateScreen" />
       <Stack.Screen name="history/historyScreen" />
     </Stack>
+
+    </ImageProvider>
+
   );
 };
 
@@ -65,5 +72,8 @@ export default function Layout() {
     return null;
   }
 
-  return <ReloadAppOnLanguageChange />;
+  return (
+    
+      <ReloadAppOnLanguageChange />
+  );
 }
