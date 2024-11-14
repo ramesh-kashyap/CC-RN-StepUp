@@ -24,6 +24,7 @@ const AwardsScreen = () => {
   const isRtl = i18n.dir() == "rtl";
 
   const [data, setData] = useState([]);
+  const [profileData, setProfileData] = useState([]);
   const [openHeightBottomSheet, setOpenHeightBottomSheet] = useState(false);
 
 
@@ -54,11 +55,35 @@ const AwardsScreen = () => {
     }
   };
 
+  const fetchProfileData = async () => {
+    try {
+      const response = await Api.get('/userInfo'); // Replace with your actual GET endpoint
+
+    
+      if (response.data.success) {
+        // Handle the successful response here
+        console.log(response.data.data);
+        setProfileData(response.data.data);        
+
+      } else {
+        Alert.alert("Error", response.data.errors);
+      }
+    } catch (error) {
+      console.log("Error details:", error);
+      if (error.response) {
+        Alert.alert("Error", error.response.data.errors);
+      } else {
+        Alert.alert("Error", "An error occurred. Please try again.");
+      }
+    }
+  };
+
+
 
   useEffect(() => {
 
     fetchData(); // Call fetchData when component mounts
-
+    fetchProfileData();
   }, []); 
  
 
@@ -179,7 +204,7 @@ const AwardsScreen = () => {
             My Assets
           </Text>
           <Text style={{ ...Fonts.SemiBold20black, textAlign: "center" }}>
-           $200
+          ${profileData.availableBalance}
           </Text>
         </View>
         <View
@@ -206,13 +231,13 @@ const AwardsScreen = () => {
                 marginTop: Default.fixPadding,
               }}
             >
-              $100
+              ${profileData.totalInvestSum}
             </Text>
             <Text
               numberOfLines={1}
               style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
             >
-             Total Balance
+             Total Investment
             </Text>
           </View>
 
@@ -235,13 +260,13 @@ const AwardsScreen = () => {
                 marginTop: Default.fixPadding,
               }}
             >
-             $30
+            ${profileData.totalWithdrawalSum}
             </Text>
             <Text
               numberOfLines={1}
               style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
             >
-              Active Balance
+              Total Withdraw
             </Text>
           </View>
         </View>
