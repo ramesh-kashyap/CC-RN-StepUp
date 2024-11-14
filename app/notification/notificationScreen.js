@@ -184,7 +184,7 @@ const NotificationScreen = () => {
               marginTop: Default.fixPadding,
             }}
           >
-            {tr("noNotification")}
+            No data to show.
           </Text>
         </View>
       ) : (
