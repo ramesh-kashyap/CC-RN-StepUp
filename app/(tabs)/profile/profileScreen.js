@@ -21,11 +21,16 @@ import HeightBottomSheet from "../../../components/heightBottomSheet";
 import StepGoalBottomSheet from "../../../components/stepGoalBottomSheet";
 import LogoutModal from "../../../components/logoutModal";
 import { useNavigation } from "expo-router";
+import { useImage } from "../../../components/ImageContext"; // import the hook
+
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
 
   const { t, i18n } = useTranslation();
+
+  const { pickedImage } = useImage();
+
 
   const isRtl = i18n.dir() == "rtl";
 
@@ -87,7 +92,7 @@ const ProfileScreen = () => {
             }}
           >
             <Image
-              source={require("../../../assets/images/profile.png")}
+              source={{ uri: pickedImage }}
               style={{
                 width: 52,
                 height: 52,

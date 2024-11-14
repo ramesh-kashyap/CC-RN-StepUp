@@ -90,7 +90,8 @@ const HomeScreen = () => {
     try {
       const response = await Api.get('/userInfo'); // Replace with your actual GET endpoint
 
-    
+      console.log(response.data);
+
       if (response.data.success) {
         // Handle the successful response here
         console.log(response.data.data);
@@ -403,7 +404,7 @@ useEffect(() => {
                 marginTop: Default.fixPadding,
               }}
             >
-              {stepCount*0.04}
+              {(stepCount*0.04).toFixed(2)}
             </Text>
             <Text
               numberOfLines={1}
@@ -436,7 +437,7 @@ useEffect(() => {
                 marginTop: Default.fixPadding,
               }}
             >
-                           {stepCount*0.01} s
+                           {(stepCount*0.01).toFixed(2)} s
             </Text>
             <Text
               numberOfLines={1}

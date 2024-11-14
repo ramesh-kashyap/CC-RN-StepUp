@@ -22,7 +22,8 @@ import {
   import { useNavigation } from "expo-router";
   import { DataTable } from 'react-native-paper';
   import Api from '../../services/Api.js'; // Adjust path if necessary
-  import HeightBottomSheet from "../../components/heightBottomSheet";
+  import { BottomSheet } from "react-native-btr";
+  import WheelPicker from "react-native-wheely";
 
 
   
@@ -35,6 +36,12 @@ import {
 
     const [data, setData] = useState([]);
     const [teamCount, setTeamCount] = useState([]);
+
+    const teamLevelList = ["01", "02", "03", "04", "05", "06", "07", "08","09", "10","11","12","13","14","15","16","17","18","19","20"];
+
+  const [level, setLevel] = useState(teamLevelList[1]);
+
+  const [selectedIndex, setSelectedIndex] = useState(1);
 
 
     const renderItem = ({ item, level }) => (
@@ -58,6 +65,9 @@ import {
     const [AllDelete, setAllDelete] = useState(false);
   
     const [openDateModal, setOpenDateModal] = useState(false);
+
+    const [levelAddressBottomSheet, setLevelAddressBottomSheet] = useState(false);
+
   
     const today = moment().format("YYYY-MM-DD");
 
@@ -233,7 +243,7 @@ import {
                     }}
                   >
                     <MaterialCommunityIcons
-                      name="calendar-range"
+                      name="account-group"
                       size={20}
                       Colors={Colors.black}
                     />
@@ -250,7 +260,7 @@ import {
                   </View>
   
                   <TouchableOpacity
-                    onPress={() => setOpenDateModal(true)}
+                    onPress={() => setLevelAddressBottomSheet(true)}
                     style={{
                       flex: 1,
                       alignItems: isRtl ? "flex-start" : "flex-end",
@@ -426,6 +436,102 @@ import {
             )}
           />
         )}
+
+<BottomSheet
+     visible={levelAddressBottomSheet}
+     onBackButtonPress={() => setLevelAddressBottomSheet(false)}
+     onBackdropPress={() => setLevelAddressBottomSheet(false)}
+     
+    >
+      <View style={{
+      padding: Default.fixPadding * 2,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      backgroundColor: Colors.white,
+    }}>
+        <View
+          style={{
+            paddingTop: Default.fixPadding * 1.5,
+            paddingBottom: Default.fixPadding * 2,
+            borderBottomWidth: 1,
+            borderBottomColor: Colors.lightGrey,
+          }}
+        >
+          <Text style={{ ...Fonts.Bold20black, textAlign: "center" }}>
+           Team Level
+          </Text>
+        </View>
+
+        <Text
+          style={{
+            ...Fonts.SemiBold16black,
+            textAlign: "center",
+            marginTop: Default.fixPadding * 3,
+            marginBottom: Default.fixPadding * 2,
+          }}
+        >
+          Choose Level
+        </Text>
+        <View
+          style={{
+            justifyContent: "center",
+            height: height / 3.1,
+          }}
+        >
+          <WheelPicker
+            selectedIndex={selectedIndex}
+            options={teamLevelList}
+            visibleRest={5}
+            itemHeight={50}
+            decelerationRate="fast"
+            itemTextStyle={{ ...Fonts.Bold25black }}
+            onChange={(index) => {
+                setSelectedIndex(index);
+              }}
+              
+            containerStyle={{
+              marginHorizontal: Default.fixPadding * 2,
+            }}
+            selectedIndicatorStyle={{
+              borderRadius: 10,
+              backgroundColor: Colors.regularGrey,
+            }}
+          />
+        </View>
+
+        <View
+          style={{
+            margin: Default.fixPadding * 2,
+          }}
+        >
+          <AwesomeButton
+            height={50}
+            onPress={() => {
+                setLevelAddressBottomSheet(false);
+                setLevel(teamLevelList[selectedIndex]);
+
+              }}
+            raiseLevel={1}
+            stretch={true}
+            borderRadius={10}
+            backgroundShadow={Colors.primary}
+            backgroundDarker={Colors.primary}
+            backgroundColor={Colors.primary}
+          >
+            <Text style={{ ...Fonts.ExtraBold18white }}>{tr("save")}</Text>
+          </AwesomeButton>
+        </View>
+        <TouchableOpacity
+           onPress={() => setLevelAddressBottomSheet(false)}
+          style={{
+            alignSelf: "center",
+            marginBottom: Default.fixPadding * 2,
+          }}
+        >
+          <Text style={{ ...Fonts.Bold16black }}>{tr("cancel")}</Text>
+        </TouchableOpacity>
+      </View>
+    </BottomSheet>
   
         <Modal
           transparent={true}
@@ -548,7 +654,7 @@ import {
             activeOpacity={1}
             onPressOut={() => setOpenDateModal(false)}
             style={{ flex: 1 }}
-          >
+          > 
             <View
               style={{
                 flex: 1,

@@ -16,9 +16,13 @@ import AwesomeButton from "react-native-really-awesome-button";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "expo-router";
 import Api from '../../services/Api.js'; // Adjust path if necessary
+import { useRouter } from 'expo-router';
+
 
 
 const { width } = Dimensions.get("window");
+
+
 
 const RegisterScreen = () => {
   const navigation = useNavigation();
@@ -31,7 +35,8 @@ const RegisterScreen = () => {
     return t(`registerScreen:${key}`);
   }
 
-  
+  const router = useRouter();
+
   const [number, setNumber] = useState();
   const [password, setPassword] = useState();
   const [confirmpassword, setConfirmPassword] = useState();
@@ -61,14 +66,13 @@ const RegisterScreen = () => {
       const response = await Api.post('/sendCodephone', { number });
   
       // Log the response for debugging
-      console.log(response);
+      // console.log(response);
   
       // Handle success response
       if (response.data.success) {
-        navigation.push("auth/otpScreen", {
-          number,
-          password,
-          referral,
+        router.push({
+          pathname: 'auth/otpScreen',
+          params: { number, password, referral }
         });
       } else {
         // If the API call was not successful, show error message
