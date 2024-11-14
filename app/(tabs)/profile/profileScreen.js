@@ -59,6 +59,9 @@ const ProfileScreen = () => {
 
   const [openLogoutModal, setOpenLogoutModal] = useState(false);
 
+  console.log("Picked Image URI:", pickedImage);
+
+
   return (
     <View style={{ flex: 1, backgroundColor: Colors.extraLightGrey }}>
       <MyStatusBar />
