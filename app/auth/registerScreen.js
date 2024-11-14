@@ -7,7 +7,7 @@ import {
   Image,
   ScrollView,
   Dimensions,
-  TextInput,
+  TextInput,Alert
 } from "react-native";
 import { Colors, Fonts, Default } from "../../constants/styles";
 import { useTranslation } from "react-i18next";
@@ -15,6 +15,8 @@ import MyStatusBar from "../../components/myStatusBar";
 import AwesomeButton from "react-native-really-awesome-button";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "expo-router";
+import Api from '../../services/Api.js'; // Adjust path if necessary
+
 
 const { width } = Dimensions.get("window");
 
@@ -34,6 +36,53 @@ const RegisterScreen = () => {
   const [password, setPassword] = useState();
   const [confirmpassword, setConfirmPassword] = useState();
   const [referral, setReferral] = useState();
+
+  const handleRegister = async () => {
+    try {
+      // Check if all fields are filled
+      if (!number || !password || !confirmpassword || !referral) {
+        Alert.alert("Error", "Please fill out all fields.");
+        return;
+      }
+  
+      // Check if the mobile number is exactly 10 digits
+      if (number.length !== 10) {
+        Alert.alert("Error", "Mobile number must be 10 digits.");
+        return;
+      }
+  
+      // Check if password and confirm password match
+      if (password !== confirmpassword) {
+        Alert.alert("Error", "Passwords do not match.");
+        return;
+      }
+  
+      // Make API request to send OTP
+      const response = await Api.post('/sendCodephone', { number });
+  
+      // Log the response for debugging
+      console.log(response);
+  
+      // Handle success response
+      if (response.data.success) {
+        navigation.push("auth/otpScreen", {
+          number,
+          password,
+          referral,
+        });
+      } else {
+        // If the API call was not successful, show error message
+        Alert.alert("Error", response.data.message || "Failed to send OTP.");
+        console.log(response.data);
+      }
+    } catch (error) {
+      // Handle any network or unexpected errors
+      console.log("Error:", error);
+      Alert.alert("Error", "An error occurred while sending OTP. Please try again.");
+    }
+  };
+  
+  
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.white }}>
@@ -175,6 +224,7 @@ const RegisterScreen = () => {
                 value={password}
                 onChangeText={setPassword}
                 placeholder="Enter Your Password"
+                keyboardType="number-pad"
                 placeholderTextColor={Colors.grey}
                 selectionColor={Colors.primary}
                 secureTextEntry={true}
@@ -205,10 +255,11 @@ const RegisterScreen = () => {
               <TextInput
                 value={confirmpassword}
                 onChangeText={setConfirmPassword}
-                keyboardType="email-address"
+               
                 placeholder="Enter Your Confirm Password"
                 placeholderTextColor={Colors.grey}
                 selectionColor={Colors.primary}
+                keyboardType="number-pad"
                 secureTextEntry={true}
                 style={{
                   ...Fonts.SemiBold16black,
@@ -257,15 +308,8 @@ const RegisterScreen = () => {
               }}
             >
               <AwesomeButton
-                progress
                 height={50}
-                progressLoadingTime={1000}
-                onPress={(next) => {
-                  setTimeout(() => {
-                    next();
-                    navigation.push("auth/otpScreen");
-                  }, 1000);
-                }}
+                onPress={handleRegister}
                 raiseLevel={1}
                 stretch={true}
                 borderRadius={10}
