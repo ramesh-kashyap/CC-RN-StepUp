@@ -35,6 +35,7 @@ import {
     }
     const [data, setData] = useState([]);
     const [walletAddress, setWalletAddress] = useState('');
+    const [number, setNumber] = useState('');
     const fetchData = async () => {
       try {
         const response = await Api.get('/userInfo'); // Replace with your actual GET endpoint
@@ -42,10 +43,10 @@ import {
       
         if (response.data.success) {
           // Handle the successful response here
-          // console.log(response.data.data.availableBalance);
+          console.log(response.data.data);
           setData(response.data.data);
-          setWalletAddress(response.data.data.walletAddress.bepAddress || ''); // Set bepAddress by default
-
+          setWalletAddress(response.data.data.walletAddress.bepAddress); // Set bepAddress by default
+          setNumber(response.data.data.phone)
   
         } else {
           Alert.alert("Error", response.data.errors);
@@ -60,6 +61,54 @@ import {
       }
     };
 
+   
+
+    const [amount, setAmount] = useState("100");
+    const handleWithdraw = async () => {
+      try {
+
+        if (  !amount) {
+          Alert.alert("Error", "Please fill out all fields.");
+          return;
+        }
+    
+        // Check if the mobile number is exactly 10 digits
+        if (!number || number.length !== 10) {
+          Alert.alert("Error", "Mobile number must be 10 digits.");
+          return;
+        }
+
+        
+        if (!walletAddress) {
+          Alert.alert("Error", "Please Go Profile Section Add Wallet Address");
+          return;
+        }
+    
+        // Make the API call
+        const response = await Api.post('/WithdrawRequest', { amount: amount, paymentMode: wallet, walletAddress: walletAddress });
+     
+        if (response.data.success) {
+         
+          Alert.alert("Error", response.data.message)
+
+        } else {
+          Alert.alert("Error", response.data.errors);
+        }
+      } catch (error) {
+        console.log("Error details:", error);
+    if (error.response) {
+      console.log("Error response data:", error.response.data);
+      Alert.alert("Error", error.response.data.errors || "An error occurred on the server.");
+    } else if (error.request) {
+      console.log("Error request:", error.request);
+      Alert.alert("Error", "No response from server. Please check your network.");
+    } else {
+      console.log("Error message:", error.message);
+      Alert.alert("Error", "An error occurred. Please try again.");
+    }
+      } 
+    };
+
     useEffect(() => {
 
       fetchData(); // Call fetchData when component mounts
@@ -71,14 +120,14 @@ import {
         "USDTBEP20",
       ];
   
-    const [wallet, setWallet] = useState(stepsList[1]);
+      const [wallet, setWallet] = useState(stepsList[1]);
 
     const [selectedIndex, setSelectedIndex] = useState(1);
 
    
-    const [number, setNumber] = useState();
+    
   
-    const [amount, setAmount] = useState("100");
+    
     const [confirmAmount, setConfirmAmount] = useState("100");
     const [selectedWalletType, setSelectedWalletType] = useState('USDTBEP20'); // 'TRC' or 'BEP'
    
@@ -325,7 +374,7 @@ import {
     alignSelf: isRtl ? "flex-end" : "flex-start",
   }}
 >
-  1234567890
+{data.phone}
 </Text>
 </View>
           </View>
@@ -343,6 +392,7 @@ import {
       backgroundShadow={Colors.primary}
       backgroundDarker={Colors.primary}
       backgroundColor={Colors.primary}
+      onPress={handleWithdraw}
       // Simply call handleDeposit without loading logic
     >
       <Text style={{ ...Fonts.ExtraBold18white }}>Withdrawl</Text>
