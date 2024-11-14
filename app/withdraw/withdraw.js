@@ -9,7 +9,7 @@ import {
     Platform,Alert,
     KeyboardAvoidingView,Dimensions
   } from "react-native";
-  import React, { useState } from "react";
+  import React, { useState, useEffect } from "react";
   import { useTranslation } from "react-i18next";
   import WheelPicker from "react-native-wheely";
   import Api from '../../services/Api.js'; // Adjust path if necessary
@@ -33,6 +33,38 @@ import {
     function tr(key) {
       return t(`deposit:${key}`);
     }
+    const [data, setData] = useState([]);
+    const [walletAddress, setWalletAddress] = useState('');
+    const fetchData = async () => {
+      try {
+        const response = await Api.get('/userInfo'); // Replace with your actual GET endpoint
+  
+      
+        if (response.data.success) {
+          // Handle the successful response here
+          // console.log(response.data.data.availableBalance);
+          setData(response.data.data);
+          setWalletAddress(response.data.data.walletAddress.bepAddress || ''); // Set bepAddress by default
+
+  
+        } else {
+          Alert.alert("Error", response.data.errors);
+        }
+      } catch (error) {
+        console.log("Error details:", error);
+        if (error.response) {
+          Alert.alert("Error", error.response.data.errors);
+        } else {
+          Alert.alert("Error", "An error occurred. Please try again.");
+        }
+      }
+    };
+
+    useEffect(() => {
+
+      fetchData(); // Call fetchData when component mounts
+  
+    }, []); 
   
     const stepsList = [
         "USDTTRC20",
@@ -48,7 +80,8 @@ import {
   
     const [amount, setAmount] = useState("100");
     const [confirmAmount, setConfirmAmount] = useState("100");
-  
+    const [selectedWalletType, setSelectedWalletType] = useState('USDTBEP20'); // 'TRC' or 'BEP'
+   
    
     
    
@@ -192,6 +225,7 @@ import {
             <Text
   style={{
     textAlign: isRtl ? "right" : "left",
+    
     ...Fonts.SemiBold16black,
   }}
 >
@@ -203,23 +237,27 @@ import {
                 alignItems: isRtl ? "flex-end" : "flex-start",
                 flexDirection: isRtl ? 'row-reverse' : 'row',
                 alignItems: 'center',
-                padding: Default.fixPadding,
+                padding: Default.fixPadding * 1,
+                marginTop: Default.fixPadding,
+                marginBottom: Default.fixPadding * 2.5,
                 marginHorizontal: Default.fixPadding * 0,
                 borderRadius: 10,
                 backgroundColor: Colors.white,
                 ...Default.shadow,
               }}
             >
-<Text
-  style={{
-    ...(number ? Fonts.SemiBold15black : Fonts.SemiBold15grey),
-   
-    marginVertical: 8,
-    alignSelf: isRtl ? "flex-end" : "flex-start",
-  }}
->
-  1234567890
-</Text>
+ <Text
+    style={{
+      ...(walletAddress ? Fonts.SemiBold15black : Fonts.SemiBold15grey),
+      marginVertical: 8,
+      alignSelf: isRtl ? "flex-end" : "flex-start",
+    }}
+  >
+    {selectedWalletType === 'USDTTRC20' && walletAddress !== null ? walletAddress : 
+     selectedWalletType === 'USDTBEP20' && walletAddress !== null ? walletAddress : 
+     'No Address Found'}
+  </Text>
+ 
 </View>
      
             <Text
@@ -270,7 +308,9 @@ import {
                 alignItems: isRtl ? "flex-end" : "flex-start",
                 flexDirection: isRtl ? 'row-reverse' : 'row',
                 alignItems: 'center',
-                padding: Default.fixPadding,
+                padding: Default.fixPadding * 1,
+                marginTop: Default.fixPadding,
+                marginBottom: Default.fixPadding * 2.5,
                 marginHorizontal: Default.fixPadding * 0,
                 borderRadius: 10,
                 backgroundColor: Colors.white,
@@ -375,9 +415,11 @@ import {
           <AwesomeButton
             height={50}
             onPress={() => {
-                setWalletAddressBottomSheet(false);
-                setWallet(stepsList[selectedIndex]);
-
+              const selectedWallet = stepsList[selectedIndex];
+          setWalletAddressBottomSheet(false);
+          setWallet(selectedWallet);
+          setSelectedWalletType(selectedWallet);
+          setWalletAddress(selectedWallet === 'USDTTRC20' ? data.walletAddress.bepAddress : data.walletAddress.trcAddress);
               }}
             raiseLevel={1}
             stretch={true}
