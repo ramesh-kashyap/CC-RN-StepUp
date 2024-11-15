@@ -38,15 +38,15 @@ import {
     const [userData, setUserData] = useState('');
     const [teamCount, setTeamCount] = useState([]);
 
-    const teamLevelList = ["01", "02", "03", "04", "05", "06", "07", "08","09", "10","11","12","13","14","15","16","17","18","19","20"];
+    const teamLevelList = ["All","1", "2", "3", "4", "5", "6", "7", "8","9", "10","11","12","13","14","15","16","17","18","19","20"];
 
-  const [level, setLevel] = useState(teamLevelList[1]);
+  const [level, setLevel] = useState(null);
 
-  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
 
     const renderItem = ({ item, level }) => (
-        <DataTable.Row style={{ backgroundColor: Colors.white }}>
+        <DataTable.Row>
           <DataTable.Cell style={styles.cell}>{item.username}</DataTable.Cell>
           <DataTable.Cell style={styles.cell}>{level}</DataTable.Cell>
           <DataTable.Cell style={styles.cell}>{item.active_status}</DataTable.Cell>
@@ -167,6 +167,10 @@ import {
       const year = date.getFullYear();
       return `${day}-${month}-${year}`;
     }
+
+    const filteredData = level
+    ? Object.entries(data).filter(([lvl]) => lvl === level) // Include only selected level
+    : Object.entries(data); 
   
   
     return (
@@ -275,7 +279,7 @@ import {
                         marginHorizontal: Default.fixPadding,
                       }}
                     >
-                      Select Team Level
+                       Team Level {teamLevelList[selectedIndex]}
                     </Text>
                   </View>
   
@@ -434,14 +438,23 @@ import {
         <DataTable.Title numeric style={styles.cell}><Text style={styles.title}>Joining Date</Text></DataTable.Title>
       </DataTable.Header>
 
-      {Object.entries(data).map(([level, userList], index) => (
-        <FlatList
-          key={index}
-          data={userList}
-          renderItem={({ item }) => renderItem({ item, level })}
-          keyExtractor={(item) => item.username}
-        />
-      ))}
+      {filteredData.length === 0 ? (
+        // Show "No data found" when filteredData is empty
+        <DataTable.Row>
+          <DataTable.Cell style={styles.cell} colSpan={5}>
+            No data found
+          </DataTable.Cell>
+        </DataTable.Row>
+      ) : (
+        filteredData.map(([level, userList], index) => (
+          <FlatList
+            key={index}
+            data={userList}
+            renderItem={({ item }) => renderItem({ item, level })}
+            keyExtractor={(item) => item.username}
+          />
+        ))
+      )}
         </DataTable>
       </ScrollView>
     </View>
@@ -526,7 +539,7 @@ import {
             height={50}
             onPress={() => {
                 setLevelAddressBottomSheet(false);
-                setLevel(teamLevelList[selectedIndex]);
+                setLevel(selectedIndex===0?null:teamLevelList[selectedIndex]);
 
               }}
             raiseLevel={1}

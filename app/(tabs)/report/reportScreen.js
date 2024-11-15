@@ -41,14 +41,12 @@ const HistoryScreen = () => {
 
   const [data, setData] = useState([]);
   const [total, setTotal] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
 
 
 
   const [openDateModal, setOpenDateModal] = useState(false);
 
   const today = moment().format("YYYY-MM-DD");
-
 
 
   const fetchData = async () => {
@@ -249,6 +247,24 @@ const HistoryScreen = () => {
 
   const [confirmDate, setConfirmDate] = useState(null);
 
+  
+  const filteredData = data.filter((item) => {
+    const itemDate = new Date(item.today); // Convert item.today to a Date object
+    const date = formatDate(itemDate); // Convert item.today to a Date object
+
+    if(!confirmDate){
+      return 1;
+    }
+
+    const startDate = confirmDate?.fromConfirmDate;
+    const endDate = confirmDate?.toConfirmDate;
+
+  
+    return date >= startDate && date <= endDate; // Check if itemDate falls within the range
+  });
+
+
+
   return (
     <View style={{ flex: 1, backgroundColor: Colors.extraLightGrey }}>
       <MyStatusBar />
@@ -312,7 +328,7 @@ const HistoryScreen = () => {
         </View>
       ) : (
         <FlatList
-          data={data}
+          data={filteredData}
           renderItem={renderItem}
           keyExtractor={(item) => item.key}
           showsVerticalScrollIndicator={false}
@@ -351,7 +367,7 @@ const HistoryScreen = () => {
                   >
                     {confirmDate
                       ? `${confirmDate.fromConfirmDate} to ${confirmDate.toConfirmDate}`
-                      : "11-06-2024 to 11-06-2024"}
+                      : "Select Date"}
                   </Text>
                 </View>
 
@@ -768,7 +784,6 @@ const HistoryScreen = () => {
                       <DateTimePicker
                         mode="range"
                         locale="en"
-                        minDate={today}
                         height={280}
                         startDate={fromDate}
                         endDate={toDate}
