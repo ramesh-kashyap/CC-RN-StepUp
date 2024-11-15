@@ -5,6 +5,12 @@ const ImageContext = createContext();
 export const ImageProvider = ({ children }) => {
   const [pickedImage, setPickedImage] = useState(null);
 
+  console.log('ImageProvider children:', children);
+
+  console.log('Picked Image:', pickedImage);
+
+
+
   return (
     <ImageContext.Provider value={{ pickedImage, setPickedImage }}>
       {children}
