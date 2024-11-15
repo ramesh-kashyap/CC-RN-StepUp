@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -22,7 +22,7 @@ import StepGoalBottomSheet from "../../../components/stepGoalBottomSheet";
 import LogoutModal from "../../../components/logoutModal";
 import { useNavigation } from "expo-router";
 import { useImage } from "../../../components/ImageContext"; // import the hook
-
+import Api from '../../../services/Api.js'; 
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -39,7 +39,36 @@ const ProfileScreen = () => {
   }
 
   const [genderBottomSheet, setGenderBottomSheet] = useState(false);
+  const [data, setData] = useState([]);
+  const fetchData = async () => {
+    try {
+      const response = await Api.get('/userInfo'); // Replace with your actual GET endpoint
 
+    
+      if (response.data.success) {
+        // Handle the successful response here
+        console.log(response.data.data);
+        setData(response.data.data);
+       
+
+      } else {
+        Alert.alert("Error", response.data.errors);
+      }
+    } catch (error) {
+      console.log("Error details:", error);
+      if (error.response) {
+        Alert.alert("Error", error.response.data.errors);
+      } else {
+        Alert.alert("Error", "An error occurred. Please try again.");
+      }
+    }
+  };
+
+  useEffect(() => {
+
+    fetchData(); // Call fetchData when component mounts
+
+  }, []); 
   const genderList = [
     {
       key: "1",
@@ -110,7 +139,8 @@ const ProfileScreen = () => {
               }}
             >
               <Text numberOfLines={1} style={{ ...Fonts.Bold16black }}>
-                Guy Hawkins
+             
+                {data.name}
               </Text>
               <Text
                 numberOfLines={1}
@@ -119,7 +149,7 @@ const ProfileScreen = () => {
                   marginTop: Default.fixPadding * 0.4,
                 }}
               >
-                +91 123456789
+                {data.phone}
               </Text>
             </View>
           </View>
@@ -147,65 +177,12 @@ const ProfileScreen = () => {
           </Text>
 
           <View style={styles.boxView}>
-            <View style={styles.borderLine}>
-              <TouchableOpacity
-                onPress={() => setGenderBottomSheet(true)}
-                style={{
-                  flexDirection: isRtl ? "row-reverse" : "row",
-                  alignItems: "center",
-                  paddingVertical: Default.fixPadding,
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="gender-male"
-                  size={20}
-                  color={Colors.primary}
-                />
-                <Text
-                  numberOfLines={1}
-                  style={{
-                    flex: 1,
-                    textAlign: isRtl ? "right" : "left",
-                    ...Fonts.SemiBold15black,
-                    marginHorizontal: Default.fixPadding,
-                  }}
-                >
-                  {tr("gender")}
-                </Text>
-              </TouchableOpacity>
-            </View>
+           
+            
 
             <View style={styles.borderLine}>
               <TouchableOpacity
-                onPress={() => setOpenWeightBottomSheet(true)}
-                style={{
-                  flexDirection: isRtl ? "row-reverse" : "row",
-                  alignItems: "center",
-                  paddingBottom: Default.fixPadding,
-                  paddingTop: Default.fixPadding * 1.4,
-                }}
-              >
-                <Image
-                  source={require("../../../assets/images/icon5.png")}
-                  style={{ width: 20, height: 20, resizeMode: "contain" }}
-                />
-                <Text
-                  numberOfLines={1}
-                  style={{
-                    flex: 1,
-                    textAlign: isRtl ? "right" : "left",
-                    ...Fonts.SemiBold15black,
-                    marginHorizontal: Default.fixPadding,
-                  }}
-                >
-                  {tr("weight")}
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.borderLine}>
-              <TouchableOpacity
-                onPress={() => setOpenHeightBottomSheet(true)}
+                 onPress={() => navigation.push("language/languageScreen")}
                 style={{
                   flexDirection: isRtl ? "row-reverse" : "row",
                   alignItems: "center",
@@ -223,72 +200,15 @@ const ProfileScreen = () => {
                     marginHorizontal: Default.fixPadding,
                   }}
                 >
-                  {tr("height")}
+                 {tr("language")}
                 </Text>
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity
-              onPress={() => navigation.push("language/languageScreen")}
-              style={{
-                flexDirection: isRtl ? "row-reverse" : "row",
-                alignItems: "center",
-                paddingBottom: Default.fixPadding,
-                paddingTop: Default.fixPadding * 1.4,
-              }}
-            >
-              <SimpleLineIcons name="globe" size={20} color={Colors.primary} />
-              <Text
-                numberOfLines={1}
-                style={{
-                  flex: 1,
-                  textAlign: isRtl ? "right" : "left",
-                  ...Fonts.SemiBold15black,
-                  marginHorizontal: Default.fixPadding,
-                }}
-              >
-                {tr("language")}
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <Text
-            style={{ textAlign: isRtl ? "right" : "left", ...Fonts.Bold16grey }}
-          >
-            {tr("steps")}
-          </Text>
-
-          <View style={styles.boxView}>
-            <View style={styles.borderLine}>
-              <TouchableOpacity
-                onPress={() => navigation.push("reminder/reminderScreen")}
-                style={{
-                  flexDirection: isRtl ? "row-reverse" : "row",
-                  alignItems: "center",
-                  paddingVertical: Default.fixPadding,
-                }}
-              >
-                <Image
-                  source={require("../../../assets/images/img1.png")}
-                  style={{ width: 20, height: 20, resizeMode: "contain" }}
-                />
-                <Text
-                  numberOfLines={1}
-                  style={{
-                    flex: 1,
-                    textAlign: isRtl ? "right" : "left",
-                    ...Fonts.SemiBold15black,
-                    marginHorizontal: Default.fixPadding,
-                  }}
-                >
-                  {tr("reminder")}
-                </Text>
-              </TouchableOpacity>
-            </View>
 
             <View style={styles.borderLine}>
               <TouchableOpacity
-                onPress={() => setOpenStepsGoalBottomSheet(true)}
+               onPress={() => navigation.push("editProfile/teamReport")}
                 style={{
                   flexDirection: isRtl ? "row-reverse" : "row",
                   alignItems: "center",
@@ -296,10 +216,10 @@ const ProfileScreen = () => {
                   paddingTop: Default.fixPadding * 1.4,
                 }}
               >
-                <Image
-                  source={require("../../../assets/images/img2.png")}
-                  style={{ width: 20, height: 20, resizeMode: "contain" }}
-                />
+                 <Image
+                source={require("../../../assets/images/img3.png")}
+                style={{ width: 20, height: 20, resizeMode: "contain" }}
+              />
                 <Text
                   numberOfLines={1}
                   style={{
@@ -309,45 +229,11 @@ const ProfileScreen = () => {
                     marginHorizontal: Default.fixPadding,
                   }}
                 >
-                  {tr("stepGoal")}
+                  Team Report
                 </Text>
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity
-              onPress={() => navigation.push("editProfile/teamReport")}
-              style={{
-                flexDirection: isRtl ? "row-reverse" : "row",
-                alignItems: "center",
-                paddingBottom: Default.fixPadding,
-                paddingTop: Default.fixPadding * 1.4,
-              }}
-            >
-              <Image
-                source={require("../../../assets/images/img3.png")}
-                style={{ width: 20, height: 20, resizeMode: "contain" }}
-              />
-              <Text
-                numberOfLines={1}
-                style={{
-                  flex: 1,
-                  textAlign: isRtl ? "right" : "left",
-                  ...Fonts.SemiBold15black,
-                  marginHorizontal: Default.fixPadding,
-                }}
-              >
-                Team Report
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <Text
-            style={{ textAlign: isRtl ? "right" : "left", ...Fonts.Bold16grey }}
-          >
-            {tr("other")}
-          </Text>
-
-          <View style={styles.boxView}>
             <View style={styles.borderLine}>
               <TouchableOpacity
                 onPress={() =>
@@ -408,34 +294,7 @@ const ProfileScreen = () => {
               </TouchableOpacity>
             </View>
 
-            <View style={styles.borderLine}>
-              <TouchableOpacity
-                onPress={() => navigation.push("giveRate/giveRateScreen")}
-                style={{
-                  flexDirection: isRtl ? "row-reverse" : "row",
-                  alignItems: "center",
-                  paddingBottom: Default.fixPadding,
-                  paddingTop: Default.fixPadding * 1.4,
-                }}
-              >
-                <MaterialCommunityIcons
-                  name="star-outline"
-                  size={22}
-                  color={Colors.primary}
-                />
-                <Text
-                  numberOfLines={1}
-                  style={{
-                    flex: 1,
-                    textAlign: isRtl ? "right" : "left",
-                    ...Fonts.SemiBold15black,
-                    marginHorizontal: Default.fixPadding,
-                  }}
-                >
-                  {tr("giveRate")}
-                </Text>
-              </TouchableOpacity>
-            </View>
+           
 
             <View style={styles.borderLine}>
               <TouchableOpacity
@@ -521,7 +380,17 @@ const ProfileScreen = () => {
                 {tr("logout")}
               </Text>
             </TouchableOpacity>
+
+          
           </View>
+
+       
+
+
+
+      
+
+          
         </View>
       </ScrollView>
 
