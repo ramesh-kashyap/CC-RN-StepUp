@@ -67,7 +67,7 @@ const EditProfileScreen = () => {
 
     router.push({
       pathname: 'auth/otpProfile',
-      params: { bep, trc, name, email, pickedImage },
+      params: { bep, trc, name, email },
     });
   };
 
