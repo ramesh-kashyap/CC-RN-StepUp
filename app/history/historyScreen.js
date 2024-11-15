@@ -359,7 +359,7 @@ const HistoryScreen = () => {
                   }}
                 >
                   <Image
-                    source={require("../../assets/images/img4.png")}
+                    source={require("../../assets/images/money.png")}
                     style={{ width: 25, height: 25, resizeMode: "contain" }}
                   />
                   <Text
@@ -450,7 +450,7 @@ const HistoryScreen = () => {
                   }}
                 >
                   <Image
-                    source={require("../../assets/images/icon4.png")}
+                    source={require("../../assets/images/withdraw.png")}
                     style={{ width: 25, height: 25, resizeMode: "contain" }}
                   />
                   <Text

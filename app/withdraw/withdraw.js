@@ -469,7 +469,7 @@ import {
           setWalletAddressBottomSheet(false);
           setWallet(selectedWallet);
           setSelectedWalletType(selectedWallet);
-          setWalletAddress(selectedWallet === 'USDTTRC20' ? data.walletAddress.bepAddress : data.walletAddress.trcAddress);
+          setWalletAddress(selectedWallet === 'USDTTRC20' ? data.walletAddress.trcAddress  : data.walletAddress.bepAddress );
               }}
             raiseLevel={1}
             stretch={true}
