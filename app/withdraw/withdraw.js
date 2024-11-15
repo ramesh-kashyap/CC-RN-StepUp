@@ -116,8 +116,8 @@ import {
     }, []); 
   
     const stepsList = [
-        "USDTTRC20",
-        "USDTBEP20",
+        "USDT(TRC20)",
+        "USDT(BEP20)",
       ];
   
       const [wallet, setWallet] = useState(stepsList[1]);
@@ -129,7 +129,7 @@ import {
   
     
     const [confirmAmount, setConfirmAmount] = useState("100");
-    const [selectedWalletType, setSelectedWalletType] = useState('USDTBEP20'); // 'TRC' or 'BEP'
+    const [selectedWalletType, setSelectedWalletType] = useState('USDT(BEP20)'); // 'TRC' or 'BEP'
    
    
     
@@ -302,8 +302,8 @@ import {
       alignSelf: isRtl ? "flex-end" : "flex-start",
     }}
   >
-    {selectedWalletType === 'USDTTRC20' && walletAddress !== null ? walletAddress : 
-     selectedWalletType === 'USDTBEP20' && walletAddress !== null ? walletAddress : 
+    {selectedWalletType === 'USDT(TRC20)' && walletAddress !== null ? walletAddress : 
+     selectedWalletType === 'USDT(BEP20)' && walletAddress !== null ? walletAddress : 
      'No Address Found'}
   </Text>
  
@@ -469,7 +469,7 @@ import {
           setWalletAddressBottomSheet(false);
           setWallet(selectedWallet);
           setSelectedWalletType(selectedWallet);
-          setWalletAddress(selectedWallet === 'USDTTRC20' ? data.walletAddress.trcAddress  : data.walletAddress.bepAddress );
+          setWalletAddress(selectedWallet === 'USDT(TRC20)' ? data.walletAddress.trcAddress  : data.walletAddress.bepAddress );
               }}
             raiseLevel={1}
             stretch={true}

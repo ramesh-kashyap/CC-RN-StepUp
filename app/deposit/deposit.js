@@ -34,8 +34,8 @@ import {
     }
   
     const stepsList = [
-        "USDTTRC20",
-        "USDTBEP20",
+        "USDT(TRC20)",
+        "USDT(BEP20)",
       ];
   
     const [wallet, setWallet] = useState(stepsList[1]);

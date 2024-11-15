@@ -35,6 +35,7 @@ import {
     const { t, i18n } = useTranslation();
 
     const [data, setData] = useState([]);
+    const [userData, setUserData] = useState('');
     const [teamCount, setTeamCount] = useState([]);
 
     const teamLevelList = ["01", "02", "03", "04", "05", "06", "07", "08","09", "10","11","12","13","14","15","16","17","18","19","20"];
@@ -70,6 +71,28 @@ import {
 
   
     const today = moment().format("YYYY-MM-DD");
+    const fetchUserData = async () => {
+      try {
+        const response = await Api.get('/userInfo'); // Replace with your actual GET endpoint
+  
+      
+        if (response.data.success) {
+          // Handle the successful response here
+          console.log(response.data.data);
+          setUserData(response.data.data);
+      
+        } else {
+          Alert.alert("Error", response.data.errors);
+        }
+      } catch (error) {
+        console.log("Error details:", error);
+        if (error.response) {
+          Alert.alert("Error", error.response.data.errors);
+        } else {
+          Alert.alert("Error", "An error occurred. Please try again.");
+        }
+      }
+    };
 
     const fetchData = async () => {
         try {
@@ -101,28 +124,32 @@ import {
       useEffect(() => {
     
         fetchData(); // Call fetchData when component mounts
-    
+        fetchUserData();
       }, []); 
       
 
-    const styles = StyleSheet.create({
+      const styles = StyleSheet.create({
         container: {
-        
-          paddingHorizontal: 30,
-          flex: 1,
+          backgroundColor: Colors.regularGrey,
+         
+          flex: 1, // This will ensure the container takes full available space vertically
+          width: '100%', // Ensures the container spans the full width of the screen
+          
         },
         cell: {
-            minWidth: 120, // Set a minimum width for cells to ensure consistency
-            justifyContent: 'center', // Centers content vertically
-            alignItems: 'center', // Centers content horizontally
-            paddingLeft : '10px'
-          },
-          title: {
-            fontWeight: 'bold',  // Makes the text bold
-            fontSize: 16,        // Sets the font size to be larger
-          },
+          minWidth: 125, // Set a minimum width for cells
+          justifyContent: 'center', // Centers content vertically
+          alignItems: 'center', // Centers content horizontally
          
+          backgroundColor: Colors.regularGrey,
+          width: '100%', // Ensures the cell spans the full width of the container
+        },
+        title: {
+          fontWeight: 'bold', // Makes the text bold
+          fontSize: 16, // Sets the font size to be larger
+        },
       });
+      
 
   
     const historyList = [
@@ -174,17 +201,10 @@ import {
                 marginHorizontal: Default.fixPadding * 1.8,
               }}
             >
-              {tr("history")}
+             Team Report
             </Text>
           </View>
-          {AllDelete ? null : (
-            <TouchableOpacity
-              onPress={() => setOpenDeleteModal(true)}
-              style={{ flex: 1, alignItems: isRtl ? "flex-start" : "flex-end" }}
-            >
-              <AntDesign name="delete" size={24} color={Colors.white} />
-            </TouchableOpacity>
-          )}
+         
         </View>
   
         {AllDelete ? (
@@ -293,7 +313,7 @@ import {
                     }}
                   >
                     <Image
-                      source={require("../../assets/images/img4.png")}
+                      source={require("../../assets/images/money.png")}
                       style={{ width: 25, height: 25, resizeMode: "contain" }}
                     />
                     <Text
@@ -302,13 +322,13 @@ import {
                         marginTop: Default.fixPadding,
                       }}
                     >
-                      10,000
+                      ${userData.totalTeamIncome}
                     </Text>
                     <Text
                       numberOfLines={1}
                       style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
                     >
-                      {tr("steps")}
+                     Total Income
                     </Text>
                   </View>
   
@@ -324,7 +344,7 @@ import {
                     }}
                   >
                     <Image
-                      source={require("../../assets/images/icon4.png")}
+                      source={require("../../assets/images/withdraw.png")}
                       style={{ width: 25, height: 25, resizeMode: "contain" }}
                     />
                     <Text
@@ -333,13 +353,13 @@ import {
                         marginTop: Default.fixPadding,
                       }}
                     >
-                      15.50 km
+                      ${userData.todayTeamIncome}
                     </Text>
                     <Text
                       numberOfLines={1}
                       style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
                     >
-                      {tr("distance")}
+                      Today Income
                     </Text>
                   </View>
                 </View>
@@ -365,17 +385,14 @@ import {
             alignItems: "center",
             width: 55,
             height: 55,
-            borderRadius: 28,
-            borderWidth: 1,
-            borderColor: Colors.primary,
-            backgroundColor: Colors.lightRegularPrimary,
+          
+           
           }}
         >
-          <Ionicons
-            name="notifications-outline"
-            size={30}
-            color={Colors.primary}
-          />
+        <Image
+                      source={require("../../assets/images/team.png")}
+                      style={{ width: 25, height: 25, resizeMode: "contain" }}
+                    />
         </View>
     
         <View
@@ -408,9 +425,9 @@ import {
 
     <View style={styles.container}>
       <ScrollView horizontal>
-        <DataTable>
-        <DataTable.Header style={{ backgroundColor: Colors.white }}>
-        <DataTable.Title style={styles.cell}><Text style={styles.title}>User Name</Text></DataTable.Title>
+        <DataTable style={{ backgroundColor: Colors.regularGrey, width: '100%',}}>
+        <DataTable.Header style={{ backgroundColor: Colors.regularGrey, width: '100%',}}>
+        <DataTable.Title style={styles.cell }><Text style={styles.title}>User Name</Text></DataTable.Title>
         <DataTable.Title style={styles.cell}><Text style={styles.title}>Level</Text></DataTable.Title>
         <DataTable.Title style={styles.cell}><Text style={styles.title}>Active Status</Text></DataTable.Title>
         <DataTable.Title numeric style={styles.cell}><Text style={styles.title}>Active Balance</Text></DataTable.Title>
@@ -491,6 +508,7 @@ import {
               
             containerStyle={{
               marginHorizontal: Default.fixPadding * 2,
+             
             }}
             selectedIndicatorStyle={{
               borderRadius: 10,
