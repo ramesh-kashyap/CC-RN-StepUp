@@ -7,9 +7,9 @@ import {
   TextInput,
   Image,
   Platform,
-  KeyboardAvoidingView,
+  KeyboardAvoidingView,Alert
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Colors, Default, Fonts } from "../../constants/styles";
 import MyStatusBar from "../../components/myStatusBar";
@@ -22,6 +22,7 @@ import AwesomeButton from "react-native-really-awesome-button";
 import { useNavigation } from "expo-router";
 import { useRouter } from 'expo-router';  // Make sure to import useRouter
 import * as FileSystem from 'expo-file-system';
+import Api from '../../services/Api';
 
 
 const EditProfileScreen = () => {
@@ -58,18 +59,84 @@ const EditProfileScreen = () => {
   const [pickedImage, setPickedImage] = useState();
   const [removeImage, setRemoveImage] = useState(false);
 
+  const [number, setNumber] = useState();
+
+
   const [removeImageToast, setRemoveImageToast] = useState(false);
   const onDismissRemoveImage = () => setRemoveImageToast(false);
 
-  const handleUpdate = () => {
-    // Use router.push to navigate to 'auth/otpProfile' with parameters
-    console.log({ bep, trc, name, email, pickedImage });
-
-    router.push({
-      pathname: 'auth/otpProfile',
-      params: { bep, trc, name, email },
-    });
+  const handleUpdate = async () => {  
+    try {
+      // Log the parameters for debugging
+      console.log({ bep, trc, name, email ,number });
+  
+      // Make API call to send OTP
+      const response = await Api.post('/sendCodephone', { number });
+  
+      // Handle success response
+      if (response.data.success) {
+        // Use router.push to navigate to 'auth/otpProfile' with parameters
+        router.push({
+          pathname: 'auth/otpProfile',
+          params: { bep, trc, name, email },
+        });    
+      } else {
+        // If the API call was not successful, show error message
+        Alert.alert("Error", response.data.message || "Failed to send OTP.");
+        console.log(response.data);
+      }
+    } catch (error) {
+      // Handle any network or unexpected errors
+      console.log("Error:", error);
+      Alert.alert("Error", "An error occurred while sending OTP. Please try again.");
+    }
   };
+  
+  const fetchData = async () => {
+    try {
+      const response = await Api.get('/userInfo'); // Replace with your actual GET endpoint
+
+      console.log(response.data);
+
+      if (response.data.success) {
+        // Handle the successful response here
+        console.log(response.data.data);
+
+        setNumber(response.data.data.phone);
+
+        setName(response.data.data.name??"");
+        setConfirmName(response.data.data.name??"");
+        setEmail(response.data.data.email??"");
+        setConfirmEmail(response.data.data.email??"");
+        setConfirmBep(response.data.data.walletAddress.bepAddress??"");
+        setBep(response.data.data.walletAddress.bepAddress??"");
+        setConfirmTrc(response.data.data.walletAddress.trcAddress??"");
+        setTrc(response.data.data.walletAddress.trcAddress??"");
+
+
+
+      } else {
+        Alert.alert("Error", response.data.errors);
+      }
+    } catch (error) {
+      console.log("Error details:", error);
+      if (error.response) {
+        Alert.alert("Error", error.response.data.errors);
+      } else {
+        Alert.alert("Error", "An error occurred. Please try again.");
+      }
+    }
+  };
+
+
+  useEffect(() => {
+
+    fetchData(); // Call fetchData when component mounts
+
+
+  }, []); 
+
+
 
   const saveImageToFileSystem = async (uri) => {
     try {
