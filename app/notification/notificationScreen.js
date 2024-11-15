@@ -14,7 +14,7 @@ import SnackbarToast from "../../components/snackbarToast";
 import MyStatusBar from "../../components/myStatusBar";
 import { useNavigation } from "expo-router";
 import Api from '../../services/Api.js'; // Adjust path if necessary
-
+import moment from "moment";
 
 const NotificationScreen = () => {
   const navigation = useNavigation();
@@ -26,7 +26,9 @@ const NotificationScreen = () => {
   function tr(key) {
     return t(`notificationScreen:${key}`);
   }
-
+  const formatDateTime = (isoDate) => {
+    return moment(isoDate).format("MMMM DD, YYYY hh:mm:ss A");
+  };
   const [removeNotificationToast, setRemoveNotificationToast] = useState(false);
   const onDismissRemoveNotificationToast = () =>
     setRemoveNotificationToast(false);
@@ -110,18 +112,18 @@ const NotificationScreen = () => {
             marginHorizontal: Default.fixPadding * 1.5,
           }}
         >
-          <Text numberOfLines={1} style={{ ...Fonts.Bold16black }}>
+          <Text numberOfLines={1} style={{ ...Fonts.Bold14black }}>
             {item.remarks}
           </Text>
           
-          <Text numberOfLines={1} style={{ ...Fonts.SemiBold14grey }}>
-            {item.ttime}
+          <Text numberOfLines={1} style={{ ...Fonts.SemiBold12grey }}>
+          {formatDateTime(item.created_at)}
           </Text>
         </View>
     
         <Text
           style={{
-            ...Fonts.SemiBold20primary,  // Same font style as Deposit
+            ...Fonts.SemiBold16primary,  // Same font style as Deposit
             textAlign: "right",
             marginLeft: "auto", // Ensures the amount is aligned to the right
             paddingRight: Default.fixPadding,

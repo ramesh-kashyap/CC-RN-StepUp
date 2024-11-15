@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "expo-router";
 import Api from '../../../services/Api.js'; // Adjust path if necessary
-
+import moment from "moment";
 
 const AwardsScreen = () => {
   const navigation = useNavigation();
@@ -28,7 +28,9 @@ const AwardsScreen = () => {
   const [openHeightBottomSheet, setOpenHeightBottomSheet] = useState(false);
 
 
-
+  const formatDateTime = (isoDate) => {
+    return moment(isoDate).format("MMMM DD, YYYY hh:mm:ss A");
+  };
   function tr(key) {
     return t(`awardsScreen:${key}`);
   }
@@ -41,6 +43,7 @@ const AwardsScreen = () => {
       if (response.data.success) {
         // Handle the successful response here
         setData(response.data.data.level_income);
+        console.log(response.data.data);
 
       } else {
         Alert.alert("Error", response.data.errors);
@@ -62,7 +65,7 @@ const AwardsScreen = () => {
     
       if (response.data.success) {
         // Handle the successful response here
-        console.log(response.data.data);
+       
         setProfileData(response.data.data);        
 
       } else {
@@ -104,8 +107,8 @@ const AwardsScreen = () => {
           style={{
             justifyContent: 'center',
             alignItems: 'center',
-            width: 55,
-            height: 55,
+            width: 45,
+            height: 45,
             borderRadius: 28,
             borderWidth: 1,
             borderColor: Colors.primary,
@@ -114,7 +117,7 @@ const AwardsScreen = () => {
         >
          <Image
               source={require("../../../assets/images/usdt.png")}
-              style={{ width: 50, height: 50, resizeMode: "contain" }}
+              style={{ width: 40, height: 40, resizeMode: "contain" }}
             />
         </View>
 
@@ -125,13 +128,13 @@ const AwardsScreen = () => {
             marginHorizontal: Default.fixPadding * 1.5,
           }}
         >
-          <Text numberOfLines={1} style={{ ...Fonts.Bold16black }}>
+          <Text numberOfLines={1} style={{ ...Fonts.Bold14black }}>
             {item.remarks}
           </Text>
           <Text
             numberOfLines={2}
             style={{
-              ...Fonts.SemiBold14black,
+              ...Fonts.SemiBold12black,
               overflow: 'hidden',
               textAlign: isRtl ? 'right' : 'left',
               marginVertical: Default.fixPadding * 0.3,
@@ -140,13 +143,14 @@ const AwardsScreen = () => {
             {item.status}
           </Text>
           <Text numberOfLines={1} style={{ ...Fonts.SemiBold14grey }}>
-            {item.created_at}
+            
+          {formatDateTime(item.created_at)}
           </Text>
         </View>
 
         <Text
           style={{
-            ...Fonts.Bold20black, // Same font style as Deposit
+            ...Fonts.Bold16black, // Same font style as Deposit
             textAlign: 'right',
             marginLeft: 'auto', // Ensures the amount is aligned to the right
             paddingRight: Default.fixPadding,

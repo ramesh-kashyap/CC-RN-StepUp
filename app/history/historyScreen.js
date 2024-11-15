@@ -227,30 +227,17 @@ const HistoryScreen = () => {
             alignItems: "center",
           }}
         >
-          <TouchableOpacity onPress={() => navigation.pop()}>
-            <Ionicons
-              name={isRtl ? "arrow-forward-outline" : "arrow-back-outline"}
-              size={25}
-              color={Colors.white}
-            />
-          </TouchableOpacity>
+          
           <Text
             style={{
               ...Fonts.Bold20white,
               marginHorizontal: Default.fixPadding * 1.8,
             }}
           >
-            {tr("history")}
+           Step Record
           </Text>
         </View>
-        {AllDelete ? null : (
-          <TouchableOpacity
-            onPress={() => setOpenDeleteModal(true)}
-            style={{ flex: 1, alignItems: isRtl ? "flex-start" : "flex-end" }}
-          >
-            <AntDesign name="delete" size={24} color={Colors.white} />
-          </TouchableOpacity>
-        )}
+       
       </View>
 
       {AllDelete ? (
