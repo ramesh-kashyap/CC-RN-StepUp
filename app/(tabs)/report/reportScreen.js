@@ -253,46 +253,33 @@ const HistoryScreen = () => {
     <View style={{ flex: 1, backgroundColor: Colors.extraLightGrey }}>
       <MyStatusBar />
       <View
-        style={{
-          flexDirection: isRtl ? "row-reverse" : "row",
-          alignItems: "center",
-          paddingVertical: Default.fixPadding * 1.2,
-          paddingHorizontal: Default.fixPadding * 2,
-          backgroundColor: Colors.primary,
-        }}
-      >
-        <View
-          style={{
-            flex: 9,
-            flexDirection: isRtl ? "row-reverse" : "row",
-            alignItems: "center",
-          }}
-        >
-          <TouchableOpacity onPress={() => navigation.pop()}>
-            <Ionicons
-              name={isRtl ? "arrow-forward-outline" : "arrow-back-outline"}
-              size={25}
-              color={Colors.white}
-            />
-          </TouchableOpacity>
-          <Text
-            style={{
-              ...Fonts.Bold20white,
-              marginHorizontal: Default.fixPadding * 1.8,
-            }}
-          >
-            {tr("history")}
-          </Text>
-        </View>
-        {AllDelete ? null : (
-          <TouchableOpacity
-            onPress={() => setOpenDeleteModal(true)}
-            style={{ flex: 1, alignItems: isRtl ? "flex-start" : "flex-end" }}
-          >
-            <AntDesign name="delete" size={24} color={Colors.white} />
-          </TouchableOpacity>
-        )}
-      </View>
+  style={{
+    flexDirection: isRtl ? "row-reverse" : "row",
+    alignItems: "center",
+    justifyContent: "center",  // Centers content horizontally
+    paddingVertical: Default.fixPadding * 1.2,
+    paddingHorizontal: Default.fixPadding * 2,
+    backgroundColor: Colors.primary,
+  }}
+>
+  <View
+    style={{
+      flexDirection: isRtl ? "row-reverse" : "row",
+      alignItems: "center",
+      justifyContent: "center",  // Centers content in the flex container
+    }}
+  >
+    <Text
+      style={{
+        ...Fonts.Bold20white,
+        marginHorizontal: Default.fixPadding * 1.8,
+      }}
+    >
+      Step Record
+    </Text>
+  </View>
+</View>
+
 
       {AllDelete ? (
         <View

@@ -336,7 +336,7 @@ const ProfileScreen = () => {
                   marginHorizontal: Default.fixPadding,
                 }}
               >
-                {tr("history")}
+                Team Report
               </Text>
             </TouchableOpacity>
           </View>
