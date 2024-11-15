@@ -266,7 +266,7 @@ const AwardsScreen = () => {
               numberOfLines={1}
               style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
             >
-              Total Withdraw
+              Total withdraw
             </Text>
           </View>
         </View>
