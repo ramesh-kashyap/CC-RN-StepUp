@@ -79,7 +79,7 @@ const AchieveGoalScreen = () => {
                 marginTop: Default.fixPadding * 0.6,
               }}
             >
-              10K
+              100K
             </Text>
           </View>
 

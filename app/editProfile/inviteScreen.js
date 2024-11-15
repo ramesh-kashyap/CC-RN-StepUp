@@ -56,43 +56,33 @@ import {
           }}
         >
           <View style={{ alignItems: "center" }}>
+
+          <Text
+              style={{
+                ...Fonts.SemiBold20primary,
+                marginTop: Default.fixPadding * 4,
+                marginBottom: Default.fixPadding, 
+              }}
+            >
+             Invite to Earn More
+            </Text>
+
             <View
               style={{
                 justifyContent: "center",
                 alignItems: "center",
-                width: 145,
-                height: 145,
-                borderRadius: 73,
-                borderWidth: 12,
-                borderColor: Colors.white,
-                backgroundColor: Colors.lightGreen,
-                ...Default.shadow,
+               
               }}
             >
               <Image
-                source={require("../../assets/images/medal.png")}
-                style={{ width: 61, height: 61, resizeMode: "contain" }}
+                source={require("../../assets/images/refer.png")}
+                style={{ width: 300, height:170, resizeMode: "contain" }}
               />
-              <Text
-                style={{
-                  ...Fonts.Bold20white,
-                  marginTop: Default.fixPadding * 0.6,
-                }}
-              >
-                10K
-              </Text>
+              
             </View>
   
-            <Text
-              style={{
-                ...Fonts.Bold22black,
-                marginTop: Default.fixPadding * 4,
-                marginBottom: Default.fixPadding,
-              }}
-            >
-              {tr("great")}
-            </Text>
-            <Text style={{ ...Fonts.Bold20black }}>{tr("achieved")}</Text>
+            
+            <Text style={{ ...Fonts.Bold14black ,marginTop: Default.fixPadding * 4}}>Your Sponsor Code - {}</Text>
           </View>
   
           <TouchableOpacity style={styles.shareBtn} onPress={shareMessage}>
