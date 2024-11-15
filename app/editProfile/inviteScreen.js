@@ -4,14 +4,16 @@ import {
     TouchableOpacity,
     Image,
     StyleSheet,
-    Share,
+    Share,Alert
   } from "react-native";
-  import React from "react";
+  import React, { useState ,useEffect} from "react"; 
   import { useTranslation } from "react-i18next";
   import { Colors, Default, Fonts } from "../../constants/styles";
   import Ionicons from "react-native-vector-icons/Ionicons";
   import MyStatusBar from "../../components/myStatusBar";
   import { useNavigation } from "expo-router";
+  import Api from '../../services/Api.js'; // Adjust path if necessary
+
   
   const inviteScreen = () => {
     const navigation = useNavigation();
@@ -23,11 +25,49 @@ import {
     function tr(key) {
       return t(`inviteScreen:${key}`);
     }
+
+    const [sponsor, setSponsor] = useState("");
+
+
+    const fetchData = async () => {
+      try {
+        const response = await Api.get('/userInfo'); // Replace with your actual GET endpoint
+  
+        console.log(response.data);
+  
+        if (response.data.success) {
+          // Handle the successful response here
+          console.log(response.data.data);
+  
+          setSponsor(response.data.data.userName??"");
+  
+        } else {
+          Alert.alert("Error", response.data.errors);
+        }
+      } catch (error) {
+        console.log("Error details:", error);
+        if (error.response) {
+          Alert.alert("Error", error.response.data.errors);
+        } else {
+          Alert.alert("Error", "An error occurred. Please try again.");
+        }
+      }
+    };
+  
+  
+    useEffect(() => {
+  
+      fetchData(); // Call fetchData when component mounts
+  
+  
+    }, []); 
   
     const shareMessage = () => {
       Share.share({
-        message: "StepUp",
+        url: "https://google.com",
+        message: `Sponsor-${sponsor}`,
       });
+      
     };
   
     return (
@@ -82,7 +122,7 @@ import {
             </View>
   
             
-            <Text style={{ ...Fonts.Bold14black ,marginTop: Default.fixPadding * 4}}>Your Sponsor Code - {}</Text>
+            <Text style={{ ...Fonts.Bold14black ,marginTop: Default.fixPadding * 4}}>Your Sponsor Code - {sponsor}</Text>
           </View>
   
           <TouchableOpacity style={styles.shareBtn} onPress={shareMessage}>
