@@ -7,9 +7,10 @@ import {
   Modal,
   Dimensions,
   TouchableWithoutFeedback,
-  ScrollView,Alert,
+  ScrollView,
+  Alert,
 } from "react-native";
-import React, { useState ,useEffect} from "react"; 
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Colors, Default, Fonts } from "../../../constants/styles";
 import MyStatusBar from "../../../components/myStatusBar";
@@ -20,8 +21,7 @@ import AwesomeButton from "react-native-really-awesome-button";
 import moment from "moment";
 import DateTimePicker from "react-native-ui-datepicker";
 import { useNavigation } from "expo-router";
-import Api from '../../../services/Api.js'; // Adjust path if necessary
-
+import Api from "../../../services/Api.js"; // Adjust path if necessary
 
 const { width, height } = Dimensions.get("window");
 
@@ -43,25 +43,19 @@ const HistoryScreen = () => {
   const [total, setTotal] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
-
-
   const [openDateModal, setOpenDateModal] = useState(false);
 
   const today = moment().format("YYYY-MM-DD");
 
-
-
   const fetchData = async () => {
     try {
-      const response = await Api.get('/stepHistory'); // Replace with your actual GET endpoint
+      const response = await Api.get("/stepHistory"); // Replace with your actual GET endpoint
 
-    
       if (response.data.success) {
         // Handle the successful response here
         // console.log(response.data.stepHistory);
         setData(response.data.stepHistory);
         setTotal(response.data.totalStep);
-
       } else {
         Alert.alert("Error", response.data.errors);
       }
@@ -75,12 +69,9 @@ const HistoryScreen = () => {
     }
   };
 
-
   useEffect(() => {
-
     fetchData(); // Call fetchData when component mounts
-
-  }, []); 
+  }, []);
 
   const renderItem = ({ item, index }) => {
     const firstItem = index === 0;
@@ -163,8 +154,8 @@ const HistoryScreen = () => {
                 marginTop: Default.fixPadding,
               }}
             >
-              {(item.step*0.04).toFixed(2)}
-              </Text>
+              {(item.step * 0.04).toFixed(2)}
+            </Text>
             <Text
               numberOfLines={1}
               style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
@@ -195,8 +186,8 @@ const HistoryScreen = () => {
                 marginTop: Default.fixPadding,
               }}
             >
-              {(item.step*0.01).toFixed(2)} s
-              </Text>
+              {(item.step * 0.01).toFixed(2)} s
+            </Text>
             <Text
               numberOfLines={1}
               style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
@@ -222,8 +213,8 @@ const HistoryScreen = () => {
                 marginTop: Default.fixPadding,
               }}
             >
-       {(item.step * 0.7).toFixed(2)} m
-</Text>
+              {(item.step * 0.7).toFixed(2)} m
+            </Text>
             <Text
               numberOfLines={1}
               style={{ ...Fonts.Medium14grey, overflow: "hidden" }}
@@ -253,33 +244,35 @@ const HistoryScreen = () => {
     <View style={{ flex: 1, backgroundColor: Colors.extraLightGrey }}>
       <MyStatusBar />
       <View
-  style={{
-    flexDirection: isRtl ? "row-reverse" : "row",
-    alignItems: "center",
-    justifyContent: "center",  // Centers content horizontally
-    paddingVertical: Default.fixPadding * 1.2,
-    paddingHorizontal: Default.fixPadding * 2,
-    backgroundColor: Colors.primary,
-  }}
->
-  <View
-    style={{
-      flexDirection: isRtl ? "row-reverse" : "row",
-      alignItems: "center",
-      justifyContent: "center",  // Centers content in the flex container
-    }}
-  >
-    <Text
-      style={{
-        ...Fonts.Bold20white,
-        marginHorizontal: Default.fixPadding * 1.8,
-      }}
-    >
-      Step Record
-    </Text>
-  </View>
-</View>
-
+        style={{
+          flexDirection: isRtl ? "row-reverse" : "row",
+          alignItems: "center",
+          justifyContent: "center", // Centers content horizontally
+          paddingVertical: Default.fixPadding * 1.2,
+          paddingHorizontal: Default.fixPadding * 2,
+          backgroundColor: Colors.primary,
+        }}
+      >
+        <View
+          style={{
+            flexDirection: isRtl ? "row-reverse" : "row", // Handle RTL or LTR layout
+            alignItems: "center", // Vertically centers content within this container
+            justifyContent: "center", // Horizontally centers the content
+            paddingVertical: Default.fixPadding * 1.2,
+            paddingHorizontal: Default.fixPadding * 2,
+            backgroundColor: Colors.primary,
+          }}
+        >
+          <Text
+            style={{
+              ...Fonts.Bold20white,
+              marginHorizontal: Default.fixPadding * 1.8,
+            }}
+          >
+            Step Record
+          </Text>
+        </View>
+      </View>
 
       {AllDelete ? (
         <View
@@ -396,7 +389,7 @@ const HistoryScreen = () => {
                       marginTop: Default.fixPadding,
                     }}
                   >
-                   {total}
+                    {total}
                   </Text>
                   <Text
                     numberOfLines={1}
@@ -428,8 +421,7 @@ const HistoryScreen = () => {
                       marginTop: Default.fixPadding,
                     }}
                   >
-                                       {(total*0.04).toFixed(2)}
-
+                    {(total * 0.04).toFixed(2)}
                   </Text>
                   <Text
                     numberOfLines={1}
@@ -461,8 +453,7 @@ const HistoryScreen = () => {
                       marginTop: Default.fixPadding,
                     }}
                   >
-                       {(total*0.01).toFixed(2)} s
-
+                    {(total * 0.01).toFixed(2)} s
                   </Text>
                   <Text
                     numberOfLines={1}
@@ -489,9 +480,7 @@ const HistoryScreen = () => {
                       marginTop: Default.fixPadding,
                     }}
                   >
-                                                         {(total * 0.7).toFixed(2)} m
-
-
+                    {(total * 0.7).toFixed(2)} m
                   </Text>
                   <Text
                     numberOfLines={1}

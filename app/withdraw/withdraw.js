@@ -45,7 +45,7 @@ import {
           // Handle the successful response here
           console.log(response.data.data);
           setData(response.data.data);
-          setWalletAddress(response.data.data.walletAddress.bepAddress); // Set bepAddress by default
+          setWalletAddress(response?.data?.data?.walletAddress?.bepAddress ?? ''); // Set bepAddress by default
           setNumber(response.data.data.phone)
   
         } else {
@@ -469,8 +469,11 @@ import {
           setWalletAddressBottomSheet(false);
           setWallet(selectedWallet);
           setSelectedWalletType(selectedWallet);
-          setWalletAddress(selectedWallet === 'USDT(TRC20)' ? data.walletAddress.trcAddress  : data.walletAddress.bepAddress );
-              }}
+          setWalletAddress(
+            selectedWallet === 'USDT(TRC20)'
+              ? data?.walletAddress?.trcAddress || ''
+              : data?.walletAddress?.bepAddress || ''
+          );              }}
             raiseLevel={1}
             stretch={true}
             borderRadius={10}

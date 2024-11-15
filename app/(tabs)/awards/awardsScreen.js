@@ -169,16 +169,36 @@ const AwardsScreen = () => {
     <View style={{ flex: 1, backgroundColor: Colors.extraLightGrey }}>
       <MyStatusBar />
       <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          paddingHorizontal: Default.fixPadding * 2,
-          paddingVertical: Default.fixPadding * 1.2,
-          backgroundColor: Colors.primary,
-        }}
-      >
-        <Text style={{ ...Fonts.Bold20white }}>{tr("awards")}</Text>
-      </View>
+  style={{
+    flexDirection: "row", // Arrange text and icon in a row
+    alignItems: "center", // Vertically center the items
+    paddingHorizontal: Default.fixPadding * 2,
+    paddingVertical: Default.fixPadding * 1.2,
+    backgroundColor: Colors.primary,
+  }}
+>
+  <Text
+    style={{
+      ...Fonts.Bold20white,
+      flex: 1, // Take up available space to center the text
+      textAlign: "center", // Ensure text is centered within its container
+    }}
+  >
+    {tr("awards")}
+  </Text>
+  
+  <TouchableOpacity
+    onPress={() => navigation.push("notification/notificationScreen")}
+  >
+    <Ionicons
+      name="document-text-outline"
+      size={24}
+      color={Colors.white}
+    />
+  </TouchableOpacity>
+</View>
+
+
 
       <ScrollView
         showsVerticalScrollIndicator={false}
