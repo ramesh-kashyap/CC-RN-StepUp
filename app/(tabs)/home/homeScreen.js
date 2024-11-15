@@ -274,7 +274,7 @@ useEffect(() => {
             <Text numberOfLines={1} style={{ ...Fonts.Bold16white }}>
               {userInfo.userName}
             </Text>
-            <View
+            {/* <View
               style={{
                 flexDirection: isRtl ? "row-reverse" : "row",
                 alignItems: "center",
@@ -295,9 +295,9 @@ useEffect(() => {
                   marginHorizontal: Default.fixPadding * 0.5,
                 }}
               >
-                Mumbai
+               
               </Text>
-            </View>
+            </View> */}
           </View>
         </View>
 
