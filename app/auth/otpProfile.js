@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  Dimensions,
+  Dimensions,Alert
 } from "react-native";
 import { Colors, Fonts, Default } from "../../constants/styles";
 import { useTranslation } from "react-i18next";
@@ -13,6 +13,8 @@ import MyStatusBar from "../../components/myStatusBar";
 import AwesomeButton from "react-native-really-awesome-button";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { OtpInput } from "react-native-otp-entry";
+import { useLocalSearchParams } from 'expo-router';
+import Api from '../../services/Api';
 import { useNavigation } from "expo-router";
 
 const { width } = Dimensions.get("window");
@@ -30,6 +32,9 @@ const OtpScreen = () => {
 
   const [timer, setTimer] = useState(59);
   const [intervalStop, setIntervalStop] = useState(true);
+
+  const { bep, email, name , trc} = useLocalSearchParams();
+
 
   const intervalRef = useRef();
 
@@ -59,10 +64,29 @@ const OtpScreen = () => {
     return `${formattedMinutes}:${formattedSeconds}`;
   };
 
-  const handleTextChange = (otp) => {
+  const handleTextChange = async (otp) => {
     if (otp.length === 4) {
       setIntervalStop(false);
-      navigation.push("auth/setGoalScreen");
+      try {
+        const response = await Api.post("/updateProfile", { bep, trc, name, email,code:otp });
+  
+        if (response.data.success) {
+  
+          navigation.push("home/homeScreen");
+
+        } else {
+          Alert.alert("Error", response.data.error);
+        }
+      } catch (error) {
+        console.log("Error details:", error);
+        if (error.response) {
+          Alert.alert("Error", error.response.data.error);
+        } else {
+          Alert.alert("Error", "An error occurred. Please try again.");
+        }
+      }
+
+
     }
   };
 
