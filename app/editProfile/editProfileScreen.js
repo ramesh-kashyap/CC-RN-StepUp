@@ -112,6 +112,7 @@ const EditProfileScreen = () => {
         setBep(response.data.data.walletAddress.bepAddress??"");
         setConfirmTrc(response.data.data.walletAddress.trcAddress??"");
         setTrc(response.data.data.walletAddress.trcAddress??"");
+        setPickedImage(response.data.data.uri??null);  
 
 
 
@@ -138,21 +139,36 @@ const EditProfileScreen = () => {
 
 
 
-  const saveImageToFileSystem = async (uri) => {
+  const uploadImageToServer = async (uri) => {
     try {
-      // Define a path in the file system for the saved image
-      const newUri = `${FileSystem.documentDirectory}picked_image.jpg`;
-      // Save the image file to the new path
-      await FileSystem.copyAsync({ from: uri, to: newUri });
-      console.log('Image saved to:', newUri);
-      setPickedImage(newUri); // Update state with saved file path
+      const formData = new FormData();
+      formData.append('image', {
+        uri,
+        name: `image_${Date.now()}.jpg`, // Unique file name
+        type: 'image/jpeg', // Correct MIME type
+      });
+  
+      const response = await Api.post('upload-image', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Override content type for file uploads
+        },
+      });
+  
+      console.log(response.data);
+
+      if (response.data.uri) {
+        console.log('Image uploaded successfully:', response.data.uri);
+        setPickedImage(response.data.uri); // Save URI for later use
+      } else {
+        console.error('Error uploading image:', result);
+        Alert.alert('Error', 'Failed to upload image.');
+      }
     } catch (error) {
-      console.error('Error saving image:', error);
-      Alert.alert('Error', 'Failed to save the image.');
+      console.error('Error uploading image:', error);
+      Alert.alert('Error', 'An error occurred while uploading the image.');
     }
   };
-
-
+  
   const galleryHandler = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -160,31 +176,36 @@ const EditProfileScreen = () => {
       aspect: [4, 3],
       quality: 1,
     });
-
+  
     if (!result.canceled) {
       const uri = result.assets[0].uri;
       console.log('Picked image URI:', uri);
-      await saveImageToFileSystem(uri); // Save and update picked image
+      await uploadImageToServer(uri); // Upload to server and update state
     }
   };
-
+  
   const [cameraNotGranted, setCameraNotGranted] = useState(false);
   const onDismissCameraNotGranted = () => setCameraNotGranted(false);
-
+  
   const cameraHandler = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-
+  
     if (!permissionResult.granted) {
       setCameraNotGranted(true);
       return;
     }
-    const result = await ImagePicker.launchCameraAsync();
-
+    const result = await ImagePicker.launchCameraAsync({
+      quality: 1,
+      allowsEditing: true,
+    });
+  
     if (!result.canceled) {
       const uri = result.assets[0].uri;
-      await saveImageToFileSystem(uri); // Save and update picked image
+      console.log('Captured image URI:', uri);
+      await uploadImageToServer(uri); // Upload to server and update state
     }
   };
+  
 
   const [userNameBottomSheet, setUserNameBottomSheet] = useState(false);
   const [emailAddressBottomSheet, setEmailAddressBottomSheet] = useState(false);
@@ -252,7 +273,7 @@ const EditProfileScreen = () => {
                   source={require("../../assets/images/profile.png")}
                   style={{
                     ...styles.image,
-                  }}
+                  }} 
                 />
               )}
             </View>

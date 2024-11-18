@@ -57,6 +57,8 @@ const HomeScreen = () => {
   const [distance, setDistance] = useState(0);
   const [lastLocation, setLastLocation] = useState(null);
   const [userInfo, setUserInfo] = useState([]);
+  const [pickedImage, setPickedImage] = useState();
+
 
 
   const storeSteps = async () => {
@@ -97,6 +99,9 @@ const HomeScreen = () => {
         console.log(response.data.data);
 
         setUserInfo(response.data.data);
+
+        setPickedImage(response.data.data.uri??null); 
+
 
         if(response.data.data){
           const todaySteps = Number(response.data.data.todaySteps);
@@ -260,10 +265,18 @@ useEffect(() => {
             alignItems: "center",
           }}
         >
+
+   { pickedImage ?
           <Image
+          source={{ uri: pickedImage }}
+            style={{ width: 58, height: 58, borderRadius: 29 }}
+          />
+    :
+            <Image         
             source={require("../../../assets/images/profile.png")}
             style={{ width: 58, height: 58, borderRadius: 29 }}
           />
+   }
           <View
             style={{
               flex: 1,

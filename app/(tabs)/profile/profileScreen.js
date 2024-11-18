@@ -21,7 +21,6 @@ import HeightBottomSheet from "../../../components/heightBottomSheet";
 import StepGoalBottomSheet from "../../../components/stepGoalBottomSheet";
 import LogoutModal from "../../../components/logoutModal";
 import { useNavigation } from "expo-router";
-import { useImage } from "../../../components/ImageContext"; // import the hook
 import Api from '../../../services/Api.js'; 
 
 const ProfileScreen = () => {
@@ -29,7 +28,7 @@ const ProfileScreen = () => {
 
   const { t, i18n } = useTranslation();
 
-  const { pickedImage } = useImage();
+  const [pickedImage, setPickedImage] = useState();
 
 
   const isRtl = i18n.dir() == "rtl";
@@ -49,7 +48,8 @@ const ProfileScreen = () => {
         // Handle the successful response here
         console.log(response.data.data);
         setData(response.data.data);
-       
+        setPickedImage(response.data.data.uri??null); 
+
 
       } else {
         Alert.alert("Error", response.data.errors);
@@ -123,14 +123,17 @@ const ProfileScreen = () => {
               alignItems: "center",
             }}
           >
-            <Image
-              source={{ uri: pickedImage }}
-              style={{
-                width: 52,
-                height: 52,
-                borderRadius: 26,
-              }}
-            />
+             { pickedImage ?
+          <Image
+          source={{ uri: pickedImage }}
+            style={{ width: 58, height: 58, borderRadius: 29 }}
+          />
+    :
+            <Image         
+            source={require("../../../assets/images/profile.png")}
+            style={{ width: 58, height: 58, borderRadius: 29 }}
+          />
+   }
             <View
               style={{
                 flex: 1,
