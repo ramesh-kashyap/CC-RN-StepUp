@@ -61,6 +61,7 @@ const HomeScreen = () => {
   const [userInfo, setUserInfo] = useState([]);
   const [pickedImage, setPickedImage] = useState();
   const [openLogoutModal, setOpenLogoutModal] = useState(false);
+  const [city, setCity] = useState(''); // To store the city name
 
 
 
@@ -238,11 +239,24 @@ useEffect(() => {
           timeInterval: 1000,
           distanceInterval: 1,
         },
-        (newLocation) => {
+        async (newLocation) => {
           const coords = newLocation.coords;
           setLocation(coords);
 
           setLastLocation(coords);
+
+          try {
+            const address = await Location.reverseGeocodeAsync({
+              latitude: coords.latitude,
+              longitude: coords.longitude,
+            });
+  
+            if (address.length > 0) {
+              setCity(address[0].city); // Store the city name in state
+            }
+          } catch (error) {
+            console.error('Error fetching city:', error);
+          }
         }
       );
     };
@@ -293,7 +307,7 @@ useEffect(() => {
             <Text numberOfLines={1} style={{ ...Fonts.Bold16white }}>
               {userInfo.userName}
             </Text>
-            {/* <View
+            <View
               style={{
                 flexDirection: isRtl ? "row-reverse" : "row",
                 alignItems: "center",
@@ -314,9 +328,9 @@ useEffect(() => {
                   marginHorizontal: Default.fixPadding * 0.5,
                 }}
               >
-               
+               {city}
               </Text>
-            </View> */}
+            </View>
           </View>
         </View>
 
