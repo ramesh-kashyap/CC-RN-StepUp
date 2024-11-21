@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import {
   StyleSheet,
   Text,
@@ -22,7 +22,7 @@ import StepGoalBottomSheet from "../../../components/stepGoalBottomSheet";
 import LogoutModal from "../../../components/logoutModal";
 import { useNavigation } from "expo-router";
 import Api from '../../../services/Api.js'; 
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native"; 
 
 
 const ProfileScreen = () => {
@@ -50,9 +50,13 @@ const ProfileScreen = () => {
         // Handle the successful response here
         console.log(response.data.data);
         setData(response.data.data);
-        if(response.data.data.uri=!"http://192.168.29.193:8000/storage"){
-        setPickedImage(response.data.data.uri??null); 
+
+        if (response.data.data.uri && response.data.data.uri.includes("http://192.168.29.193:8000/storage/images/")) {
+          setPickedImage(response.data.data.uri ?? null);
+        } else {
+          setPickedImage(null); // Optional: Clear the image if the condition isn't met
         }
+        
 
       } else {
         Alert.alert("Error", response.data.errors);
@@ -70,7 +74,7 @@ const ProfileScreen = () => {
   useFocusEffect(
     useCallback(() => {
       // This will run every time the screen comes into focus
-      fetchProfileData();
+      fetchData();
     }, [])
   );
   

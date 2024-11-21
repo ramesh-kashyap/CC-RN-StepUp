@@ -112,9 +112,12 @@ const EditProfileScreen = () => {
         setBep(response.data.data.walletAddress.bepAddress??"");
         setConfirmTrc(response.data.data.walletAddress.trcAddress??"");
         setTrc(response.data.data.walletAddress.trcAddress??"");
-        if(response.data.data.uri=!"http://192.168.29.193:8000/storage"){
-          setPickedImage(response.data.data.uri??null); 
-          } 
+        if (response.data.data.uri && response.data.data.uri.includes("http://192.168.29.193:8000/storage/images/")) {
+          setPickedImage(response.data.data.uri ?? null);
+        } else {
+          setPickedImage(null); // Optional: Clear the image if the condition isn't met
+        }
+        
 
 
 

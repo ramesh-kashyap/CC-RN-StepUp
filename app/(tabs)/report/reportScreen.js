@@ -10,7 +10,7 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Colors, Default, Fonts } from "../../../constants/styles";
 import MyStatusBar from "../../../components/myStatusBar";
@@ -22,6 +22,8 @@ import moment from "moment";
 import DateTimePicker from "react-native-ui-datepicker";
 import { useNavigation } from "expo-router";
 import Api from "../../../services/Api.js"; // Adjust path if necessary
+import { useFocusEffect } from "@react-navigation/native";
+
 
 const { width, height } = Dimensions.get("window");
 
@@ -71,9 +73,12 @@ const HistoryScreen = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData(); // Call fetchData when component mounts
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      // This will run every time the screen comes into focus
+      fetchData();
+    }, [])
+  );
 
   const renderItem = ({ item, index }) => {
     const firstItem = index === 0;

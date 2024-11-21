@@ -56,21 +56,21 @@ const OnboardingScreen = () => {
       key: "1",
       title: tr("title1"),
       description:
-        "Lorem ipsum dolor sit amet consectetur. Duis ifermentum erat egestas at mattis. Tincidunt egestas lectus semetus egestas. Tincidunt felis ",
-      image: require("../../assets/images/onboarding1.png"),
+        "Monitor your steps, distance, and calories burned in real-time, all within a simple, intuitive interface.",
+      image: require("../../assets/images/onboarding1.png"), 
     },
     {
       key: "2",
       title: tr("title2"),
       description:
-        "Lorem ipsum dolor sit amet consectetur. Duis ifermentum erat egestas at mattis. Tincidunt egestas lectus semetus egestas. Tincidunt felis ",
+        "Push your limits and unlock your potential with Challenge Yourself. Set goals, track progress, and celebrate every achievement on your journey to success!",
       image: require("../../assets/images/onboarding2.png"),
     },
     {
       key: "3",
       title: tr("title3"),
       description:
-        "Lorem ipsum dolor sit amet consectetur. Duis ifermentum erat egestas at mattis. Tincidunt egestas lectus semetus egestas. Tincidunt felis ",
+        "Your personal companion for fitness and well-being. Track your workouts, nutrition, and progress to maintain a balanced lifestyle!",
       image: require("../../assets/images/onboarding3.png"),
     },
   ];

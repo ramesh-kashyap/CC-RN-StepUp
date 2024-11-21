@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react"; 
+import React, { useState, useEffect, useCallback } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,6 +15,8 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "expo-router";
 import Api from '../../../services/Api.js'; // Adjust path if necessary
 import moment from "moment";
+import { useFocusEffect } from "@react-navigation/native";
+
 
 const AwardsScreen = () => {
   const navigation = useNavigation();
@@ -82,12 +84,14 @@ const AwardsScreen = () => {
   };
 
 
+  useFocusEffect(
+    useCallback(() => {
+      // This will run every time the screen comes into focus
+      fetchData();
+      fetchProfileData();
 
-  useEffect(() => {
-
-    fetchData(); // Call fetchData when component mounts
-    fetchProfileData();
-  }, []); 
+    }, [])
+  );
  
 
   const renderItem = ({ item }) => (

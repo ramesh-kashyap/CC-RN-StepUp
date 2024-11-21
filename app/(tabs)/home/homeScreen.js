@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   StyleSheet,
   Text,
@@ -25,6 +25,7 @@ import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import Api from '../../../services/Api.js'; // Adjust path if necessary
 import LogoutModal from "../../../components/logoutModal";
+import { useFocusEffect } from "@react-navigation/native";
 
 
 
@@ -105,9 +106,12 @@ const HomeScreen = () => {
 
         setUserInfo(response.data.data);
 
-        if(response.data.data.uri=!"http://192.168.29.193:8000/storage"){
-          setPickedImage(response.data.data.uri??null); 
-          } 
+        if (response.data.data.uri && response.data.data.uri.includes("http://192.168.29.193:8000/storage/images/")) {
+          setPickedImage(response.data.data.uri ?? null);
+        } else {
+          setPickedImage(null); // Optional: Clear the image if the condition isn't met
+        }
+        
 
 
         if(response.data.data){
@@ -131,12 +135,12 @@ const HomeScreen = () => {
   };
 
 
-  useEffect(() => {
-
-    fetchData(); // Call fetchData when component mounts
-
-
-  }, []); 
+  useFocusEffect(
+    useCallback(() => {
+      // This will run every time the screen comes into focus
+      fetchData();
+    }, [])
+  );
 
 
   // Check if the Pedometer is available on the device
@@ -289,12 +293,12 @@ useEffect(() => {
    { pickedImage ?
           <Image
           source={{ uri: pickedImage }}
-            style={{ width: 58, height: 58, borderRadius: 29 }}
+            style={{ width: 45, height: 45, borderRadius: 29 }}
           />
     :
             <Image         
             source={require("../../../assets/images/profile.png")}
-            style={{ width: 58, height: 58, borderRadius: 29 }}
+            style={{ width: 45, height: 45, borderRadius: 29 }}
           />
    }
           <View

@@ -75,7 +75,7 @@ const OtpScreen = () => {
           navigation.push("home/homeScreen");
 
         } else {
-          Alert.alert("Error", response.data.error);
+          Alert.alert("Error", response.data.errors);
         }
       } catch (error) {
         console.log("Error details:", error);
