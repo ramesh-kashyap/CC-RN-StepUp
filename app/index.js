@@ -33,7 +33,7 @@ const Index = () => {
               marginTop: Default.fixPadding * 0.7,
             }}
           >
-            StepUp
+            Foot Print
           </Text>
         </LinearGradient>
       </ImageBackground>

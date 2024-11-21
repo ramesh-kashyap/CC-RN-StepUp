@@ -117,7 +117,7 @@ const LoginScreen = () => {
               marginTop: Default.fixPadding * 0.7,
             }}
           >
-            StepUp
+            Foot Print
           </Text>
         </ImageBackground>
         <View

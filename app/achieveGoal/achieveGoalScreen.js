@@ -26,7 +26,7 @@ const AchieveGoalScreen = () => {
 
   const shareMessage = () => {
     Share.share({
-      message: "StepUp",
+      message: "Foot Print",
     });
   };
 
