@@ -307,14 +307,25 @@ const EditProfileScreen = () => {
         </View>
 
         <View style={{ marginHorizontal: Default.fixPadding * 2 }}>
-          <Text
-            style={{
-              textAlign: isRtl ? "right" : "left",
-              ...Fonts.SemiBold16black,
-            }}
-          >
-           Name
-          </Text>
+         
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+  <Image
+    source={require("../../assets/images/profile_icon.png")}
+    style={{
+      width: 20,
+      height: 20,
+      marginRight: 8, // Adds space between the image and text
+    }}
+  />
+  <Text
+    style={{
+      textAlign: isRtl ? "right" : "left",
+      ...Fonts.SemiBold16black,
+    }}
+  >
+     Name
+  </Text>
+</View>
           <TouchableOpacity
             onPress={() => {
               setName(confirmName);
@@ -339,15 +350,25 @@ const EditProfileScreen = () => {
                 : "Sahil "}
             </Text>
           </TouchableOpacity>
-
-          <Text
-            style={{
-              textAlign: isRtl ? "right" : "left",
-              ...Fonts.SemiBold16black,
-            }}
-          >
-            {tr("email")}
-          </Text>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+  <Image
+    source={require("../../assets/images/email.png")}
+    style={{
+      width: 20,
+      height: 20,
+      marginRight: 8, // Adds space between the image and text
+    }}
+  />
+  <Text
+    style={{
+      textAlign: isRtl ? "right" : "left",
+      ...Fonts.SemiBold16black,
+    }}
+  >
+     Email address
+  </Text>
+</View>
+          
           <TouchableOpacity
             onPress={() => {
               setEmail(confirmEmail);
@@ -372,15 +393,26 @@ const EditProfileScreen = () => {
                 : "guyhawkins@mail.com"}
             </Text>
           </TouchableOpacity>
+         
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+  <Image
+    source={require("../../assets/images/bep.png")}
+    style={{
+      width: 20,
+      height: 20,
+      marginRight: 8, // Adds space between the image and text
+    }}
+  />
+  <Text
+    style={{
+      textAlign: isRtl ? "right" : "left",
+      ...Fonts.SemiBold16black,
+    }}
+  >
+    USDT BEP20
+  </Text>
+</View>
 
-          <Text
-            style={{
-              textAlign: isRtl ? "right" : "left",
-              ...Fonts.SemiBold16black,
-            }}
-          >
-            USDT BEP20
-          </Text>
           <TouchableOpacity
             onPress={() => {
               setBep(confirmBep);
@@ -405,15 +437,25 @@ const EditProfileScreen = () => {
                 : ""}
             </Text>
           </TouchableOpacity>
-
-          <Text
-            style={{
-              textAlign: isRtl ? "right" : "left",
-              ...Fonts.SemiBold16black,
-            }}
-          >
-            USDT TRC20
-          </Text>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+  <Image
+    source={require("../../assets/images/trx.png")}
+    style={{
+      width: 20,
+      height: 20,
+      marginRight: 8, // Adds space between the image and text
+    }}
+  />
+  <Text
+    style={{
+      textAlign: isRtl ? "right" : "left",
+      ...Fonts.SemiBold16black,
+    }}
+  >
+    USDT TRC20
+  </Text>
+</View>
+         
           <TouchableOpacity
             onPress={() => {
               setTrc(confirmTrc);

@@ -33,10 +33,10 @@ const LoginScreen = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [email, setEmail] = useState("");
   const handleLogin = async () => {
     try {
-      const response = await Api.post("/login", { phone, password });
+      const response = await Api.post("/login", { email, password });
 
       if (response.data.success) {
 
@@ -147,46 +147,32 @@ const LoginScreen = () => {
               ...Fonts.SemiBold16black,
             }}
           >
-            {tr("mobileNumber")}
+           Email
           </Text>
 
-          <IntlPhoneInput
-            defaultCountry="IN"
-            closeText={tr("close")}
-            filterText={tr("search")}
-            placeholder={tr("enterMobileNumber")}
-            onChangeText={({ dialCode, unmaskedPhoneNumber }) =>
-              setPhone(unmaskedPhoneNumber)
-            } // capture unmasked phone number
-            placeholderTextColor={Colors.grey}
-            flagStyle={{ width: 0, height: 0 }}
-            modalCountryItemCountryNameStyle={{ ...Fonts.SemiBold15black }}
-            closeButtonStyle={{
-              ...Fonts.SemiBold15black,
-            }}
-            inputProps={{ selectionColor: Colors.primary }}
-            dialCodeTextStyle={{
-              ...Fonts.SemiBold15black,
-              paddingRight: Default.fixPadding * 1.2,
-            }}
-            containerStyle={{
-              justifyContent: "center",
-              alignItems: "center",
-              paddingVertical: Default.fixPadding * 1.2,
-              marginBottom: Default.fixPadding * 2,
-              marginTop: Default.fixPadding,
-              borderRadius: 10,
-              backgroundColor: Colors.white,
-              ...Default.shadow,
-            }}
-            phoneInputStyle={{
-              ...Fonts.SemiBold16black,
-              textAlign: isRtl ? "right" : "left",
-              paddingHorizontal: isRtl ? 0 : Default.fixPadding * 1.2,
-              borderLeftWidth: 2,
-              borderLeftColor: Colors.lightGrey,
-            }}
-          />
+          <TextInput
+  placeholder={'Enter Your Email'} 
+  placeholderTextColor={Colors.grey}
+  onChangeText={(text) => setEmail(text)} // Capture email input
+  keyboardType="email-address" // Use email keyboard type
+  autoCapitalize="none" // Prevent capitalization for email input
+  style={{
+    ...Fonts.SemiBold16black,
+    textAlign: isRtl ? "right" : "left",
+    paddingHorizontal: isRtl ? 0 : Default.fixPadding * 1.2,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: Default.fixPadding * 1.2,
+    marginBottom: Default.fixPadding * 2,
+    marginTop: Default.fixPadding,
+    borderRadius: 10,
+    backgroundColor: Colors.white,
+    borderLeftWidth: 2,
+    borderLeftColor: Colors.lightGrey,
+    ...Default.shadow,
+  }}
+/>
+
 
           <Text
             style={{
