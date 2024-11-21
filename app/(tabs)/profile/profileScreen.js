@@ -28,7 +28,7 @@ const ProfileScreen = () => {
 
   const { t, i18n } = useTranslation();
 
-  const [pickedImage, setPickedImage] = useState();
+  const [pickedImage, setPickedImage] = useState(null);
 
 
   const isRtl = i18n.dir() == "rtl";
@@ -48,8 +48,9 @@ const ProfileScreen = () => {
         // Handle the successful response here
         console.log(response.data.data);
         setData(response.data.data);
+        if(response.data.data.uri=!"http://192.168.29.193:8000/storage"){
         setPickedImage(response.data.data.uri??null); 
-
+        }
 
       } else {
         Alert.alert("Error", response.data.errors);
@@ -152,7 +153,7 @@ const ProfileScreen = () => {
                   marginTop: Default.fixPadding * 0.4,
                 }}
               >
-                {data.phone}
+                {data.jdate}
               </Text>
             </View>
           </View>

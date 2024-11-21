@@ -24,6 +24,8 @@ import { Pedometer } from 'expo-sensors';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import Api from '../../../services/Api.js'; // Adjust path if necessary
+import LogoutModal from "../../../components/logoutModal";
+
 
 
 
@@ -58,6 +60,8 @@ const HomeScreen = () => {
   const [lastLocation, setLastLocation] = useState(null);
   const [userInfo, setUserInfo] = useState([]);
   const [pickedImage, setPickedImage] = useState();
+  const [openLogoutModal, setOpenLogoutModal] = useState(false);
+
 
 
 
@@ -100,7 +104,9 @@ const HomeScreen = () => {
 
         setUserInfo(response.data.data);
 
-        setPickedImage(response.data.data.uri??null); 
+        if(response.data.data.uri=!"http://192.168.29.193:8000/storage"){
+          setPickedImage(response.data.data.uri??null); 
+          } 
 
 
         if(response.data.data){
@@ -315,13 +321,9 @@ useEffect(() => {
         </View>
 
         <TouchableOpacity
-          onPress={() => navigation.push("notification/notificationScreen")}
+          onPress={() => setOpenLogoutModal(true)}
         >
-          <Ionicons
-            name="document-text-outline"
-            size={24}
-            color={Colors.white}
-          />
+         <Ionicons name="log-out-outline" size={20} color={Colors.white} />
         </TouchableOpacity>
       </View>
 
@@ -538,6 +540,35 @@ useEffect(() => {
           </TouchableOpacity>
         </View>
 
+
+        <View
+          style={{
+            marginHorizontal: Default.fixPadding * 2,
+          }}
+        >
+          <Text
+            style={{
+              textAlign: isRtl ? "right" : "left",
+              ...Fonts.Bold16black,
+              marginBottom: Default.fixPadding,
+            }}
+          >
+           Note-
+          </Text>
+          <Text
+            style={{
+              textAlign: isRtl ? "right" : "left",
+              ...Fonts.SemiBold14grey,
+            }}
+          >
+          Complete your daily Step Goal to achieve extra Bonus.
+          </Text>
+          
+         
+          
+          
+        </View>
+
        
        
       </ScrollView>
@@ -689,10 +720,21 @@ useEffect(() => {
                   </Text>
                 </TouchableOpacity>
               </View>
+
+             
             </View>
+            
           </ScrollView>
         </View>
       </BottomSheet>
+      <LogoutModal
+        visible={openLogoutModal}
+        closeLogoutModal={() => setOpenLogoutModal(false)}
+        onLogoutHandler={() => {
+          setOpenLogoutModal(false);
+          navigation.push("auth/loginScreen");
+        }}
+      />
     </View>
   );
 };
