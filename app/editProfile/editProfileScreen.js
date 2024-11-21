@@ -71,7 +71,7 @@ const EditProfileScreen = () => {
       console.log({ bep, trc, name, email ,number });
   
       // Make API call to send OTP
-      const response = await Api.post('/sendCodephone', { number });
+      const response = await Api.post('/sendCodephone', { email });
   
       // Handle success response
       if (response.data.success) {
@@ -312,14 +312,16 @@ const EditProfileScreen = () => {
         <View style={{ marginHorizontal: Default.fixPadding * 2 }}>
          
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-  <Image
-    source={require("../../assets/images/profile_icon.png")}
-    style={{
-      width: 20,
-      height: 20,
-      marginRight: 8, // Adds space between the image and text
-    }}
-  />
+          <Ionicons
+        name="person-outline" // Profile icon
+        size={20}
+        color={Colors.black} // Adjust color as per your design
+        style={{
+          width: 20,
+          height: 20,
+          marginRight: 8, // Adds space between the icon and text
+        }}
+      />
   <Text
     style={{
       textAlign: isRtl ? "right" : "left",
@@ -354,14 +356,17 @@ const EditProfileScreen = () => {
             </Text>
           </TouchableOpacity>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-  <Image
-    source={require("../../assets/images/email.png")}
-    style={{
-      width: 20,
-      height: 20,
-      marginRight: 8, // Adds space between the image and text
-    }}
-  />
+ 
+    <Ionicons
+        name="mail-outline" // You can also try 'mail' or 'mail-sharp'
+        size={20}
+        color={Colors.black} // Adjust color as per your design
+        style={{
+          width: 20,
+          height: 20,
+          marginRight: 8, // Adds space between the image and text
+        }}
+      />
   <Text
     style={{
       textAlign: isRtl ? "right" : "left",

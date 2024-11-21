@@ -39,7 +39,7 @@ const OtpScreen = () => {
   
 
   // Destructure parameters safely
-  const { number, password, referral } = useLocalSearchParams();
+  const { email, password, referral } = useLocalSearchParams();
 
 
   const intervalRef = useRef();
@@ -74,7 +74,7 @@ const OtpScreen = () => {
     if (otp.length === 4) {
       setIntervalStop(false);
       try {
-        const response = await Api.post("/registers", { phone:number, password,sponsor:referral,code:otp });
+        const response = await Api.post("/registers", { email:email, password,sponsor:referral,code:otp });
   
         if (response.data.success) {
           Alert.alert("Success", response.data.message);
@@ -241,16 +241,9 @@ const OtpScreen = () => {
             }}
           >
             <AwesomeButton
-              progress
+              
               height={50}
-              progressLoadingTime={1000}
-              onPress={(next) => {
-                setIntervalStop(false);
-                setTimeout(() => {
-                  next();
-                  navigation.push("auth/setGoalScreen");
-                }, 1000);
-              }}
+            
               raiseLevel={1}
               stretch={true}
               borderRadius={10}
