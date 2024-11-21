@@ -39,7 +39,6 @@ const LoginScreen = () => {
       const response = await Api.post("/login", { phone, password });
 
       if (response.data.success) {
-        Alert.alert("Success", response.data.message);
 
         if (response.data.token) {
           await AsyncStorage.setItem("auth_token", response.data.token);

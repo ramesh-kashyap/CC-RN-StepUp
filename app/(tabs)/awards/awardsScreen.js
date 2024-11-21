@@ -129,7 +129,7 @@ const AwardsScreen = () => {
           }}
         >
           <Text numberOfLines={1} style={{ ...Fonts.Bold14black }}>
-            {item.remarks}
+            {item.remarks=="Deposits"?"Deposit":"Withdraw"}
           </Text>
           <Text
             numberOfLines={2}
