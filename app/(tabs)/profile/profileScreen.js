@@ -22,6 +22,8 @@ import StepGoalBottomSheet from "../../../components/stepGoalBottomSheet";
 import LogoutModal from "../../../components/logoutModal";
 import { useNavigation } from "expo-router";
 import Api from '../../../services/Api.js'; 
+import { useFocusEffect } from "@react-navigation/native";
+
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -65,11 +67,13 @@ const ProfileScreen = () => {
     }
   };
 
-  useEffect(() => {
-
-    fetchData(); // Call fetchData when component mounts
-
-  }, []); 
+  useFocusEffect(
+    useCallback(() => {
+      // This will run every time the screen comes into focus
+      fetchProfileData();
+    }, [])
+  );
+  
   const genderList = [
     {
       key: "1",

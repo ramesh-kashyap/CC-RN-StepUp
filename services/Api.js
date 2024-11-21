@@ -1,8 +1,11 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 // Base URL for your API
-const BASE_URL = 'http://192.168.29.38:8000/api/';
+const BASE_URL = 'http://192.168.29.193:8000/api/';
+
+
 
 // Create an Axios instance
 const Api = axios.create({
@@ -52,6 +55,7 @@ Api.interceptors.response.use(
       // Redirect to login or show a modal
       console.log("Unauthorized. Redirecting to login...");
       // You can handle the redirection to login here.
+
     }
     return Promise.reject(error);
   }
