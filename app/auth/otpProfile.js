@@ -70,12 +70,13 @@ const OtpScreen = () => {
       try {
         const response = await Api.post("/updateProfile", { bep, trc, name, email,code:otp });
   
+        console.log(response.data);
         if (response.data.success) {
   
           navigation.push("home/homeScreen");
 
         } else {
-          Alert.alert("Error", response.data.error);
+          Alert.alert("Error", "Invalid OTP");
         }
       } catch (error) {
         console.log("Error details:", error);
@@ -234,16 +235,10 @@ const OtpScreen = () => {
             }}
           >
             <AwesomeButton
-              progress
+             
               height={50}
-              progressLoadingTime={1000}
-              onPress={(next) => {
-                setIntervalStop(false);
-                setTimeout(() => {
-                  next();
-                  navigation.push("auth/setGoalScreen");
-                }, 1000);
-              }}
+             
+              
               raiseLevel={1}
               stretch={true}
               borderRadius={10}

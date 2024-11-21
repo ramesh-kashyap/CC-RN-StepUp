@@ -41,18 +41,19 @@ const RegisterScreen = () => {
   const [password, setPassword] = useState();
   const [confirmpassword, setConfirmPassword] = useState();
   const [referral, setReferral] = useState();
-
+  const [email, setEmail] = useState("");
   const handleRegister = async () => {
     try {
       // Check if all fields are filled
-      if (!number || !password || !confirmpassword || !referral) {
+      if (!email || !password || !confirmpassword || !referral) {
         Alert.alert("Error", "Please fill out all fields.");
         return;
       }
   
-      // Check if the mobile number is exactly 10 digits
-      if (number.length !== 10) {
-        Alert.alert("Error", "Mobile number must be 10 digits.");
+      
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email validation pattern
+      if (!emailRegex.test(email)) {
+        Alert.alert("Error", "Please enter a valid email address.");
         return;
       }
   
@@ -63,7 +64,7 @@ const RegisterScreen = () => {
       }
   
       // Make API request to send OTP
-      const response = await Api.post('/sendCodephone', { number });
+      const response = await Api.post('/sendCodephone', { email });
   
       // Log the response for debugging
       // console.log(response);
@@ -72,7 +73,7 @@ const RegisterScreen = () => {
       if (response.data.success) {
         router.push({
           pathname: 'auth/otpScreen',
-          params: { number, password, referral }
+          params: { email, password, referral }
         });
       } else {
         // If the API call was not successful, show error message
@@ -174,40 +175,41 @@ const RegisterScreen = () => {
 
           <View style={{ marginHorizontal: Default.fixPadding * 2 }}>
           <Text
-              style={{
-                textAlign: isRtl ? "right" : "left",
-                ...Fonts.SemiBold16black,
-              }}
-            >
-              {tr("mobileNumber")}
-            </Text>
-            <View
-              style={{
-                flexDirection: isRtl ? "row-reverse" : "row",
-                ...styles.textInputCard,
-              }}
-            >
-              <Ionicons
-                name="phone-portrait-outline"
-                color={Colors.grey}
-                size={18}
-              />
-              <TextInput
-                maxLength={10}
-                value={number}
-                onChangeText={setNumber}
-                keyboardType="number-pad"
-                placeholder={tr("enterMobileNumber")}
-                placeholderTextColor={Colors.grey}
-                selectionColor={Colors.primary}
-                style={{
-                  ...Fonts.SemiBold16black,
-                  flex: 1,
-                  textAlign: isRtl ? "right" : "left",
-                  marginHorizontal: Default.fixPadding * 1.2,
-                }}
-              />
-            </View>
+  style={{
+    textAlign: isRtl ? "right" : "left",
+    ...Fonts.SemiBold16black,
+  }}
+>
+  {tr("emailAddress")}
+</Text>
+<View
+  style={{
+    flexDirection: isRtl ? "row-reverse" : "row",
+    ...styles.textInputCard,
+  }}
+>
+  <Ionicons
+    name="mail-outline" // Updated icon for email
+    color={Colors.grey}
+    size={18}
+  />
+  <TextInput
+    value={email} // State variable for email
+    onChangeText={setEmail} // Function to update email state
+    keyboardType="email-address" // Email-specific keyboard
+    placeholder={tr("enterEmailAddress")} // Updated placeholder
+    placeholderTextColor={Colors.grey}
+    selectionColor={Colors.primary}
+    autoCapitalize="none" // Prevent automatic capitalization
+    autoCorrect={false} // Disable auto-correction for emails
+    style={{
+      ...Fonts.SemiBold16black,
+      flex: 1,
+      textAlign: isRtl ? "right" : "left",
+      marginHorizontal: Default.fixPadding * 1.2,
+    }}
+  />
+</View>
 
             <Text
               style={{
